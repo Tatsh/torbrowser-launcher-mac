@@ -1,0 +1,583 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		26D9D1CE2515D2AA00253C00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9D1CD2515D2AA00253C00 /* AppDelegate.swift */; };
+		26D9D1D02515D2AB00253C00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26D9D1CF2515D2AB00253C00 /* Assets.xcassets */; };
+		26D9D1D32515D2AB00253C00 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 26D9D1D12515D2AB00253C00 /* MainMenu.xib */; };
+		26D9D1DF2515D2AB00253C00 /* torbrowser_launcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9D1DE2515D2AB00253C00 /* torbrowser_launcherTests.swift */; };
+		26D9D1EA2515D2AB00253C00 /* torbrowser_launcherUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9D1E92515D2AB00253C00 /* torbrowser_launcherUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		26D9D1DB2515D2AB00253C00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 26D9D1C22515D2AA00253C00 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 26D9D1C92515D2AA00253C00;
+			remoteInfo = "torbrowser-launcher";
+		};
+		26D9D1E62515D2AB00253C00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 26D9D1C22515D2AA00253C00 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 26D9D1C92515D2AA00253C00;
+			remoteInfo = "torbrowser-launcher";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		26D9D1CA2515D2AA00253C00 /* torbrowser-launcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "torbrowser-launcher.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		26D9D1CD2515D2AA00253C00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		26D9D1CF2515D2AB00253C00 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		26D9D1D22515D2AB00253C00 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		26D9D1D42515D2AB00253C00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		26D9D1D52515D2AB00253C00 /* torbrowser_launcher.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = torbrowser_launcher.entitlements; sourceTree = "<group>"; };
+		26D9D1DA2515D2AB00253C00 /* torbrowser-launcherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "torbrowser-launcherTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		26D9D1DE2515D2AB00253C00 /* torbrowser_launcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = torbrowser_launcherTests.swift; sourceTree = "<group>"; };
+		26D9D1E02515D2AB00253C00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		26D9D1E52515D2AB00253C00 /* torbrowser-launcherUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "torbrowser-launcherUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		26D9D1E92515D2AB00253C00 /* torbrowser_launcherUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = torbrowser_launcherUITests.swift; sourceTree = "<group>"; };
+		26D9D1EB2515D2AB00253C00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		26D9D1C72515D2AA00253C00 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26D9D1D72515D2AB00253C00 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26D9D1E22515D2AB00253C00 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		26D9D1C12515D2AA00253C00 = {
+			isa = PBXGroup;
+			children = (
+				26D9D1CC2515D2AA00253C00 /* torbrowser-launcher */,
+				26D9D1DD2515D2AB00253C00 /* torbrowser-launcherTests */,
+				26D9D1E82515D2AB00253C00 /* torbrowser-launcherUITests */,
+				26D9D1CB2515D2AA00253C00 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		26D9D1CB2515D2AA00253C00 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				26D9D1CA2515D2AA00253C00 /* torbrowser-launcher.app */,
+				26D9D1DA2515D2AB00253C00 /* torbrowser-launcherTests.xctest */,
+				26D9D1E52515D2AB00253C00 /* torbrowser-launcherUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		26D9D1CC2515D2AA00253C00 /* torbrowser-launcher */ = {
+			isa = PBXGroup;
+			children = (
+				26D9D1CD2515D2AA00253C00 /* AppDelegate.swift */,
+				26D9D1CF2515D2AB00253C00 /* Assets.xcassets */,
+				26D9D1D12515D2AB00253C00 /* MainMenu.xib */,
+				26D9D1D42515D2AB00253C00 /* Info.plist */,
+				26D9D1D52515D2AB00253C00 /* torbrowser_launcher.entitlements */,
+			);
+			path = "torbrowser-launcher";
+			sourceTree = "<group>";
+		};
+		26D9D1DD2515D2AB00253C00 /* torbrowser-launcherTests */ = {
+			isa = PBXGroup;
+			children = (
+				26D9D1DE2515D2AB00253C00 /* torbrowser_launcherTests.swift */,
+				26D9D1E02515D2AB00253C00 /* Info.plist */,
+			);
+			path = "torbrowser-launcherTests";
+			sourceTree = "<group>";
+		};
+		26D9D1E82515D2AB00253C00 /* torbrowser-launcherUITests */ = {
+			isa = PBXGroup;
+			children = (
+				26D9D1E92515D2AB00253C00 /* torbrowser_launcherUITests.swift */,
+				26D9D1EB2515D2AB00253C00 /* Info.plist */,
+			);
+			path = "torbrowser-launcherUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		26D9D1C92515D2AA00253C00 /* torbrowser-launcher */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26D9D1EE2515D2AB00253C00 /* Build configuration list for PBXNativeTarget "torbrowser-launcher" */;
+			buildPhases = (
+				26D9D1C62515D2AA00253C00 /* Sources */,
+				26D9D1C72515D2AA00253C00 /* Frameworks */,
+				26D9D1C82515D2AA00253C00 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "torbrowser-launcher";
+			productName = "torbrowser-launcher";
+			productReference = 26D9D1CA2515D2AA00253C00 /* torbrowser-launcher.app */;
+			productType = "com.apple.product-type.application";
+		};
+		26D9D1D92515D2AB00253C00 /* torbrowser-launcherTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26D9D1F12515D2AB00253C00 /* Build configuration list for PBXNativeTarget "torbrowser-launcherTests" */;
+			buildPhases = (
+				26D9D1D62515D2AB00253C00 /* Sources */,
+				26D9D1D72515D2AB00253C00 /* Frameworks */,
+				26D9D1D82515D2AB00253C00 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				26D9D1DC2515D2AB00253C00 /* PBXTargetDependency */,
+			);
+			name = "torbrowser-launcherTests";
+			productName = "torbrowser-launcherTests";
+			productReference = 26D9D1DA2515D2AB00253C00 /* torbrowser-launcherTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		26D9D1E42515D2AB00253C00 /* torbrowser-launcherUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26D9D1F42515D2AB00253C00 /* Build configuration list for PBXNativeTarget "torbrowser-launcherUITests" */;
+			buildPhases = (
+				26D9D1E12515D2AB00253C00 /* Sources */,
+				26D9D1E22515D2AB00253C00 /* Frameworks */,
+				26D9D1E32515D2AB00253C00 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				26D9D1E72515D2AB00253C00 /* PBXTargetDependency */,
+			);
+			name = "torbrowser-launcherUITests";
+			productName = "torbrowser-launcherUITests";
+			productReference = 26D9D1E52515D2AB00253C00 /* torbrowser-launcherUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		26D9D1C22515D2AA00253C00 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1200;
+				LastUpgradeCheck = 1200;
+				TargetAttributes = {
+					26D9D1C92515D2AA00253C00 = {
+						CreatedOnToolsVersion = 12.0;
+					};
+					26D9D1D92515D2AB00253C00 = {
+						CreatedOnToolsVersion = 12.0;
+						TestTargetID = 26D9D1C92515D2AA00253C00;
+					};
+					26D9D1E42515D2AB00253C00 = {
+						CreatedOnToolsVersion = 12.0;
+						TestTargetID = 26D9D1C92515D2AA00253C00;
+					};
+				};
+			};
+			buildConfigurationList = 26D9D1C52515D2AA00253C00 /* Build configuration list for PBXProject "torbrowser-launcher" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 26D9D1C12515D2AA00253C00;
+			productRefGroup = 26D9D1CB2515D2AA00253C00 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				26D9D1C92515D2AA00253C00 /* torbrowser-launcher */,
+				26D9D1D92515D2AB00253C00 /* torbrowser-launcherTests */,
+				26D9D1E42515D2AB00253C00 /* torbrowser-launcherUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		26D9D1C82515D2AA00253C00 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26D9D1D02515D2AB00253C00 /* Assets.xcassets in Resources */,
+				26D9D1D32515D2AB00253C00 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26D9D1D82515D2AB00253C00 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26D9D1E32515D2AB00253C00 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		26D9D1C62515D2AA00253C00 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26D9D1CE2515D2AA00253C00 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26D9D1D62515D2AB00253C00 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26D9D1DF2515D2AB00253C00 /* torbrowser_launcherTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26D9D1E12515D2AB00253C00 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26D9D1EA2515D2AB00253C00 /* torbrowser_launcherUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		26D9D1DC2515D2AB00253C00 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 26D9D1C92515D2AA00253C00 /* torbrowser-launcher */;
+			targetProxy = 26D9D1DB2515D2AB00253C00 /* PBXContainerItemProxy */;
+		};
+		26D9D1E72515D2AB00253C00 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 26D9D1C92515D2AA00253C00 /* torbrowser-launcher */;
+			targetProxy = 26D9D1E62515D2AB00253C00 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		26D9D1D12515D2AB00253C00 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				26D9D1D22515D2AB00253C00 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		26D9D1EC2515D2AB00253C00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		26D9D1ED2515D2AB00253C00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		26D9D1EF2515D2AB00253C00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "torbrowser-launcher/torbrowser_launcher.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = EU5R2QY9HJ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "torbrowser-launcher/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "sh.tat.abstractcat.torbrowser-launcher";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		26D9D1F02515D2AB00253C00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "torbrowser-launcher/torbrowser_launcher.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = EU5R2QY9HJ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "torbrowser-launcher/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "sh.tat.abstractcat.torbrowser-launcher";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		26D9D1F22515D2AB00253C00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = EU5R2QY9HJ;
+				INFOPLIST_FILE = "torbrowser-launcherTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = "sh.tat.abstractcat.torbrowser-launcherTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/torbrowser-launcher.app/Contents/MacOS/torbrowser-launcher";
+			};
+			name = Debug;
+		};
+		26D9D1F32515D2AB00253C00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = EU5R2QY9HJ;
+				INFOPLIST_FILE = "torbrowser-launcherTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = "sh.tat.abstractcat.torbrowser-launcherTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/torbrowser-launcher.app/Contents/MacOS/torbrowser-launcher";
+			};
+			name = Release;
+		};
+		26D9D1F52515D2AB00253C00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = EU5R2QY9HJ;
+				INFOPLIST_FILE = "torbrowser-launcherUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "sh.tat.abstractcat.torbrowser-launcherUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "torbrowser-launcher";
+			};
+			name = Debug;
+		};
+		26D9D1F62515D2AB00253C00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = EU5R2QY9HJ;
+				INFOPLIST_FILE = "torbrowser-launcherUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "sh.tat.abstractcat.torbrowser-launcherUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "torbrowser-launcher";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		26D9D1C52515D2AA00253C00 /* Build configuration list for PBXProject "torbrowser-launcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26D9D1EC2515D2AB00253C00 /* Debug */,
+				26D9D1ED2515D2AB00253C00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26D9D1EE2515D2AB00253C00 /* Build configuration list for PBXNativeTarget "torbrowser-launcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26D9D1EF2515D2AB00253C00 /* Debug */,
+				26D9D1F02515D2AB00253C00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26D9D1F12515D2AB00253C00 /* Build configuration list for PBXNativeTarget "torbrowser-launcherTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26D9D1F22515D2AB00253C00 /* Debug */,
+				26D9D1F32515D2AB00253C00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26D9D1F42515D2AB00253C00 /* Build configuration list for PBXNativeTarget "torbrowser-launcherUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26D9D1F52515D2AB00253C00 /* Debug */,
+				26D9D1F62515D2AB00253C00 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 26D9D1C22515D2AA00253C00 /* Project object */;
+}
