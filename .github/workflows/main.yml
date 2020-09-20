@@ -24,4 +24,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: xcodebuild
+        run: xcodebuild CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual ENABLE_HARDENED_RUNTIME=NO
