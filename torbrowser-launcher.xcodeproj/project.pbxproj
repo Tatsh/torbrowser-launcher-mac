@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		264E5CE82516530C00877FC3 /* LauncherWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 264E5CE72516530C00877FC3 /* LauncherWindow.xib */; };
 		26D9D1CE2515D2AA00253C00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9D1CD2515D2AA00253C00 /* AppDelegate.swift */; };
 		26D9D1D02515D2AB00253C00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26D9D1CF2515D2AB00253C00 /* Assets.xcassets */; };
 		26D9D1D32515D2AB00253C00 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 26D9D1D12515D2AB00253C00 /* MainMenu.xib */; };
 		26D9D1DF2515D2AB00253C00 /* torbrowser_launcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9D1DE2515D2AB00253C00 /* torbrowser_launcherTests.swift */; };
 		26D9D1EA2515D2AB00253C00 /* torbrowser_launcherUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9D1E92515D2AB00253C00 /* torbrowser_launcherUITests.swift */; };
+		26D9D1FB2516407E00253C00 /* LauncherWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9D1FA2516407E00253C00 /* LauncherWindow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		264E5CE72516530C00877FC3 /* LauncherWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LauncherWindow.xib; sourceTree = "<group>"; };
 		26D9D1CA2515D2AA00253C00 /* torbrowser-launcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "torbrowser-launcher.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		26D9D1CD2515D2AA00253C00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		26D9D1CF2515D2AB00253C00 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -44,6 +47,7 @@
 		26D9D1E52515D2AB00253C00 /* torbrowser-launcherUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "torbrowser-launcherUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		26D9D1E92515D2AB00253C00 /* torbrowser_launcherUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = torbrowser_launcherUITests.swift; sourceTree = "<group>"; };
 		26D9D1EB2515D2AB00253C00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		26D9D1FA2516407E00253C00 /* LauncherWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherWindow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +103,8 @@
 				26D9D1D12515D2AB00253C00 /* MainMenu.xib */,
 				26D9D1D42515D2AB00253C00 /* Info.plist */,
 				26D9D1D52515D2AB00253C00 /* torbrowser_launcher.entitlements */,
+				26D9D1FA2516407E00253C00 /* LauncherWindow.swift */,
+				264E5CE72516530C00877FC3 /* LauncherWindow.xib */,
 			);
 			path = "torbrowser-launcher";
 			sourceTree = "<group>";
@@ -224,6 +230,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				264E5CE82516530C00877FC3 /* LauncherWindow.xib in Resources */,
 				26D9D1D02515D2AB00253C00 /* Assets.xcassets in Resources */,
 				26D9D1D32515D2AB00253C00 /* MainMenu.xib in Resources */,
 			);
@@ -251,6 +258,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				26D9D1CE2515D2AA00253C00 /* AppDelegate.swift in Sources */,
+				26D9D1FB2516407E00253C00 /* LauncherWindow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

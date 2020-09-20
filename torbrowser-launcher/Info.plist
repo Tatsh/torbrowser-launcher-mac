@@ -26,5 +26,11 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>TBLMirrors</key>
+	<array>
+		<string>https://dist.torproject.org/</string>
+		<string>https://tor.crazyhaze.de/dist/</string>
+		<string>https://creep.im/tor/dist/</string>
+	</array>
 </dict>
 </plist>
