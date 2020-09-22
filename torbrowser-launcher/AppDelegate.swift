@@ -32,6 +32,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSComboBoxDataSource {
         torServerTextField?.stringValue = def.string(forKey: "TBLTorSOCKSAddress") ?? "127.0.0.1:9010"
         selectedMirrorIndex = def.integer(forKey: "TBLMirrorSelectedIndex")
 
+        let tbPath = getTorBrowserPath()
+        if FileManager.default.fileExists(atPath: tbPath) {
+            self.statusLabel.cell?.title = "installed"
+        }
+
         let vc = LauncherWindowController()
         Bundle.main.loadNibNamed("LauncherWindow", owner: vc, topLevelObjects: nil)
         vc.downloadTor()
