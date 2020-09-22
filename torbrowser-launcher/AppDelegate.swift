@@ -17,15 +17,18 @@ import Cocoa
     private var selectedMirrorIndex = UserDefaults.standard
         .integer(forKey: "TBLMirrorSelectedIndex")
     private var shouldSave = false
+    private var useProxy = false
+    private var proxyAddress = "127.0.0.1:9010"
 
     // MARK: - Application delegate
 
     func applicationDidFinishLaunching(_: Notification) {
         let def = UserDefaults.standard
-        downloadOverSystemTorCheckbox?.state = def
-            .bool(forKey: "TBLDownloadOverSystemTor") ? .on : .off
-        torServerTextField?.stringValue = def
+        useProxy = def.bool(forKey: "TBLDownloadOverSystemTor")
+        proxyAddress = def
             .string(forKey: "TBLTorSOCKSAddress") ?? "127.0.0.1:9010"
+        downloadOverSystemTorCheckbox?.state = useProxy ? .on : .off
+        torServerTextField?.stringValue = proxyAddress
 
         if FileManager.default.fileExists(atPath: kTorBrowserVersionPath),
             FileManager.default.fileExists(atPath: kTorBrowserAppPath) {
@@ -38,7 +41,7 @@ import Cocoa
         }
 
         if !CommandLine.arguments.contains("--settings") {
-            startDownloader()
+            startDownloader(proxy: useProxy ? proxyAddress : nil)
         } else {
             settingsWindow.setIsVisible(true)
         }
@@ -92,7 +95,7 @@ import Cocoa
             }
         }
         settingsWindow.setIsVisible(false)
-        startDownloader()
+        startDownloader(proxy: useProxy ? proxyAddress : nil)
     }
 
     @IBAction func saveAndExit(_: Any) {
@@ -102,7 +105,7 @@ import Cocoa
 
     // MARK: - Private
 
-    private func startDownloader() {
+    private func startDownloader(proxy: String?) {
         let vc = LauncherWindowController()
         Bundle.main.loadNibNamed(
             "LauncherWindow",
@@ -112,6 +115,6 @@ import Cocoa
         // Filter removes Xcode debug arguments
         vc.urls = Array(CommandLine.arguments[1...])
             .filter { !$0.starts(with: "-") && $0.lowercased() != "yes" }
-        vc.downloadTor()
+        vc.downloadTor(proxy: proxy)
     }
 }

@@ -72,7 +72,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
 
     // MARK: - Utility
 
-    func downloadTor() {
+    func downloadTor(proxy: String?) {
         progressBar.doubleValue = 0
         statusLabel.cell?
             .title =
@@ -82,7 +82,19 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                 comment: "Displayed when the update URL is being generated (first step of the process)."
             )
 
-        URLSession.shared
+        var session = URLSession.shared
+        if proxy != nil {
+            let sessionConfiguration = URLSessionConfiguration.default
+            let spl = proxy!.split(separator: ":")
+            sessionConfiguration.connectionProxyDictionary = [
+                kCFNetworkProxiesHTTPEnable as AnyHashable: true,
+                kCFNetworkProxiesHTTPPort as AnyHashable: Int(spl.last!)!,
+                kCFNetworkProxiesHTTPProxy as AnyHashable: spl.first!
+            ]
+            session = URLSession(configuration: sessionConfiguration)
+        }
+
+        session
             .dataTask(with: URL(string: kUpdateIndexURI)!) { data, resp, error in
                 if error != nil {
                     self
@@ -192,7 +204,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                                 "downloads.json"
                             )
                     )
-                URLSession.shared
+                session
                     .dataTask(with: URL(
                         string: kUpdateURIPrefix
                             .appending(updatePath!)
@@ -265,6 +277,18 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                                             basename
                                         )
                                 )
+                            let config = URLSessionConfiguration
+                                .background(
+                                    withIdentifier: "\(Bundle.main.bundleIdentifier!).background"
+                                )
+                            if proxy != nil {
+                                let spl = proxy!.split(separator: ":")
+                                config.connectionProxyDictionary = [
+                                    kCFNetworkProxiesHTTPEnable as AnyHashable: true,
+                                    kCFNetworkProxiesHTTPPort as AnyHashable: Int(spl.last!)!,
+                                    kCFNetworkProxiesHTTPProxy as AnyHashable: spl.first!
+                                ]
+                            }
                             URLSession(
                                 configuration: URLSessionConfiguration
                                     .background(
