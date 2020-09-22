@@ -55,7 +55,7 @@
 --enable unusedArguments
 --enable void
 --enable wrap
---maxwidth 79
+--maxwidth 99
 --enable wrapArguments
 --wrapcollections before-first
 --wrapparameters after-first
