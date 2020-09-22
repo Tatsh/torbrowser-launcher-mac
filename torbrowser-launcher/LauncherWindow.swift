@@ -16,15 +16,19 @@ struct Downloads: Codable {
     var version: String
 }
 
+func getTorBrowserPath() -> String {
+    return ((NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first! as NSString).appendingPathComponent("Tor Browser Launcher") as NSString).appendingPathComponent("Tor Browser.app")
+}
+
 class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, URLSessionDownloadDelegate {
     @IBOutlet weak var statusLabel: NSTextField!
     @IBOutlet weak var progressBar: NSProgressIndicator!
 
-    var currentMountedDMGPath: String?
-    let appSupportDir = (NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first! as NSString).appendingPathComponent("Tor Browser Launcher")
-    var tbTargetAppDir: String?
-    var versionFile: String?
-    var lastBasename: String?
+    private var currentMountedDMGPath: String?
+    private let appSupportDir = (NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first! as NSString).appendingPathComponent("Tor Browser Launcher")
+    private var tbTargetAppDir: String = getTorBrowserPath()
+    private var versionFile: String?
+    private var lastBasename: String?
 
     @IBAction func onCancel(_ sender: Any) {
         if currentMountedDMGPath != nil {
@@ -39,7 +43,6 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
         self.progressBar.doubleValue = 0
         self.statusLabel.cell?.title = "Determining update URL"
 
-        self.tbTargetAppDir = (appSupportDir as NSString).appendingPathComponent("Tor Browser.app")
         self.versionFile = (appSupportDir as NSString).appendingPathComponent("version")
         if FileManager.default.fileExists(atPath: versionFile!) {
             self.lastBasename = try? String(contentsOfFile: versionFile!).trimmingCharacters(in: .whitespacesAndNewlines)
@@ -104,7 +107,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
 
                 if  self.lastBasename == basename {
                     self.setStatus("Launching Tor Browser")
-                    try! NSWorkspace.shared.launchApplication(at: URL(fileURLWithPath: self.tbTargetAppDir!), options: .withoutAddingToRecents, configuration: [NSWorkspace.LaunchConfigurationKey : Any]())
+                    try! NSWorkspace.shared.launchApplication(at: URL(fileURLWithPath: self.tbTargetAppDir), options: .withoutAddingToRecents, configuration: [NSWorkspace.LaunchConfigurationKey : Any]())
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         NSApp.terminate(nil)
                     }
