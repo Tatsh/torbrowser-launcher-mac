@@ -1,0 +1,9 @@
+
+/* Class = "NSWindow"; title = "Tor Browser Launcher"; ObjectID = "4Bm-Sy-v3c"; */
+"4Bm-Sy-v3c.title" = "Tor Browser Launcher";
+
+/* Class = "NSTextFieldCell"; title = "<status text>"; ObjectID = "5um-2w-5mA"; */
+"5um-2w-5mA.title" = "<status text>";
+
+/* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "UnV-N6-vJp"; */
+"UnV-N6-vJp.title" = "Cancel";

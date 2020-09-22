@@ -49,7 +49,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSComboBoxDataSource {
 
         let tbPath = getTorBrowserPath()
         if FileManager.default.fileExists(atPath: tbPath) {
-            self.statusLabel.cell?.title = "installed"
+            self.statusLabel.cell?.title = NSLocalizedString("settings-status-label-installed", comment: "Shows \"installed\" if Tor Browser.app is on the system from a previous run")
         }
 
         if !CommandLine.arguments.contains("--settings") {

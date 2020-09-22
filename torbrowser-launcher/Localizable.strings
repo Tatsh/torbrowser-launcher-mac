@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  torbrowser-launcher
+
+  Created by Tatsh on 2020-09-22.
+  
+*/
+"settings-status-label-installed" = "installed";
+
+"download-window-status-label-getting-update-url" = "Getting update URL";

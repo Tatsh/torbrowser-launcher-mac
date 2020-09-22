@@ -26,7 +26,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
 
     private var currentMountedDMGPath: String?
     private let appSupportDir = (NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first! as NSString).appendingPathComponent("Tor Browser Launcher")
-    private var tbTargetAppDir: String = getTorBrowserPath()
+    private let tbTargetAppDir = getTorBrowserPath()
     private var versionFile: String?
     private var lastBasename: String?
     private var urls: [String]?
@@ -42,7 +42,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
 
     func downloadTor(urls: [String]?) {
         self.progressBar.doubleValue = 0
-        self.statusLabel.cell?.title = "Determining update URL"
+        self.statusLabel.cell?.title = NSLocalizedString("download-window-status-label-getting-update-url", comment: "")
         self.urls = urls
 
         self.versionFile = (appSupportDir as NSString).appendingPathComponent("version")
@@ -50,8 +50,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
             self.lastBasename = try? String(contentsOfFile: versionFile!).trimmingCharacters(in: .whitespacesAndNewlines)
         }
 
-        let session = URLSession.shared
-        let task = session.dataTask(with: URL(string: kUpdateIndexURI)!) { (data, resp, error) in
+        URLSession.shared.dataTask(with: URL(string: kUpdateIndexURI)!) { (data, resp, error) in
             if error != nil {
                 self.setStatus("Failed to determine update path (error: \(error?.localizedDescription ?? "(none)")). Cannot continue.")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
@@ -63,7 +62,8 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
             let statusCode = (resp as! HTTPURLResponse).statusCode
             if  statusCode < 200 || statusCode > 299 {
                 DispatchQueue.main.async {
-                    self.statusLabel.cell?.title = "Failed to determine update path (status code \(statusCode). Cannot continue."
+                    let format = NSLocalizedString("Failed to determine update path (status code %d). Cannot continue.", comment: "")
+                    self.statusLabel.cell?.title = String.localizedStringWithFormat(format, statusCode)
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
                     NSApp.terminate(nil)
@@ -84,7 +84,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
             }
 
             if updatePath == nil {
-                self.setStatus("Failed to determine update path. Cannot continue.")
+                self.setStatus(NSLocalizedString("Failed to determine update path. Cannot continue.", comment: ""))
                 DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
                     NSApp.terminate(nil)
                 }
@@ -96,9 +96,9 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
 
             self.setStatus("Fetching downloads.json")
             let downloadsJSON = kUpdateURIPrefix.appending(updatePath!).appending("release/downloads.json")
-            session.dataTask(with: URL(string: downloadsJSON)!) { (data, resp, error) in
+            URLSession.shared.dataTask(with: URL(string: downloadsJSON)!) { (data, resp, error) in
                 if error != nil {
-                    print(error?.localizedDescription ?? "No description")
+                    print(error?.localizedDescription ?? NSLocalizedString("no-error-info-message", comment: "Displayed when no error details are available."))
                     return
                 }
                 let decoder = JSONDecoder()
@@ -108,7 +108,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
                 let basename = (binary as NSString).lastPathComponent
 
                 if  self.lastBasename == basename {
-                    self.setStatus("Launching Tor Browser")
+                    self.setStatus(NSLocalizedString("status-launching-tor-browser", comment: "Displayed when Tor Browser is starting"))
                     var config = [NSWorkspace.LaunchConfigurationKey : Any]()
                     if urls != nil {
                         config[NSWorkspace.LaunchConfigurationKey.arguments] = urls
@@ -125,8 +125,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
                     dmgSession.downloadTask(with: URL(string: binary)!).resume()
                 }
             }.resume()
-        }
-        task.resume()
+        }.resume()
     }
 
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
