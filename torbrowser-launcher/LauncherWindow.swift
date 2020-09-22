@@ -72,7 +72,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
 
     // MARK: - Utility
 
-    func downloadTor(proxy: String?) {
+    func downloadTor(proxy: String?, mirror: String) {
         progressBar.doubleValue = 0
         statusLabel.cell?
             .title =
@@ -229,7 +229,8 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                             from: data!
                         )
                         let binary = downloads
-                            .downloads["osx64"]!["en-US"]!["binary"]!
+                            .downloads["osx64"]!["en-US"]!["binary"]!.replacingOccurrences(of: "https://dist.torproject.org/", with: mirror)
+                        print("Binary", binary)
                         let basename = (binary as NSString)
                             .lastPathComponent
 
