@@ -73,7 +73,7 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "--settings"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>

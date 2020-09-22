@@ -1,94 +1,105 @@
-//
-//  AppDelegate.swift
-//  torbrowser-launcher
-//
-//  Created by Tatsh on 2020-09-19.
-//
-
 import Cocoa
 
-@NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate, NSComboBoxDataSource {
-    private var mirrors = Bundle.main.infoDictionary?["TBLMirrors"] as! [String]
-    private var selectedMirrorIndex: Int?
+@NSApplicationMain class AppDelegate: NSObject, NSApplicationDelegate,
+    NSComboBoxDataSource {
+    private var mirrors = Bundle.main
+        .infoDictionary?["TBLMirrors"] as! [String]
+    private var selectedMirrorIndex = UserDefaults.standard
+        .integer(forKey: "TBLMirrorSelectedIndex")
     private var shouldSave = false
 
+    @IBOutlet var downloadOverSystemTorCheckbox: NSButton!
+    @IBOutlet var mirrorPicker: NSComboBox!
     @IBOutlet var settingsWindow: NSWindow!
-    @IBOutlet weak var statusLabel: NSTextField!
-    @IBOutlet weak var downloadOverSystemTorCheckbox: NSButton!
-    @IBOutlet weak var torServerTextField: NSTextField!
-    @IBOutlet weak var reinstallTorBrowserButton: NSButton!
-    @IBOutlet weak var mirrorPicker: NSComboBox!
-    @IBOutlet weak var cancelButton: NSButton!
-    @IBOutlet weak var saveAndExitButton: NSButton!
+    @IBOutlet var statusLabel: NSTextField!
+    @IBOutlet var torServerTextField: NSTextField!
 
-    @IBAction func didPressReinstall(sender: Any) {
-        let tbPath = getTorBrowserPath()
-        let versionPath = (tbPath as NSString).deletingLastPathComponent.appending("/version")
-        if FileManager.default.fileExists(atPath: tbPath) {
-            try! FileManager.default.removeItem(atPath: tbPath)
+    @IBAction func didPressReinstall(sender _: Any) {
+        for path in [kTorBrowserAppPath, kTorBrowserVersionPath] {
+            if FileManager.default.fileExists(atPath: path) {
+                try! FileManager.default.removeItem(atPath: path)
+            }
         }
-        if FileManager.default.fileExists(atPath: versionPath) {
-            try! FileManager.default.removeItem(atPath: versionPath)
-        }
-        self.settingsWindow.setIsVisible(false)
-        let vc = LauncherWindowController()
-        Bundle.main.loadNibNamed("LauncherWindow", owner: vc, topLevelObjects: nil)
-        vc.downloadTor(urls: Array(CommandLine.arguments[1...]))
+        settingsWindow.setIsVisible(false)
+        startDownloader()
     }
 
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
+    func applicationDidFinishLaunching(_: Notification) {
         let def = UserDefaults.standard
-        if def.bool(forKey: "TBLDownloadOverSystemTor") {
-            downloadOverSystemTorCheckbox?.state = .on
-        } else {
-            downloadOverSystemTorCheckbox?.state = .off
-        }
-        torServerTextField?.stringValue = def.string(forKey: "TBLTorSOCKSAddress") ?? "127.0.0.1:9010"
-        selectedMirrorIndex = def.integer(forKey: "TBLMirrorSelectedIndex")
+        downloadOverSystemTorCheckbox?.state = def
+            .bool(forKey: "TBLDownloadOverSystemTor") ? .on : .off
+        torServerTextField?.stringValue = def
+            .string(forKey: "TBLTorSOCKSAddress") ?? "127.0.0.1:9010"
 
-        let tbPath = getTorBrowserPath()
-        if FileManager.default.fileExists(atPath: tbPath) {
-            self.statusLabel.cell?.title = NSLocalizedString("settings-status-label-installed", comment: "Shows \"installed\" if Tor Browser.app is on the system from a previous run")
+        if FileManager.default.fileExists(atPath: kTorBrowserVersionPath),
+            FileManager.default.fileExists(atPath: kTorBrowserAppPath) {
+            statusLabel.cell?
+                .title = NSLocalizedString(
+                    "settings-status-label-installed",
+                    value: "installed",
+                    comment: "Shows \"installed\" if Tor Browser.app is on the system from a previous run"
+                )
         }
 
         if !CommandLine.arguments.contains("--settings") {
-            let vc = LauncherWindowController()
-            Bundle.main.loadNibNamed("LauncherWindow", owner: vc, topLevelObjects: nil)
-            vc.downloadTor(urls: Array(CommandLine.arguments[1...]))
+            startDownloader()
         } else {
-            self.settingsWindow.setIsVisible(true)
+            settingsWindow.setIsVisible(true)
         }
     }
 
-    func applicationWillBecomeActive(_ notification: Notification) {
-        mirrorPicker?.selectItem(at: selectedMirrorIndex ?? 0)
+    private func startDownloader() {
+        let vc = LauncherWindowController()
+        Bundle.main.loadNibNamed(
+            "LauncherWindow",
+            owner: vc,
+            topLevelObjects: nil
+        )
+        // Filter removes Xcode debug arguments
+        vc.urls = Array(CommandLine.arguments[1...])
+            .filter { !$0.starts(with: "-") && $0.lowercased() != "yes" }
+        vc.downloadTor()
     }
 
-    @IBAction func cancel(_ sender: Any) {
+    func applicationWillBecomeActive(_: Notification) {
+        mirrorPicker.selectItem(at: selectedMirrorIndex)
+    }
+
+    @IBAction func cancel(_: Any) {
         NSApp.terminate(nil)
     }
 
-    @IBAction func saveAndExit(_ sender: Any) {
+    @IBAction func saveAndExit(_: Any) {
         shouldSave = true
         NSApp.terminate(nil)
     }
 
-    func applicationWillTerminate(_ aNotification: Notification) {
+    func applicationWillTerminate(_: Notification) {
         if shouldSave {
             let def = UserDefaults.standard
-            def.setValue(downloadOverSystemTorCheckbox?.state == .off ? false : true, forKey: "TBLDownloadOverSystemTor")
-            def.setValue(torServerTextField?.stringValue, forKey: "TBLTorSOCKSAddress")
-            def.setValue(mirrorPicker?.indexOfSelectedItem, forKey: "TBLMirrorSelectedIndex")
+            def
+                .setValue(
+                    downloadOverSystemTorCheckbox
+                        .state == .off ? false : true,
+                    forKey: "TBLDownloadOverSystemTor"
+                )
+            def.setValue(
+                torServerTextField.stringValue,
+                forKey: "TBLTorSOCKSAddress"
+            )
+            def.setValue(
+                mirrorPicker.indexOfSelectedItem,
+                forKey: "TBLMirrorSelectedIndex"
+            )
             def.synchronize()
         }
     }
 
-    func numberOfItems(in comboBox: NSComboBox) -> Int {
+    func numberOfItems(in _: NSComboBox) -> Int {
         return mirrors.count
     }
 
-    func comboBox(_ comboBox: NSComboBox, objectValueForItemAt index: Int) -> Any? {
+    func comboBox(_: NSComboBox, objectValueForItemAt index: Int) -> Any? {
         return mirrors[index]
     }
 }

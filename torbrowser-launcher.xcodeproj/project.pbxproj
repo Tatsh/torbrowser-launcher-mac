@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		269F676A2519B89200F9E765 /* LauncherWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 269F676C2519B89200F9E765 /* LauncherWindow.xib */; };
-		269F67752519B98700F9E765 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 269F67742519B98700F9E765 /* Localizable.strings */; };
 		26D9D1CE2515D2AA00253C00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9D1CD2515D2AA00253C00 /* AppDelegate.swift */; };
 		26D9D1D02515D2AB00253C00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26D9D1CF2515D2AB00253C00 /* Assets.xcassets */; };
 		26D9D1D32515D2AB00253C00 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 26D9D1D12515D2AB00253C00 /* MainMenu.xib */; };
@@ -38,7 +37,6 @@
 		269F676B2519B89200F9E765 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LauncherWindow.xib; sourceTree = "<group>"; };
 		269F67712519B90A00F9E765 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		269F67732519B91400F9E765 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LauncherWindow.strings; sourceTree = "<group>"; };
-		269F67742519B98700F9E765 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		26D9D1CA2515D2AA00253C00 /* Tor Browser Launcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tor Browser Launcher.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		26D9D1CD2515D2AA00253C00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		26D9D1CF2515D2AB00253C00 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -109,7 +107,6 @@
 				26D9D1D52515D2AB00253C00 /* torbrowser_launcher.entitlements */,
 				26D9D1FA2516407E00253C00 /* LauncherWindow.swift */,
 				269F676C2519B89200F9E765 /* LauncherWindow.xib */,
-				269F67742519B98700F9E765 /* Localizable.strings */,
 			);
 			path = "torbrowser-launcher";
 			sourceTree = "<group>";
@@ -237,7 +234,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				269F676A2519B89200F9E765 /* LauncherWindow.xib in Resources */,
-				269F67752519B98700F9E765 /* Localizable.strings in Resources */,
 				26D9D1D02515D2AB00253C00 /* Assets.xcassets in Resources */,
 				26D9D1D32515D2AB00253C00 /* MainMenu.xib in Resources */,
 			);
