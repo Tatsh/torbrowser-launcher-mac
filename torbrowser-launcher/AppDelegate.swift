@@ -89,6 +89,13 @@ import Cocoa
     }
 
     @IBAction func didPressReinstall(sender _: Any) {
+        for app in NSWorkspace.shared.runningApplications {
+            if let execURL = app.executableURL,
+                execURL.lastPathComponent == "firefox",
+                execURL.absoluteString.contains("/Tor%20Browser%20Launcher/") {
+                app.forceTerminate()
+            }
+        }
         for path in [kTorBrowserAppPath, kTorBrowserVersionPath] {
             if FileManager.default.fileExists(atPath: path) {
                 try! FileManager.default.removeItem(atPath: path)
