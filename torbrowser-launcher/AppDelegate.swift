@@ -22,9 +22,22 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSComboBoxDataSource {
     @IBOutlet weak var cancelButton: NSButton!
     @IBOutlet weak var saveAndExitButton: NSButton!
 
+    @IBAction func didPressReinstall(sender: Any) {
+        let tbPath = getTorBrowserPath()
+        let versionPath = (tbPath as NSString).deletingLastPathComponent.appending("/version")
+        if FileManager.default.fileExists(atPath: tbPath) {
+            try! FileManager.default.removeItem(atPath: tbPath)
+        }
+        if FileManager.default.fileExists(atPath: versionPath) {
+            try! FileManager.default.removeItem(atPath: versionPath)
+        }
+        self.settingsWindow.setIsVisible(false)
+        let vc = LauncherWindowController()
+        Bundle.main.loadNibNamed("LauncherWindow", owner: vc, topLevelObjects: nil)
+        vc.downloadTor(urls: Array(CommandLine.arguments[1...]))
+    }
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-
-
         let def = UserDefaults.standard
         if def.bool(forKey: "TBLDownloadOverSystemTor") {
             downloadOverSystemTorCheckbox?.state = .on

@@ -214,6 +214,9 @@
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="didPressReinstallWithSender:" target="Voe-Tx-rLC" id="hNc-C0-kdW"/>
+                        </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YCh-sk-Fu3">
                         <rect key="frame" x="303" y="117" width="47" height="16"/>
