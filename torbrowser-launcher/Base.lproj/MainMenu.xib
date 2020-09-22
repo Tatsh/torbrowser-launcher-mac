@@ -12,7 +12,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="torbrowser_launcher" customModuleProvider="target">
             <connections>
                 <outlet property="cancelButton" destination="UVa-wX-Qb6" id="QT3-cr-bkh"/>
@@ -225,7 +225,7 @@
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nG0-sF-m7S">
                         <rect key="frame" x="354" y="117" width="92" height="16"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="&lt;placeholder&gt;" id="cpB-Xc-pDt">
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="not installed" id="cpB-Xc-pDt">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
