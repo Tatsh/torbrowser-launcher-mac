@@ -29,8 +29,6 @@
 	<key>TBLMirrors</key>
 	<array>
 		<string>https://dist.torproject.org/</string>
-		<string>https://tor.crazyhaze.de/dist/</string>
-		<string>https://creep.im/tor/dist/</string>
 		<string>https://tor.ybti.net/dist/</string>
 		<string>https://tor.0x3d.lu/dist/</string>
 		<string>https://www.it-sicherheitschannel.de/dist/</string>
