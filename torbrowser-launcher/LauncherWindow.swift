@@ -1,8 +1,8 @@
 import Cocoa
 
-private let kUpdateURIPrefix = "https://aus1.torproject.org/torbrowser/"
-private let kUpdateIndexURI = "https://aus1.torproject.org/torbrowser/?C=M;O=D"
 private let kUpdateRE = "a href=\"(update_[^\"]+).*"
+private let kUpdateURIPrefix = "https://aus1.torproject.org/torbrowser/"
+private let kUpdateIndexURI = "\(kUpdateURIPrefix)?C=M;O=D"
 
 private struct Downloads: Codable {
     var downloads: [String: [String: [String: String]]]
