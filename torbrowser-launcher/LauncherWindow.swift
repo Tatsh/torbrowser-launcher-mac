@@ -1,13 +1,15 @@
 import Cocoa
 
-private let kUpdateRE = "a href=\"(update_[^\"]+).*"
-private let kUpdateURIPrefix = "https://aus1.torproject.org/torbrowser/"
-private let kUpdateIndexURI = "\(kUpdateURIPrefix)?C=M;O=D"
-
 private struct Downloads: Codable {
     var downloads: [String: [String: [String: String]]]
     var version: String
 }
+
+// MARK: - Constants
+
+private let kUpdateRE = "a href=\"(update_[^\"]+).*"
+private let kUpdateURIPrefix = "https://aus1.torproject.org/torbrowser/"
+private let kUpdateIndexURI = "\(kUpdateURIPrefix)?C=M;O=D"
 
 private let kAppSupportDirectory = NSSearchPathForDirectoriesInDomains(
     .applicationSupportDirectory,
@@ -21,15 +23,25 @@ let kTorBrowserAppPath = (kTorBrowserLauncherPath as NSString)
 let kTorBrowserVersionPath = (kTorBrowserLauncherPath as NSString)
     .appendingPathComponent("version")
 
+// MARK: -
+
 class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
     URLSessionDownloadDelegate {
+    // MARK: - Outlets
+
     @IBOutlet var progressBar: NSProgressIndicator!
     @IBOutlet var statusLabel: NSTextField!
+
+    // MARK: - Ivars
 
     var urls: [String]?
 
     private var currentMountedDMGPath: String?
+    private var hasSetMaxValue = false
     private var lastBasename: String?
+    private var updateRE: NSRegularExpression?
+
+    // MARK: - Initializers
 
     override init(contentRect: NSRect, styleMask style: NSWindow.StyleMask,
                   backing backingStoreType: NSWindow.BackingStoreType,
@@ -44,7 +56,10 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
             lastBasename = try! String(contentsOfFile: kTorBrowserVersionPath)
                 .trimmingCharacters(in: .whitespacesAndNewlines)
         }
+        updateRE = try! NSRegularExpression(pattern: kUpdateRE)
     }
+
+    // MARK: - Actions
 
     @IBAction func onCancel(_: Any) {
         if currentMountedDMGPath != nil {
@@ -55,6 +70,8 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
         }
     }
 
+    // MARK: - Utility
+
     func downloadTor() {
         progressBar.doubleValue = 0
         statusLabel.cell?
@@ -62,7 +79,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
             NSLocalizedString(
                 "download-window-status-label-getting-update-url",
                 value: "Getting update URL",
-                comment: ""
+                comment: "Displayed when the update URL is being generated (first step of the process)."
             )
 
         URLSession.shared
@@ -75,11 +92,15 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                                     NSLocalizedString(
                                         "download-window-status-error-fetching-update-index",
                                         value: "Failed to determine update path: (error: %s). Cannot continue.",
-                                        comment: ""
+                                        comment: "Displayed when the update URL cannot be determined (likely because the site is down)."
                                     ),
                                     error?
                                         .localizedDescription ??
-                                        "(no description)"
+                                        NSLocalizedString(
+                                            "download-window-status-error-no-description",
+                                            value: "(no description)",
+                                            comment: "Generic \"no description\" text."
+                                        )
                                 )
                         )
                     DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
@@ -96,8 +117,8 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                             .localizedStringWithFormat(
                                 NSLocalizedString(
                                     "download-window-status-failed-update-path",
-                                    value: "Failed to determine update path (status code %d). Cannot continue.",
-                                    comment: ""
+                                    value: "Failed to determine update path (status code: %d). Cannot continue.",
+                                    comment: "Displays when the HTTP status %d is not equal to 200."
                                 ),
                                 (resp as! HTTPURLResponse).statusCode
                             )
@@ -108,11 +129,10 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                     return
                 }
 
-                let re = try! NSRegularExpression(pattern: kUpdateRE)
                 var updatePath: String?
                 for line in String(data: data!, encoding: .utf8)!
                     .split(separator: "\n") {
-                    let m = re.firstMatch(
+                    let m = self.updateRE!.firstMatch(
                         in: String(line),
                         options: [],
                         range: NSRange(
@@ -133,7 +153,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                             NSLocalizedString(
                                 "download-window-status-failed-update-path-2",
                                 value: "Failed to determine update path. Cannot continue.",
-                                comment: ""
+                                comment: "Displays when the update path (part of a URL) cannot be determined."
                             )
                         )
                     DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
@@ -146,7 +166,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                     NSLocalizedString(
                         "download-window-status-creating-app-support-dir",
                         value: "Creating %@",
-                        comment: ""
+                        comment: "Displays when a the ~/Library/Application Support/NAME directory is being created."
                     ),
                     kTorBrowserLauncherPath
                 ))
@@ -167,38 +187,43 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                                 NSLocalizedString(
                                     "download-window-status-fetching-filename",
                                     value: "Fetching %@",
-                                    comment: ""
+                                    comment: "Displays when a file %@ is being downloaded."
                                 ),
                                 "downloads.json"
                             )
                     )
-                let downloadsJSON = kUpdateURIPrefix.appending(updatePath!)
-                    .appending("release/downloads.json")
                 URLSession.shared
-                    .dataTask(with: URL(string: downloadsJSON)!) { data, _, error in
+                    .dataTask(with: URL(
+                        string: kUpdateURIPrefix
+                            .appending(updatePath!)
+                            .appending(
+                                "release/downloads.json"
+                            )
+                    )!) { data, _, error in
                         if error != nil {
                             print(
                                 error?
                                     .localizedDescription ??
                                     NSLocalizedString(
-                                        "download-window-status-no-error-info",
-                                        value: "No error information is available.",
-                                        comment: "Displayed when no error details are available."
+                                        "download-window-status-error-no-description",
+                                        value: "(no description)",
+                                        comment: ""
                                     )
                             )
                             return
                         }
-                        let decoder = JSONDecoder()
-                        let downloads = try! decoder.decode(
+                        let downloads = try! JSONDecoder().decode(
                             Downloads.self,
                             from: data!
                         )
-                        let localizedValue = downloads
-                            .downloads["osx64"]!["en-US"]
-                        let binary = localizedValue!["binary"]!
-                        let basename = (binary as NSString).lastPathComponent
+                        let binary = downloads
+                            .downloads["osx64"]!["en-US"]!["binary"]!
+                        let basename = (binary as NSString)
+                            .lastPathComponent
 
-                        if self.lastBasename == basename {
+                        if self.lastBasename == basename,
+                            FileManager.default
+                            .fileExists(atPath: kTorBrowserAppPath) {
                             self
                                 .setStatus(
                                     NSLocalizedString(
@@ -207,22 +232,19 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                                         comment: "Displayed when Tor Browser is starting."
                                     )
                                 )
-                            var config =
-                                [NSWorkspace.LaunchConfigurationKey: Any]()
-                            if self.urls != nil, !self.urls!.isEmpty {
-                                config[
-                                    NSWorkspace.LaunchConfigurationKey
-                                        .arguments
-                                ] =
-                                    self.urls
-                            }
                             try! NSWorkspace.shared
                                 .launchApplication(
                                     at: URL(
                                         fileURLWithPath: kTorBrowserAppPath
                                     ),
                                     options: .withoutAddingToRecents,
-                                    configuration: config
+                                    configuration: [
+                                        NSWorkspace
+                                            .LaunchConfigurationKey
+                                            .arguments: self
+                                            .urls != nil ? self
+                                            .urls ?? [] : [],
+                                    ]
                                 )
                             DispatchQueue.main
                                 .asyncAfter(deadline: .now() + 0.2) {
@@ -238,26 +260,26 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                                             NSLocalizedString(
                                                 "download-window-status-fetching-filename",
                                                 value: "Fetching %@",
-                                                comment: ""
+                                                comment: "Displays when the DMG is being downloaded."
                                             ),
                                             basename
                                         )
                                 )
-                            let dmgSession =
-                                URLSession(
-                                    configuration: URLSessionConfiguration
-                                        .background(
-                                            withIdentifier: "\(Bundle.main.bundleIdentifier!).background"
-                                        ),
-                                    delegate: self,
-                                    delegateQueue: OperationQueue()
-                                )
-                            dmgSession.downloadTask(with: URL(string: binary)!)
+                            URLSession(
+                                configuration: URLSessionConfiguration
+                                    .background(
+                                        withIdentifier: "\(Bundle.main.bundleIdentifier!).background"
+                                    ),
+                                delegate: self,
+                                delegateQueue: OperationQueue()
+                            ).downloadTask(with: URL(string: binary)!)
                                 .resume()
                         }
                     }.resume()
             }.resume()
     }
+
+    // MARK: - URL session delegate
 
     func urlSession(_: URLSession, downloadTask: URLSessionDownloadTask,
                     didFinishDownloadingTo location: URL) {
@@ -276,14 +298,16 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
             encoding: .ascii
         )
 
-        try? FileManager.default.removeItem(at: target)
+        if FileManager.default.fileExists(atPath: target.path) {
+            try! FileManager.default.removeItem(at: target)
+        }
         try! FileManager.default.moveItem(at: location, to: target)
 
         setStatus(String.localizedStringWithFormat(
             NSLocalizedString(
                 "download-status-window-mounting-image",
                 value: "Mounting %@",
-                comment: ""
+                comment: "Displays when the DMG is being attached (mounted)."
             ),
             basename
         ))
@@ -307,7 +331,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
         setStatus(NSLocalizedString(
             "download-status-window-removing-old-version",
             value: "Removing old version",
-            comment: ""
+            comment: "Displays when the old version of \"Tor Browser.app\" is being deleted."
         ))
         if FileManager.default.fileExists(atPath: kTorBrowserAppPath) {
             try! FileManager.default
@@ -317,7 +341,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
         setStatus(NSLocalizedString(
             "download-status-window-copying-app-bundle",
             value: "Copying app bundle",
-            comment: ""
+            comment: "Displays when the \"Tor Browser.app\" is being copied."
         ))
         try! FileManager.default.copyItem(
             atPath: tbSourceAppDir,
@@ -328,7 +352,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
             NSLocalizedString(
                 "download-status-window-unmounting-image",
                 value: "Unmounting %@",
-                comment: ""
+                comment: "Displays when the DMG is being detached (unmounted)."
             ),
             basename
         ))
@@ -338,7 +362,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
         setStatus(NSLocalizedString(
             "download-status-window-removing-quarantine-attributes",
             value: "Removing quarantine attributes",
-            comment: ""
+            comment: "Displays when the com.apple.quarantine extended file attribute is being removed."
         ))
         Process.launchedProcess(
             launchPath: "/usr/bin/xattr",
@@ -370,12 +394,21 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
         }
     }
 
-    private func unmount(path: String) {
-        Process.launchedProcess(
-            launchPath: "/usr/bin/hdiutil",
-            arguments: ["detach", path]
-        ).waitUntilExit()
+    func urlSession(_: URLSession, downloadTask _: URLSessionDownloadTask,
+                    didWriteData _: Int64, totalBytesWritten: Int64,
+                    totalBytesExpectedToWrite: Int64) {
+        if !hasSetMaxValue {
+            DispatchQueue.main.async {
+                self.progressBar.maxValue = Double(totalBytesExpectedToWrite)
+            }
+            hasSetMaxValue = true
+        }
+        DispatchQueue.main.async {
+            self.progressBar.doubleValue = Double(totalBytesWritten)
+        }
     }
+
+    // MARK: - Private
 
     private func setStatus(_ s: String) {
         DispatchQueue.main.async {
@@ -383,12 +416,10 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
         }
     }
 
-    func urlSession(_: URLSession, downloadTask _: URLSessionDownloadTask,
-                    didWriteData _: Int64, totalBytesWritten: Int64,
-                    totalBytesExpectedToWrite: Int64) {
-        DispatchQueue.main.async {
-            self.progressBar.maxValue = Double(totalBytesExpectedToWrite)
-            self.progressBar.doubleValue = Double(totalBytesWritten)
-        }
+    private func unmount(path: String) {
+        Process.launchedProcess(
+            launchPath: "/usr/bin/hdiutil",
+            arguments: ["detach", path]
+        ).waitUntilExit()
     }
 }

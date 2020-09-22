@@ -2,27 +2,23 @@ import Cocoa
 
 @NSApplicationMain class AppDelegate: NSObject, NSApplicationDelegate,
     NSComboBoxDataSource {
+    // MARK: - Outlets
+
     @IBOutlet var downloadOverSystemTorCheckbox: NSButton!
     @IBOutlet var mirrorPicker: NSComboBox!
     @IBOutlet var settingsWindow: NSWindow!
     @IBOutlet var statusLabel: NSTextField!
     @IBOutlet var torServerTextField: NSTextField!
-    
+
+    // MARK: - Ivars
+
     private var mirrors = Bundle.main
         .infoDictionary?["TBLMirrors"] as! [String]
     private var selectedMirrorIndex = UserDefaults.standard
         .integer(forKey: "TBLMirrorSelectedIndex")
     private var shouldSave = false
 
-    @IBAction func didPressReinstall(sender _: Any) {
-        for path in [kTorBrowserAppPath, kTorBrowserVersionPath] {
-            if FileManager.default.fileExists(atPath: path) {
-                try! FileManager.default.removeItem(atPath: path)
-            }
-        }
-        settingsWindow.setIsVisible(false)
-        startDownloader()
-    }
+    // MARK: - Application delegate
 
     func applicationDidFinishLaunching(_: Notification) {
         let def = UserDefaults.standard
@@ -37,7 +33,7 @@ import Cocoa
                 .title = NSLocalizedString(
                     "settings-status-label-installed",
                     value: "installed",
-                    comment: "Shows \"installed\" if Tor Browser.app is on the system from a previous run"
+                    comment: "Shows \"installed\" if Tor Browser.app is on the system from a previous run."
                 )
         }
 
@@ -48,30 +44,8 @@ import Cocoa
         }
     }
 
-    private func startDownloader() {
-        let vc = LauncherWindowController()
-        Bundle.main.loadNibNamed(
-            "LauncherWindow",
-            owner: vc,
-            topLevelObjects: nil
-        )
-        // Filter removes Xcode debug arguments
-        vc.urls = Array(CommandLine.arguments[1...])
-            .filter { !$0.starts(with: "-") && $0.lowercased() != "yes" }
-        vc.downloadTor()
-    }
-
     func applicationWillBecomeActive(_: Notification) {
         mirrorPicker.selectItem(at: selectedMirrorIndex)
-    }
-
-    @IBAction func cancel(_: Any) {
-        NSApp.terminate(nil)
-    }
-
-    @IBAction func saveAndExit(_: Any) {
-        shouldSave = true
-        NSApp.terminate(nil)
     }
 
     func applicationWillTerminate(_: Notification) {
@@ -95,11 +69,49 @@ import Cocoa
         }
     }
 
+    // MARK: - Combo box data source
+
     func numberOfItems(in _: NSComboBox) -> Int {
         return mirrors.count
     }
 
     func comboBox(_: NSComboBox, objectValueForItemAt index: Int) -> Any? {
         return mirrors[index]
+    }
+
+    // MARK: - Actions
+
+    @IBAction func cancel(_: Any) {
+        NSApp.terminate(nil)
+    }
+
+    @IBAction func didPressReinstall(sender _: Any) {
+        for path in [kTorBrowserAppPath, kTorBrowserVersionPath] {
+            if FileManager.default.fileExists(atPath: path) {
+                try! FileManager.default.removeItem(atPath: path)
+            }
+        }
+        settingsWindow.setIsVisible(false)
+        startDownloader()
+    }
+
+    @IBAction func saveAndExit(_: Any) {
+        shouldSave = true
+        NSApp.terminate(nil)
+    }
+
+    // MARK: - Private
+
+    private func startDownloader() {
+        let vc = LauncherWindowController()
+        Bundle.main.loadNibNamed(
+            "LauncherWindow",
+            owner: vc,
+            topLevelObjects: nil
+        )
+        // Filter removes Xcode debug arguments
+        vc.urls = Array(CommandLine.arguments[1...])
+            .filter { !$0.starts(with: "-") && $0.lowercased() != "yes" }
+        vc.downloadTor()
     }
 }
