@@ -89,7 +89,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
             sessionConfiguration.connectionProxyDictionary = [
                 kCFNetworkProxiesHTTPEnable as AnyHashable: true,
                 kCFNetworkProxiesHTTPPort as AnyHashable: Int(spl.last!)!,
-                kCFNetworkProxiesHTTPProxy as AnyHashable: spl.first!
+                kCFNetworkProxiesHTTPProxy as AnyHashable: spl.first!,
             ]
             session = URLSession(configuration: sessionConfiguration)
         }
@@ -213,27 +213,57 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                             )
                     )!) { data, _, error in
                         if error != nil {
-                            print(
-                                error?
-                                    .localizedDescription ??
-                                    NSLocalizedString(
-                                        "download-window-status-error-no-description",
-                                        value: "(no description)",
-                                        comment: ""
-                                    )
-                            )
+                            self
+                                .setStatus(
+                                    "Error occurred while fetching downloads.json"
+                                )
+                            DispatchQueue.main
+                                .asyncAfter(deadline: .now() + 0.2) {
+                                    NSApp.terminate(nil)
+                                }
                             return
                         }
                         let downloads = try! JSONDecoder().decode(
                             Downloads.self,
                             from: data!
                         )
-                        let binary = downloads
-                            .downloads["osx64"]!["en-US"]!["binary"]!.replacingOccurrences(of: "https://dist.torproject.org/", with: mirror)
-                        print("Binary", binary)
-                        let basename = (binary as NSString)
-                            .lastPathComponent
 
+                        // MARK: Locale
+
+                        let locale = NSLocale.preferredLanguages
+                        var locales = [locale[0]]
+                        if locale[0].contains("-") {
+                            locales
+                                .append(String(
+                                    locale[0].split(separator: "-")
+                                        .first!
+                                ))
+                        }
+                        locales.append("en-US")
+                        var binary: String?
+                        for localeCandidate in locales {
+                            binary = downloads
+                                .downloads["osx64"]![localeCandidate]?["binary"]!
+                                .replacingOccurrences(
+                                    of: "https://dist.torproject.org/",
+                                    with: mirror
+                                )
+                            if binary != nil {
+                                break
+                            }
+                        }
+                        if binary == nil {
+                            self.setStatus("Failed to get a URL")
+                            DispatchQueue.main
+                                .asyncAfter(deadline: .now() + 0.2) {
+                                    NSApp.terminate(nil)
+                                }
+                        }
+
+                        // MARK: Launch if already installed
+
+                        let basename = (binary! as NSString)
+                            .lastPathComponent
                         if self.lastBasename == basename,
                             FileManager.default
                             .fileExists(atPath: kTorBrowserAppPath) {
@@ -286,15 +316,20 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                                 let spl = proxy!.split(separator: ":")
                                 config.connectionProxyDictionary = [
                                     kCFNetworkProxiesHTTPEnable as AnyHashable: true,
-                                    kCFNetworkProxiesHTTPPort as AnyHashable: Int(spl.last!)!,
-                                    kCFNetworkProxiesHTTPProxy as AnyHashable: spl.first!
+                                    kCFNetworkProxiesHTTPPort as AnyHashable: Int(
+                                        spl
+                                            .last!,
+                                        radix: 10
+                                    )!,
+                                    kCFNetworkProxiesHTTPProxy as AnyHashable: spl
+                                        .first!,
                                 ]
                             }
                             URLSession(
                                 configuration: config,
                                 delegate: self,
                                 delegateQueue: OperationQueue()
-                            ).downloadTask(with: URL(string: binary)!)
+                            ).downloadTask(with: URL(string: binary!)!)
                                 .resume()
                         }
                     }.resume()
@@ -419,13 +454,8 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
     func urlSession(_: URLSession, downloadTask _: URLSessionDownloadTask,
                     didWriteData _: Int64, totalBytesWritten: Int64,
                     totalBytesExpectedToWrite: Int64) {
-        if !hasSetMaxValue {
-            DispatchQueue.main.async {
-                self.progressBar.maxValue = Double(totalBytesExpectedToWrite)
-            }
-            hasSetMaxValue = true
-        }
         DispatchQueue.main.async {
+            self.progressBar.maxValue = Double(totalBytesExpectedToWrite)
             self.progressBar.doubleValue = Double(totalBytesWritten)
         }
     }
