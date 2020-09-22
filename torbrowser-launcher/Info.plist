@@ -31,6 +31,37 @@
 		<string>https://dist.torproject.org/</string>
 		<string>https://tor.crazyhaze.de/dist/</string>
 		<string>https://creep.im/tor/dist/</string>
+		<string>https://tor.ybti.net/dist/</string>
+		<string>https://tor.0x3d.lu/dist/</string>
+		<string>https://www.it-sicherheitschannel.de/dist/</string>
+		<string>https://mirror.freedif.org/TorProject/dist</string>
+		<string>https://tor.secure.voyage/dist</string>
+		<string>https://tor.127001.ovh/dist/</string>
+		<string>https://mirror.oldsql.cc/tor/dist/</string>
+		<string>https://mirror.torworld.org/dist/</string>
+		<string>https://tormirror.tb-itf-tor.de/dist/</string>
+		<string>https://tor.zilog.es/dist/</string>
+		<string>https://torproject.ph3x.at/dist/</string>
+		<string>https://www.torservers.net/mirrors/torproject.org/dist/</string>
+		<string>https://tor.myrl.net/dist/</string>
+		<string>https://tor.stalkr.net/dist/</string>
+		<string>https://tor-mirror.cyberguerrilla.org/dist/</string>
+		<string>https://mirror.velcommuta.de/tor/dist/</string>
+		<string>https://tor.eff.org/dist/</string>
+		<string>https://tor.void.gr/dist/</string>
+		<string>https://www.moparisthebest.com/tor/dist/</string>
+		<string>https://108.248.87.242/dist/</string>
+		<string>https://mirror.ntzk.de/torproject.org/dist/</string>
+		<string>https://www.eprci.com/tor/dist/</string>
+		<string>https://sela.io/mirrors/torproject.org/dist/</string>
+		<string>https://tor.ccc.de/dist/</string>
+		<string>https://tormirror.snydernet.net/dist/</string>
+		<string>https://tor.calyxinstitute.org/dist/</string>
+		<string>https://torproject.mirror.metalgamer.eu/dist/</string>
+		<string>https://nl.mirror.babylon.network/torproject/dist/</string>
+		<string>https://fr.mirror.babylon.network/torproject/dist/</string>
+		<string>https://cyberside.net.ee/sibul/dist/</string>
+		<string>https://tormirror.tb-itf-tor.de/dist/</string>
 	</array>
 </dict>
 </plist>
