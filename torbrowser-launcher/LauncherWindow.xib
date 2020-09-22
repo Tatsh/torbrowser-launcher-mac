@@ -17,13 +17,15 @@
         <window title="Tor Browser Launcher" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="" animationBehavior="default" tabbingMode="disallowed" id="4Bm-Sy-v3c" customClass="LauncherWindowController" customModule="torbrowser_launcher" customModuleProvider="target">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="300" height="123"/>
+            <rect key="contentRect" x="810" y="525" width="300" height="120"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
-            <view key="contentView" id="xX4-ds-qOl">
-                <rect key="frame" x="0.0" y="0.0" width="300" height="123"/>
+            <value key="minSize" type="size" width="300" height="120"/>
+            <value key="maxSize" type="size" width="300" height="123"/>
+            <view key="contentView" autoresizesSubviews="NO" id="xX4-ds-qOl">
+                <rect key="frame" x="0.0" y="0.0" width="300" height="120"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <progressIndicator wantsLayer="YES" maxValue="100" doubleValue="50" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="i8i-Xv-5Qw">
+                    <progressIndicator wantsLayer="YES" maxValue="100" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="i8i-Xv-5Qw">
                         <rect key="frame" x="20" y="60" width="260" height="20"/>
                     </progressIndicator>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1e0-Ng-8uG">
@@ -60,7 +62,7 @@ Gw
                     <constraint firstAttribute="trailing" secondItem="i8i-Xv-5Qw" secondAttribute="trailing" constant="20" symbolic="YES" id="zZy-c0-J8S"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="-386" y="-631.5"/>
+            <point key="canvasLocation" x="-386" y="-632"/>
         </window>
     </objects>
 </document>
