@@ -9,7 +9,7 @@ import Cocoa
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSComboBoxDataSource {
-    private var mirrors = Bundle.main.infoDictionary?["TBLMirrors"] as? [String]
+    private var mirrors = Bundle.main.infoDictionary?["TBLMirrors"] as! [String]
     private var selectedMirrorIndex: Int?
     private var shouldSave = false
 
@@ -23,6 +23,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSComboBoxDataSource {
     @IBOutlet weak var saveAndExitButton: NSButton!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+
+
         let def = UserDefaults.standard
         if def.bool(forKey: "TBLDownloadOverSystemTor") {
             downloadOverSystemTorCheckbox?.state = .on
@@ -70,10 +72,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSComboBoxDataSource {
     }
 
     func numberOfItems(in comboBox: NSComboBox) -> Int {
-        return mirrors?.count ?? 0
+        return mirrors.count
     }
 
     func comboBox(_ comboBox: NSComboBox, objectValueForItemAt index: Int) -> Any? {
-        return mirrors?[index]
+        return mirrors[index]
     }
 }
