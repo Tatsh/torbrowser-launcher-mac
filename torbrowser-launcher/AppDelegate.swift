@@ -37,9 +37,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSComboBoxDataSource {
             self.statusLabel.cell?.title = "installed"
         }
 
-        let vc = LauncherWindowController()
-        Bundle.main.loadNibNamed("LauncherWindow", owner: vc, topLevelObjects: nil)
-        vc.downloadTor()
+        if !CommandLine.arguments.contains("--settings") {
+            let vc = LauncherWindowController()
+            Bundle.main.loadNibNamed("LauncherWindow", owner: vc, topLevelObjects: nil)
+            vc.downloadTor(urls: Array(CommandLine.arguments[1...]))
+        } else {
+            self.settingsWindow.setIsVisible(true)
+        }
     }
 
     func applicationWillBecomeActive(_ notification: Notification) {

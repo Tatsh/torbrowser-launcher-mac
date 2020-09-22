@@ -29,6 +29,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
     private var tbTargetAppDir: String = getTorBrowserPath()
     private var versionFile: String?
     private var lastBasename: String?
+    private var urls: [String]?
 
     @IBAction func onCancel(_ sender: Any) {
         if currentMountedDMGPath != nil {
@@ -39,9 +40,10 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
         }
     }
 
-    func downloadTor() {
+    func downloadTor(urls: [String]?) {
         self.progressBar.doubleValue = 0
         self.statusLabel.cell?.title = "Determining update URL"
+        self.urls = urls
 
         self.versionFile = (appSupportDir as NSString).appendingPathComponent("version")
         if FileManager.default.fileExists(atPath: versionFile!) {
@@ -107,7 +109,11 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
 
                 if  self.lastBasename == basename {
                     self.setStatus("Launching Tor Browser")
-                    try! NSWorkspace.shared.launchApplication(at: URL(fileURLWithPath: self.tbTargetAppDir), options: .withoutAddingToRecents, configuration: [NSWorkspace.LaunchConfigurationKey : Any]())
+                    var config = [NSWorkspace.LaunchConfigurationKey : Any]()
+                    if urls != nil {
+                        config[NSWorkspace.LaunchConfigurationKey.arguments] = urls
+                    }
+                    try! NSWorkspace.shared.launchApplication(at: URL(fileURLWithPath: self.tbTargetAppDir), options: .withoutAddingToRecents, configuration: config)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         NSApp.terminate(nil)
                     }
@@ -152,7 +158,11 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
         Process.launchedProcess(launchPath: "/usr/bin/xattr", arguments: ["-dr", "com.apple.quarantine", tbTargetAppDir]).waitUntilExit()
 
         setStatus("Launching Tor Browser")
-        try! NSWorkspace.shared.launchApplication(at: URL(fileURLWithPath: tbTargetAppDir), options: .withoutAddingToRecents, configuration: [NSWorkspace.LaunchConfigurationKey : Any]())
+        var config = [NSWorkspace.LaunchConfigurationKey : Any]()
+        if urls != nil {
+            config[NSWorkspace.LaunchConfigurationKey.arguments] = urls
+        }
+        try! NSWorkspace.shared.launchApplication(at: URL(fileURLWithPath: tbTargetAppDir), options: .withoutAddingToRecents, configuration: config)
 
         DispatchQueue.main.async {
             NSApp.terminate(nil)
