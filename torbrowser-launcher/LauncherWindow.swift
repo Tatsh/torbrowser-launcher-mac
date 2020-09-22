@@ -290,10 +290,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                                 ]
                             }
                             URLSession(
-                                configuration: URLSessionConfiguration
-                                    .background(
-                                        withIdentifier: "\(Bundle.main.bundleIdentifier!).background"
-                                    ),
+                                configuration: config,
                                 delegate: self,
                                 delegateQueue: OperationQueue()
                             ).downloadTask(with: URL(string: binary)!)
