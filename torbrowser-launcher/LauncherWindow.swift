@@ -20,8 +20,17 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
     @IBOutlet weak var statusLabel: NSTextField!
     @IBOutlet weak var progressBar: NSProgressIndicator!
 
+    var currentMountedDMGPath: String?
+    let appSupportDir = (NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first! as NSString).appendingPathComponent("Tor Browser Launcher")
+    var tbTargetAppDir: String?
+    var versionFile: String?
+    var lastBasename: String?
+
     @IBAction func onCancel(_ sender: Any) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+        if currentMountedDMGPath != nil {
+            unmount(path: currentMountedDMGPath!)
+        }
+        DispatchQueue.main.async {
             NSApp.terminate(nil)
         }
     }
@@ -29,6 +38,12 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
     func downloadTor() {
         self.progressBar.doubleValue = 0
         self.statusLabel.cell?.title = "Determining update URL"
+
+        self.tbTargetAppDir = (appSupportDir as NSString).appendingPathComponent("Tor Browser.app")
+        self.versionFile = (appSupportDir as NSString).appendingPathComponent("version")
+        if FileManager.default.fileExists(atPath: versionFile!) {
+            self.lastBasename = try? String(contentsOfFile: versionFile!).trimmingCharacters(in: .whitespacesAndNewlines)
+        }
 
         let session = URLSession.shared
         let task = session.dataTask(with: URL(string: kUpdateIndexURI)!) { (data, resp, error) in
@@ -71,6 +86,9 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
                 return
             }
 
+            self.setStatus("Creating \(self.appSupportDir)")
+            try? FileManager.default.createDirectory(at: URL(fileURLWithPath: self.appSupportDir), withIntermediateDirectories: false, attributes: nil)
+
             self.setStatus("Fetching downloads.json")
             let downloadsJSON = kUpdateURIPrefix.appending(updatePath!).appending("release/downloads.json")
             session.dataTask(with: URL(string: downloadsJSON)!) { (data, resp, error) in
@@ -82,15 +100,21 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
                 let downloads = try! decoder.decode(Downloads.self, from: data!)
                 let localizedValue = downloads.downloads["osx64"]!["en-US"]
                 let binary = localizedValue!["binary"]!
-
-                // let sig = localizedValue!["sig"]!
-                // TODO Implement signature checking with GPG
-                // print(sig)
-
                 let basename = (binary as NSString).lastPathComponent
-                self.setStatus("Fetching \(basename)")
-                let dmgSession = URLSession(configuration: URLSessionConfiguration.background(withIdentifier: "\(Bundle.main.bundleIdentifier!).background"), delegate: self, delegateQueue: OperationQueue())
-                dmgSession.downloadTask(with: URL(string: binary)!).resume()
+
+                if  self.lastBasename == basename {
+                    self.setStatus("Launching Tor Browser")
+                    try! NSWorkspace.shared.launchApplication(at: URL(fileURLWithPath: self.tbTargetAppDir!), options: .withoutAddingToRecents, configuration: [NSWorkspace.LaunchConfigurationKey : Any]())
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        NSApp.terminate(nil)
+                    }
+                } else {
+                    // TODO Implement signature checking with GPG
+                    // let sig = localizedValue!["sig"]!
+                    self.setStatus("Fetching \(basename)")
+                    let dmgSession = URLSession(configuration: URLSessionConfiguration.background(withIdentifier: "\(Bundle.main.bundleIdentifier!).background"), delegate: self, delegateQueue: OperationQueue())
+                    dmgSession.downloadTask(with: URL(string: binary)!).resume()
+                }
             }.resume()
         }
         task.resume()
@@ -100,18 +124,16 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
         let basename = ((downloadTask.currentRequest?.url!.absoluteString)! as NSString).lastPathComponent
         let target = location.deletingLastPathComponent().appendingPathComponent(basename)
         let tempDir = (NSTemporaryDirectory() as NSString).appendingPathComponent(ProcessInfo().globallyUniqueString)
-        let appSupport = (NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first! as NSString).appendingPathComponent("Tor Browser Launcher")
         let tbSourceAppDir = (tempDir as NSString).appendingPathComponent("Tor Browser.app")
-        let tbTargetAppDir = (appSupport as NSString).appendingPathComponent("Tor Browser.app")
+        let tbTargetAppDir = (appSupportDir as NSString).appendingPathComponent("Tor Browser.app")
+        try! basename.write(toFile: self.versionFile!, atomically: true, encoding: .ascii)
 
         try? FileManager.default.removeItem(at: target)
         try! FileManager.default.moveItem(at: location, to: target)
 
         setStatus("Mounting \(basename)")
         Process.launchedProcess(launchPath: "/usr/bin/hdiutil", arguments: ["attach", target.path, "-mountpoint", tempDir, "-private", "-nobrowse", "-noautoopen", "-noautofsck",  "-noverify", "-readonly"]).waitUntilExit()
-
-        setStatus("Creating \(appSupport)")
-        try? FileManager.default.createDirectory(at: URL(fileURLWithPath: appSupport), withIntermediateDirectories: false, attributes: nil)
+        currentMountedDMGPath = tempDir
 
         setStatus("Removing old version")
         try? FileManager.default.removeItem(at: URL(fileURLWithPath: tbTargetAppDir))
@@ -120,7 +142,8 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
         try! FileManager.default.copyItem(atPath: tbSourceAppDir, toPath: tbTargetAppDir)
 
         setStatus("Unmounting \(basename)")
-        Process.launchedProcess(launchPath: "/usr/bin/hdiutil", arguments: ["detach", tempDir]).waitUntilExit()
+        unmount(path: tempDir)
+        currentMountedDMGPath = nil
 
         setStatus("Removing quarantine attributes")
         Process.launchedProcess(launchPath: "/usr/bin/xattr", arguments: ["-dr", "com.apple.quarantine", tbTargetAppDir]).waitUntilExit()
@@ -131,6 +154,10 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate, 
         DispatchQueue.main.async {
             NSApp.terminate(nil)
         }
+    }
+
+    func unmount(path: String) {
+        Process.launchedProcess(launchPath: "/usr/bin/hdiutil", arguments: ["detach", path]).waitUntilExit()
     }
 
     func setStatus(_ s: String) {
