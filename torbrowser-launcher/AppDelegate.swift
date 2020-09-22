@@ -2,17 +2,17 @@ import Cocoa
 
 @NSApplicationMain class AppDelegate: NSObject, NSApplicationDelegate,
     NSComboBoxDataSource {
-    private var mirrors = Bundle.main
-        .infoDictionary?["TBLMirrors"] as! [String]
-    private var selectedMirrorIndex = UserDefaults.standard
-        .integer(forKey: "TBLMirrorSelectedIndex")
-    private var shouldSave = false
-
     @IBOutlet var downloadOverSystemTorCheckbox: NSButton!
     @IBOutlet var mirrorPicker: NSComboBox!
     @IBOutlet var settingsWindow: NSWindow!
     @IBOutlet var statusLabel: NSTextField!
     @IBOutlet var torServerTextField: NSTextField!
+    
+    private var mirrors = Bundle.main
+        .infoDictionary?["TBLMirrors"] as! [String]
+    private var selectedMirrorIndex = UserDefaults.standard
+        .integer(forKey: "TBLMirrorSelectedIndex")
+    private var shouldSave = false
 
     @IBAction func didPressReinstall(sender _: Any) {
         for path in [kTorBrowserAppPath, kTorBrowserVersionPath] {

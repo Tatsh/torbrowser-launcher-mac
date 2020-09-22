@@ -26,9 +26,10 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
     @IBOutlet var progressBar: NSProgressIndicator!
     @IBOutlet var statusLabel: NSTextField!
 
+    var urls: [String]?
+
     private var currentMountedDMGPath: String?
     private var lastBasename: String?
-    var urls: [String]?
 
     override init(contentRect: NSRect, styleMask style: NSWindow.StyleMask,
                   backing backingStoreType: NSWindow.BackingStoreType,
