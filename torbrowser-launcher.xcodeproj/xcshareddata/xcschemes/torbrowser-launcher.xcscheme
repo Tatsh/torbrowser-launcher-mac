@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "26D9D1C92515D2AA00253C00"
-               BuildableName = "torbrowser-launcher.app"
-               BlueprintName = "torbrowser-launcher"
+               BuildableName = "Tor Browser Launcher.app"
+               BlueprintName = "Tor Browser Launcher"
                ReferencedContainer = "container:torbrowser-launcher.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -65,8 +65,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "26D9D1C92515D2AA00253C00"
-            BuildableName = "torbrowser-launcher.app"
-            BlueprintName = "torbrowser-launcher"
+            BuildableName = "Tor Browser Launcher.app"
+            BlueprintName = "Tor Browser Launcher"
             ReferencedContainer = "container:torbrowser-launcher.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -88,8 +88,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "26D9D1C92515D2AA00253C00"
-            BuildableName = "torbrowser-launcher.app"
-            BlueprintName = "torbrowser-launcher"
+            BuildableName = "Tor Browser Launcher.app"
+            BlueprintName = "Tor Browser Launcher"
             ReferencedContainer = "container:torbrowser-launcher.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

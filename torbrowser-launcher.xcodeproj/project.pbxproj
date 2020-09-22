@@ -35,7 +35,7 @@
 
 /* Begin PBXFileReference section */
 		264E5CE72516530C00877FC3 /* LauncherWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LauncherWindow.xib; sourceTree = "<group>"; };
-		26D9D1CA2515D2AA00253C00 /* torbrowser-launcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "torbrowser-launcher.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		26D9D1CA2515D2AA00253C00 /* Tor Browser Launcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tor Browser Launcher.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		26D9D1CD2515D2AA00253C00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		26D9D1CF2515D2AB00253C00 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		26D9D1D22515D2AB00253C00 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -88,7 +88,7 @@
 		26D9D1CB2515D2AA00253C00 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				26D9D1CA2515D2AA00253C00 /* torbrowser-launcher.app */,
+				26D9D1CA2515D2AA00253C00 /* Tor Browser Launcher.app */,
 				26D9D1DA2515D2AB00253C00 /* torbrowser-launcherTests.xctest */,
 				26D9D1E52515D2AB00253C00 /* torbrowser-launcherUITests.xctest */,
 			);
@@ -130,9 +130,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		26D9D1C92515D2AA00253C00 /* torbrowser-launcher */ = {
+		26D9D1C92515D2AA00253C00 /* Tor Browser Launcher */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 26D9D1EE2515D2AB00253C00 /* Build configuration list for PBXNativeTarget "torbrowser-launcher" */;
+			buildConfigurationList = 26D9D1EE2515D2AB00253C00 /* Build configuration list for PBXNativeTarget "Tor Browser Launcher" */;
 			buildPhases = (
 				26D9D1C62515D2AA00253C00 /* Sources */,
 				26D9D1C72515D2AA00253C00 /* Frameworks */,
@@ -142,9 +142,9 @@
 			);
 			dependencies = (
 			);
-			name = "torbrowser-launcher";
+			name = "Tor Browser Launcher";
 			productName = "torbrowser-launcher";
-			productReference = 26D9D1CA2515D2AA00253C00 /* torbrowser-launcher.app */;
+			productReference = 26D9D1CA2515D2AA00253C00 /* Tor Browser Launcher.app */;
 			productType = "com.apple.product-type.application";
 		};
 		26D9D1D92515D2AB00253C00 /* torbrowser-launcherTests */ = {
@@ -218,7 +218,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				26D9D1C92515D2AA00253C00 /* torbrowser-launcher */,
+				26D9D1C92515D2AA00253C00 /* Tor Browser Launcher */,
 				26D9D1D92515D2AB00253C00 /* torbrowser-launcherTests */,
 				26D9D1E42515D2AB00253C00 /* torbrowser-launcherUITests */,
 			);
@@ -283,12 +283,12 @@
 /* Begin PBXTargetDependency section */
 		26D9D1DC2515D2AB00253C00 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 26D9D1C92515D2AA00253C00 /* torbrowser-launcher */;
+			target = 26D9D1C92515D2AA00253C00 /* Tor Browser Launcher */;
 			targetProxy = 26D9D1DB2515D2AB00253C00 /* PBXContainerItemProxy */;
 		};
 		26D9D1E72515D2AB00253C00 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 26D9D1C92515D2AA00253C00 /* torbrowser-launcher */;
+			target = 26D9D1C92515D2AA00253C00 /* Tor Browser Launcher */;
 			targetProxy = 26D9D1E62515D2AB00253C00 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -428,6 +428,7 @@
 				CODE_SIGN_ENTITLEMENTS = "torbrowser-launcher/torbrowser_launcher.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = EU5R2QY9HJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "torbrowser-launcher/Info.plist";
@@ -449,6 +450,7 @@
 				CODE_SIGN_ENTITLEMENTS = "torbrowser-launcher/torbrowser_launcher.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = EU5R2QY9HJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "torbrowser-launcher/Info.plist";
@@ -558,7 +560,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		26D9D1EE2515D2AB00253C00 /* Build configuration list for PBXNativeTarget "torbrowser-launcher" */ = {
+		26D9D1EE2515D2AB00253C00 /* Build configuration list for PBXNativeTarget "Tor Browser Launcher" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				26D9D1EF2515D2AB00253C00 /* Debug */,
