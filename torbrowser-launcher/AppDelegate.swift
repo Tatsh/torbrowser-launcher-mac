@@ -22,6 +22,10 @@ import Cocoa
 
     // MARK: - Application delegate
 
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
+    }
+
     func applicationDidFinishLaunching(_: Notification) {
         let def = UserDefaults.standard
         useProxy = def.bool(forKey: "TBLDownloadOverSystemTor")
@@ -85,7 +89,7 @@ import Cocoa
     // MARK: - Actions
 
     @IBAction func cancel(_: Any) {
-        NSApp.terminate(nil)
+        settingsWindow.close()
     }
 
     @IBAction func didPressReinstall(sender _: Any) {
@@ -101,13 +105,13 @@ import Cocoa
                 try! FileManager.default.removeItem(atPath: path)
             }
         }
-        settingsWindow.setIsVisible(false)
         startDownloader(proxy: useProxy ? proxyAddress : nil)
+        settingsWindow.close()
     }
 
     @IBAction func saveAndExit(_: Any) {
         shouldSave = true
-        NSApp.terminate(nil)
+        settingsWindow.close()
     }
 
     // MARK: - Private
