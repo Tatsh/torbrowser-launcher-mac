@@ -121,7 +121,10 @@ import Cocoa
         )
         // Filter removes Xcode debug arguments
         vc.urls = Array(CommandLine.arguments[1...])
-            .filter { !$0.starts(with: "-") && $0.lowercased() != "yes" && $0.lowercased() != "no" && !$0.hasPrefix("(")}
+            .filter {
+                !$0.starts(with: "-") && $0.lowercased() != "yes" && $0.lowercased() != "no" && !$0
+                    .hasPrefix("(")
+            }
         vc.downloadTor(proxy: proxy, mirror: mirrors[selectedMirrorIndex])
     }
 }
