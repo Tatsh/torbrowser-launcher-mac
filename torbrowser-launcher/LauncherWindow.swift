@@ -231,7 +231,11 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                         // MARK: Locale
 
                         let locale = NSLocale.preferredLanguages
-                        var locales = [locale[0]]
+                        var locales =
+                            [
+                                locale[0].replacingOccurrences(of: "-Hans", with: "-CN")
+                                    .replacingOccurrences(of: "-Hant", with: "-TW"),
+                            ]
                         if locale[0].contains("-") {
                             locales
                                 .append(String(
