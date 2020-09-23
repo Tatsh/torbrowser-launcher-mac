@@ -37,7 +37,6 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
     var urls: [String]?
 
     private var currentMountedDMGPath: String?
-    private var hasSetMaxValue = false
     private var lastBasename: String?
     private var updateRE: NSRegularExpression?
 
