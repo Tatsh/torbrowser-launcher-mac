@@ -1,0 +1,90 @@
+/* Class = "NSMenuItem"; title = "Tor Browser Launcher"; ObjectID = "1Xt-HY-uBw"; */
+"1Xt-HY-uBw.title" = "Tor 浏览器启动器";
+
+/* Class = "NSMenuItem"; title = "Quit Tor Browser Launcher"; ObjectID = "4sb-4s-VLi"; */
+"4sb-4s-VLi.title" = "退出 Tor 浏览器启动器";
+
+/* Class = "NSMenuItem"; title = "About Tor Browser Launcher"; ObjectID = "5kV-Vb-QxS"; */
+"5kV-Vb-QxS.title" = "关于 Tor 浏览器启动器";
+
+/* Class = "NSMenuItem"; title = "Edit"; ObjectID = "5QF-Oa-p0T"; */
+"5QF-Oa-p0T.title" = "编辑";
+
+/* Class = "NSMenuItem"; title = "Redo"; ObjectID = "6dh-zS-Vam"; */
+"6dh-zS-Vam.title" = "重做";
+
+/* Class = "NSTextFieldCell"; title = "Tor server"; ObjectID = "7EK-dt-slc"; */
+"7EK-dt-slc.title" = "Tor 服务器";
+
+/* Class = "NSTextFieldCell"; title = "Status:"; ObjectID = "aE0-H6-vOu"; */
+"aE0-H6-vOu.title" = "状态：";
+
+/* Class = "NSMenuItem"; title = "Window"; ObjectID = "aUF-d1-5bR"; */
+"aUF-d1-5bR.title" = "窗口";
+
+/* Class = "NSMenu"; title = "Main Menu"; ObjectID = "AYu-sK-qS6"; */
+"AYu-sK-qS6.title" = "主菜单";
+
+/* Class = "NSButtonCell"; title = "Save & Exit"; ObjectID = "b4n-es-iI2"; */
+"b4n-es-iI2.title" = "保存并退出";
+
+/* Class = "NSTextFieldCell"; title = "not installed"; ObjectID = "cpB-Xc-pDt"; */
+"cpB-Xc-pDt.title" = "未安装";
+
+/* Class = "NSMenuItem"; title = "Undo"; ObjectID = "dRJ-4n-Yzg"; */
+"dRJ-4n-Yzg.title" = "重做";
+
+/* Class = "NSMenuItem"; title = "Paste"; ObjectID = "gVA-U4-sdL"; */
+"gVA-U4-sdL.title" = "粘贴";
+
+/* Class = "NSMenuItem"; title = "Show All"; ObjectID = "Kd2-mp-pUS"; */
+"Kd2-mp-pUS.title" = "显示全部";
+
+/* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "LE2-aR-0XJ"; */
+"LE2-aR-0XJ.title" = "将全部窗口置于最前";
+
+/* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "MY2-xA-rGP"; */
+"MY2-xA-rGP.title" = "取消";
+
+/* Class = "NSMenuItem"; title = "Hide Tor Browser Launcher"; ObjectID = "Olw-nP-bQN"; */
+"Olw-nP-bQN.title" = "隐藏 Tor 浏览器启动器";
+
+/* Class = "NSMenuItem"; title = "Delete"; ObjectID = "pa3-QI-u2k"; */
+"pa3-QI-u2k.title" = "删除";
+
+/* Class = "NSWindow"; title = "Tor Browser Launcher Settings"; ObjectID = "QvC-M9-y7g"; */
+"QvC-M9-y7g.title" = "Tor 浏览器启动器设置";
+
+/* Class = "NSTextFieldCell"; title = "Mirror"; ObjectID = "RL3-FD-7oh"; */
+"RL3-FD-7oh.title" = "镜像";
+
+/* Class = "NSMenuItem"; title = "Select All"; ObjectID = "Ruw-6m-B2m"; */
+"Ruw-6m-B2m.title" = "全选";
+
+/* Class = "NSMenu"; title = "Window"; ObjectID = "Td7-aD-5lo"; */
+"Td7-aD-5lo.title" = "窗口";
+
+/* Class = "NSMenu"; title = "Tor Browser Launcher"; ObjectID = "uQy-DD-JDr"; */
+"uQy-DD-JDr.title" = "Tor 浏览器启动器";
+
+/* Class = "NSMenuItem"; title = "Cut"; ObjectID = "uRl-iY-unG"; */
+"uRl-iY-unG.title" = "剪切";
+
+/* Class = "NSButtonCell"; title = "Download over system Tor"; ObjectID = "uxL-4M-2I5"; */
+"uxL-4M-2I5.title" = "经由系统 Tor 下载";
+
+/* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
+"Vdr-fp-XzO.title" = "隐藏其他";
+
+/* Class = "NSTextFieldCell"; title = "127.0.0.1:9010"; ObjectID = "vwF-fU-QEv"; */
+"vwF-fU-QEv.title" = "127.0.0.1:9010";
+
+/* Class = "NSMenu"; title = "Edit"; ObjectID = "W48-6f-4Dl"; */
+"W48-6f-4Dl.title" = "编辑";
+
+/* Class = "NSButtonCell"; title = "Reinstall Tor Browser"; ObjectID = "WhO-br-yEf"; */
+"WhO-br-yEf.title" = "重新安装 Tor 浏览器";
+
+/* Class = "NSMenuItem"; title = "Copy"; ObjectID = "x3v-GG-iWU"; */
+"x3v-GG-iWU.title" = "复制";
+
