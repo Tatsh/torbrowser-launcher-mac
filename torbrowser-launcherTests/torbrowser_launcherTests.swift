@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import torbrowser_launcher
+@testable import Tor_Browser_Launcher
 
 class torbrowser_launcherTests: XCTestCase {
 
