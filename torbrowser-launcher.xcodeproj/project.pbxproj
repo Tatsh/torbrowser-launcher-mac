@@ -48,7 +48,6 @@
 		26D9D1CF2515D2AB00253C00 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		26D9D1D22515D2AB00253C00 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		26D9D1D42515D2AB00253C00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		26D9D1D52515D2AB00253C00 /* torbrowser_launcher.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = torbrowser_launcher.entitlements; sourceTree = "<group>"; };
 		26D9D1DA2515D2AB00253C00 /* torbrowser-launcherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "torbrowser-launcherTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		26D9D1DE2515D2AB00253C00 /* torbrowser_launcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = torbrowser_launcherTests.swift; sourceTree = "<group>"; };
 		26D9D1E02515D2AB00253C00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -83,6 +82,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		267E424E251EAE4400A616C8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				26D9D1D12515D2AB00253C00 /* MainMenu.xib */,
+				269F676C2519B89200F9E765 /* LauncherWindow.xib */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		267E424F251EAE5C00A616C8 /* Translations */ = {
+			isa = PBXGroup;
+			children = (
+				269F67C9251AD0D900F9E765 /* Localizable.strings */,
+				269F67C6251AD0D900F9E765 /* InfoPlist.strings */,
+			);
+			path = Translations;
+			sourceTree = "<group>";
+		};
 		26D9D1C12515D2AA00253C00 = {
 			isa = PBXGroup;
 			children = (
@@ -106,15 +123,12 @@
 		26D9D1CC2515D2AA00253C00 /* torbrowser-launcher */ = {
 			isa = PBXGroup;
 			children = (
-				26D9D1CD2515D2AA00253C00 /* AppDelegate.swift */,
 				26D9D1CF2515D2AB00253C00 /* Assets.xcassets */,
-				26D9D1D12515D2AB00253C00 /* MainMenu.xib */,
-				26D9D1D42515D2AB00253C00 /* Info.plist */,
-				269F67C9251AD0D900F9E765 /* Localizable.strings */,
-				269F67C6251AD0D900F9E765 /* InfoPlist.strings */,
-				26D9D1D52515D2AB00253C00 /* torbrowser_launcher.entitlements */,
+				267E424F251EAE5C00A616C8 /* Translations */,
+				267E424E251EAE4400A616C8 /* Views */,
+				26D9D1CD2515D2AA00253C00 /* AppDelegate.swift */,
 				26D9D1FA2516407E00253C00 /* LauncherWindow.swift */,
-				269F676C2519B89200F9E765 /* LauncherWindow.xib */,
+				26D9D1D42515D2AB00253C00 /* Info.plist */,
 			);
 			path = "torbrowser-launcher";
 			sourceTree = "<group>";
@@ -472,7 +486,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ANALYZER_LOCALIZABILITY_EMPTY_CONTEXT = YES;
-				CODE_SIGN_ENTITLEMENTS = "torbrowser-launcher/torbrowser_launcher.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -495,7 +508,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ANALYZER_LOCALIZABILITY_EMPTY_CONTEXT = YES;
-				CODE_SIGN_ENTITLEMENTS = "torbrowser-launcher/torbrowser_launcher.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
