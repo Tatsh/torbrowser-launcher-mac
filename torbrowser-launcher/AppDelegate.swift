@@ -123,12 +123,14 @@ import Cocoa
             owner: vc,
             topLevelObjects: nil
         )
-        // Filter removes Xcode debug arguments
         vc.urls = Array(CommandLine.arguments[1...])
-            .filter {
+        // Filter removes Xcode debug arguments
+        if ProcessInfo.processInfo.environment.keys.contains("__XCODE_BUILT_PRODUCTS_DIR_PATHS") {
+            vc.urls = vc.urls!.filter {
                 !$0.starts(with: "-") && $0.lowercased() != "yes" && $0.lowercased() != "no" && !$0
                     .hasPrefix("(")
             }
+        }
         vc.downloadTor(proxy: proxy, mirror: mirrors[selectedMirrorIndex])
     }
 }
