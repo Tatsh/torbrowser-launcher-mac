@@ -91,13 +91,13 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
-		267E424F251EAE5C00A616C8 /* Translations */ = {
+		267E4259251EAEE000A616C8 /* Translations */ = {
 			isa = PBXGroup;
 			children = (
 				269F67C9251AD0D900F9E765 /* Localizable.strings */,
 				269F67C6251AD0D900F9E765 /* InfoPlist.strings */,
 			);
-			path = Translations;
+			name = Translations;
 			sourceTree = "<group>";
 		};
 		26D9D1C12515D2AA00253C00 = {
@@ -124,7 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				26D9D1CF2515D2AB00253C00 /* Assets.xcassets */,
-				267E424F251EAE5C00A616C8 /* Translations */,
+				267E4259251EAEE000A616C8 /* Translations */,
 				267E424E251EAE4400A616C8 /* Views */,
 				26D9D1CD2515D2AA00253C00 /* AppDelegate.swift */,
 				26D9D1FA2516407E00253C00 /* LauncherWindow.swift */,
