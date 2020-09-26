@@ -9,8 +9,13 @@ private struct Downloads: Codable {
 
 private let kUpdateRE = "a href=\"(update_[^\"]+).*"
 private let kUpdateURIPrefix = "https://aus1.torproject.org/torbrowser/"
+private let kUpdateURISuffix = "release/downloads.json"
 private let kUpdateIndexURI = "\(kUpdateURIPrefix)?C=M;O=D"
-
+private let kBackgroundIdentifier = "\(Bundle.main.bundleIdentifier!).background"
+private let kTorBrowserAppBundleBasename = "Tor Browser.app"
+private let kDefaultMirror = "https://dist.torproject.org/"
+private let kJSONKeyMacOS = "osx64"
+private let kJSONKeyBinary = "binary"
 private let kAppSupportDirectory = NSSearchPathForDirectoriesInDomains(
     .applicationSupportDirectory,
     .userDomainMask,
@@ -19,7 +24,7 @@ private let kAppSupportDirectory = NSSearchPathForDirectoriesInDomains(
 let kTorBrowserLauncherPath = (kAppSupportDirectory as NSString)
     .appendingPathComponent("Tor Browser Launcher")
 let kTorBrowserAppPath = (kTorBrowserLauncherPath as NSString)
-    .appendingPathComponent("Tor Browser.app")
+    .appendingPathComponent(kTorBrowserAppBundleBasename)
 let kTorBrowserVersionPath = (kTorBrowserLauncherPath as NSString)
     .appendingPathComponent("version")
 
@@ -35,63 +40,37 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
     // MARK: - Ivars
 
     var urls: [String]?
-
     private var currentMountedDMGPath: String?
-    private var lastBasename: String?
-    private var updateRE: NSRegularExpression?
+    private var lastBasename: String? {
+        return FileManager.default
+            .fileExists(atPath: kTorBrowserVersionPath) ?
+            try! String(contentsOfFile: kTorBrowserVersionPath)
+            .trimmingCharacters(in: .whitespacesAndNewlines) : nil
+    }
 
-    // MARK: - Initializers
-
-    override init(contentRect: NSRect, styleMask style: NSWindow.StyleMask,
-                  backing backingStoreType: NSWindow.BackingStoreType,
-                  defer flag: Bool) {
-        super.init(
-            contentRect: contentRect,
-            styleMask: style,
-            backing: backingStoreType,
-            defer: flag
-        )
-        if FileManager.default.fileExists(atPath: kTorBrowserVersionPath) {
-            lastBasename = try! String(contentsOfFile: kTorBrowserVersionPath)
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-        }
-        updateRE = try! NSRegularExpression(pattern: kUpdateRE)
+    private var updateRE: NSRegularExpression {
+        return try! NSRegularExpression(pattern: kUpdateRE)
     }
 
     // MARK: - Actions
 
     @IBAction func onCancel(_: Any) {
-        if currentMountedDMGPath != nil {
-            unmount(path: currentMountedDMGPath!)
-        }
-        DispatchQueue.main.async {
-            NSApp.terminate(nil)
-        }
+        hdiDetach(path: currentMountedDMGPath)
+        quit()
     }
 
-    // MARK: - Utility
+    // MARK: - Main download method
 
     func downloadTor(proxy: String?, mirror: String) {
         progressBar.doubleValue = 0
-        statusLabel.cell?
-            .title =
-            NSLocalizedString(
-                "download-window-status-label-getting-update-url",
-                value: "Getting update URL",
-                comment: "Displayed when the update URL is being generated (first step of the process)."
-            )
+        setStatus(NSLocalizedString(
+            "download-window-status-label-getting-update-url",
+            value: "Getting update URL",
+            comment: "Displayed when the update URL is being generated (first step of the process)."
+        ))
+        let session = proxy != nil ? urlSessionWithProxy(proxy!) : URLSession.shared
 
-        var session = URLSession.shared
-        if proxy != nil {
-            let sessionConfiguration = URLSessionConfiguration.default
-            let spl = proxy!.split(separator: ":")
-            sessionConfiguration.connectionProxyDictionary = [
-                kCFNetworkProxiesHTTPEnable as AnyHashable: true,
-                kCFNetworkProxiesHTTPPort as AnyHashable: Int(spl.last!)!,
-                kCFNetworkProxiesHTTPProxy as AnyHashable: spl.first!,
-            ]
-            session = URLSession(configuration: sessionConfiguration)
-        }
+        // MARK: Get the updates index
 
         session
             .dataTask(with: URL(string: kUpdateIndexURI)!) { data, resp, error in
@@ -114,50 +93,35 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                                         )
                                 )
                         )
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-                        NSApp.terminate(nil)
-                    }
+                    delayedQuit(10)
                     return
                 }
 
-                if (resp as! HTTPURLResponse)
-                    .statusCode < 200 || (resp as! HTTPURLResponse)
-                    .statusCode > 299 {
-                    DispatchQueue.main.async {
-                        self.statusLabel.cell?.title = String
+                // MARK: Check update index response status code
+
+                let statusCode = (resp as! HTTPURLResponse).statusCode
+                if statusCode < 200 || statusCode > 299 {
+                    self.setStatus(
+                        String
                             .localizedStringWithFormat(
                                 NSLocalizedString(
                                     "download-window-status-failed-update-path",
                                     value: "Failed to determine update path (status code: %d). Cannot continue.",
                                     comment: "Displays when the HTTP status %d is not equal to 200."
                                 ),
-                                (resp as! HTTPURLResponse).statusCode
+                                statusCode
                             )
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-                        NSApp.terminate(nil)
-                    }
+                    )
+                    delayedQuit(10)
                     return
                 }
 
-                var updatePath: String?
-                for line in String(data: data!, encoding: .utf8)!
-                    .split(separator: "\n") {
-                    let m = self.updateRE!.firstMatch(
-                        in: String(line),
-                        options: [],
-                        range: NSRange(
-                            location: 0,
-                            length: line.count
-                        )
-                    )
-                    if m == nil {
-                        continue
-                    }
-                    updatePath = (String(line) as NSString)
-                        .substring(with: m!.range(at: 1))
-                    break
-                }
+                // MARK: Find the update path in the HTML
+
+                let updatePath = findMatchInLines(
+                    lines: String(data: data!, encoding: .utf8)!,
+                    regex: self.updateRE
+                )
                 if updatePath == nil {
                     self
                         .setStatus(
@@ -167,11 +131,11 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                                 comment: "Displays when the update path (part of a URL) cannot be determined."
                             )
                         )
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-                        NSApp.terminate(nil)
-                    }
+                    delayedQuit(10)
                     return
                 }
+
+                // MARK: Create app support directory structure
 
                 self.setStatus(String.localizedStringWithFormat(
                     NSLocalizedString(
@@ -181,7 +145,6 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                     ),
                     kTorBrowserLauncherPath
                 ))
-
                 try? FileManager.default
                     .createDirectory(
                         at: URL(
@@ -190,6 +153,8 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                         withIntermediateDirectories: false,
                         attributes: nil
                     )
+
+                // MARK: Download downloads.json
 
                 self
                     .setStatus(
@@ -208,7 +173,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                         string: kUpdateURIPrefix
                             .appending(updatePath!)
                             .appending(
-                                "release/downloads.json"
+                                kUpdateURISuffix
                             )
                     )!) { data, _, error in
                         if error != nil {
@@ -216,10 +181,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                                 .setStatus(
                                     "Error occurred while fetching downloads.json"
                                 )
-                            DispatchQueue.main
-                                .asyncAfter(deadline: .now() + 0.2) {
-                                    NSApp.terminate(nil)
-                                }
+                            delayedQuit(0.2)
                             return
                         }
                         let downloads = try! JSONDecoder().decode(
@@ -227,28 +189,14 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                             from: data!
                         )
 
-                        // MARK: Locale
+                        // MARK: Find matching locale version
 
-                        let locale = NSLocale.preferredLanguages
-                        var locales =
-                            [
-                                locale[0].replacingOccurrences(of: "-Hans", with: "-CN")
-                                    .replacingOccurrences(of: "-Hant", with: "-TW"),
-                            ]
-                        if locale[0].contains("-") {
-                            locales
-                                .append(String(
-                                    locale[0].split(separator: "-")
-                                        .first!
-                                ))
-                        }
-                        locales.append("en-US")
                         var binary: String?
-                        for localeCandidate in locales {
+                        for localeCandidate in locales() {
                             binary = downloads
-                                .downloads["osx64"]![localeCandidate]?["binary"]!
+                                .downloads[kJSONKeyMacOS]![localeCandidate]?[kJSONKeyBinary]!
                                 .replacingOccurrences(
-                                    of: "https://dist.torproject.org/",
+                                    of: kDefaultMirror,
                                     with: mirror
                                 )
                             if binary != nil {
@@ -256,11 +204,12 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                             }
                         }
                         if binary == nil {
-                            self.setStatus("Failed to get a URL")
-                            DispatchQueue.main
-                                .asyncAfter(deadline: .now() + 0.2) {
-                                    NSApp.terminate(nil)
-                                }
+                            self.setStatus(NSLocalizedString(
+                                "download-window-no-url-found",
+                                value: "Failed to get a URL",
+                                comment: "Displayed when a download URL for Tor Browser cannot be found"
+                            ))
+                            delayedQuit(0.2)
                         }
 
                         // MARK: Launch if already installed
@@ -278,25 +227,11 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                                         comment: "Displayed when Tor Browser is starting."
                                     )
                                 )
-                            try! NSWorkspace.shared
-                                .launchApplication(
-                                    at: URL(
-                                        fileURLWithPath: kTorBrowserAppPath
-                                    ),
-                                    options: .withoutAddingToRecents,
-                                    configuration: [
-                                        NSWorkspace
-                                            .LaunchConfigurationKey
-                                            .arguments: self
-                                            .urls != nil ? self
-                                            .urls ?? [] : [],
-                                    ]
-                                )
-                            DispatchQueue.main
-                                .asyncAfter(deadline: .now() + 0.2) {
-                                    NSApp.terminate(nil)
-                                }
+                            launchTorBrowser(self.urls)
+                            delayedQuit(0.2)
                         } else {
+                            // MARK: Download the DMG
+
                             // TODO: Implement signature checking with GPG
                             // let sig = localizedValue!["sig"]!
                             self
@@ -311,28 +246,18 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                                             basename
                                         )
                                 )
-                            let config = URLSessionConfiguration
-                                .background(
-                                    withIdentifier: "\(Bundle.main.bundleIdentifier!).background"
-                                )
-                            if proxy != nil {
-                                let spl = proxy!.split(separator: ":")
-                                config.connectionProxyDictionary = [
-                                    kCFNetworkProxiesHTTPEnable as AnyHashable: true,
-                                    kCFNetworkProxiesHTTPPort as AnyHashable: Int(
-                                        spl
-                                            .last!,
-                                        radix: 10
-                                    )!,
-                                    kCFNetworkProxiesHTTPProxy as AnyHashable: spl
-                                        .first!,
-                                ]
-                            }
-                            URLSession(
-                                configuration: config,
+                            (proxy != nil ? backgroundURLSession(
+                                withProxy: proxy!,
+                                identifier: kBackgroundIdentifier,
                                 delegate: self,
                                 delegateQueue: OperationQueue()
-                            ).downloadTask(with: URL(string: binary!)!)
+                            ) : URLSession(
+                                configuration: URLSessionConfiguration.background(
+                                    withIdentifier: kBackgroundIdentifier
+                                ),
+                                delegate: self,
+                                delegateQueue: OperationQueue()
+                            )).downloadTask(with: URL(string: binary!)!)
                                 .resume()
                         }
                     }.resume()
@@ -351,17 +276,22 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
         let tempDir = (NSTemporaryDirectory() as NSString)
             .appendingPathComponent(ProcessInfo().globallyUniqueString)
         let tbSourceAppDir = (tempDir as NSString)
-            .appendingPathComponent("Tor Browser.app")
+            .appendingPathComponent(kTorBrowserAppBundleBasename)
+
+        // MARK: Write version file
+
         try! basename.write(
             toFile: kTorBrowserVersionPath,
             atomically: true,
             encoding: .ascii
         )
 
-        if FileManager.default.fileExists(atPath: target.path) {
-            try! FileManager.default.removeItem(at: target)
-        }
+        // MARK: Place the DMG
+
+        removeIfExists(path: target.path)
         try! FileManager.default.moveItem(at: location, to: target)
+
+        // MARK: Attach the DMG
 
         setStatus(String.localizedStringWithFormat(
             NSLocalizedString(
@@ -371,32 +301,19 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
             ),
             basename
         ))
-        Process.launchedProcess(
-            launchPath: "/usr/bin/hdiutil",
-            arguments: [
-                "attach",
-                target.path,
-                "-mountpoint",
-                tempDir,
-                "-private",
-                "-nobrowse",
-                "-noautoopen",
-                "-noautofsck",
-                "-noverify",
-                "-readonly",
-            ]
-        ).waitUntilExit()
+        hdiAttach(path: target.path, mountPoint: tempDir)
         currentMountedDMGPath = tempDir
+
+        // MARK: Remove old Tor Browser.app
 
         setStatus(NSLocalizedString(
             "download-status-window-removing-old-version",
             value: "Removing old version",
             comment: "Displays when the old version of \"Tor Browser.app\" is being deleted."
         ))
-        if FileManager.default.fileExists(atPath: kTorBrowserAppPath) {
-            try! FileManager.default
-                .removeItem(at: URL(fileURLWithPath: kTorBrowserAppPath))
-        }
+        removeIfExists(path: kTorBrowserAppPath)
+
+        // MARK: Copy the bundle
 
         setStatus(NSLocalizedString(
             "download-status-window-copying-app-bundle",
@@ -408,6 +325,8 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
             toPath: kTorBrowserAppPath
         )
 
+        // MARK: Detach the DMG
+
         setStatus(String.localizedStringWithFormat(
             NSLocalizedString(
                 "download-status-window-unmounting-image",
@@ -416,65 +335,46 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
             ),
             basename
         ))
-        unmount(path: tempDir)
+        hdiDetach(path: tempDir)
         currentMountedDMGPath = nil
+
+        // MARK: Remove quarantine attributes
 
         setStatus(NSLocalizedString(
             "download-status-window-removing-quarantine-attributes",
             value: "Removing quarantine attributes",
             comment: "Displays when the com.apple.quarantine extended file attribute is being removed."
         ))
-        Process.launchedProcess(
-            launchPath: "/usr/bin/xattr",
-            arguments: [
-                "-dr",
-                "com.apple.quarantine",
-                kTorBrowserAppPath,
-            ]
-        ).waitUntilExit()
+        removeQuarantineExtendedAtributes(path: kTorBrowserAppPath)
+
+        // MARK: Launch
 
         setStatus(NSLocalizedString(
             "download-window-status-launching",
             value: "Launching Tor Browser",
             comment: "Displayed when Tor Browser is starting"
         ))
-        var config = [NSWorkspace.LaunchConfigurationKey: Any]()
-        if urls != nil, !urls!.isEmpty {
-            config[NSWorkspace.LaunchConfigurationKey.arguments] = urls
-        }
-        try! NSWorkspace.shared
-            .launchApplication(
-                at: URL(fileURLWithPath: kTorBrowserAppPath),
-                options: .withoutAddingToRecents,
-                configuration: config
-            )
-
-        DispatchQueue.main.async {
-            NSApp.terminate(nil)
-        }
+        launchTorBrowser(urls)
+        quit()
     }
 
     func urlSession(_: URLSession, downloadTask _: URLSessionDownloadTask,
                     didWriteData _: Int64, totalBytesWritten: Int64,
                     totalBytesExpectedToWrite: Int64) {
+        // MARK: Update the progress bar
+
         DispatchQueue.main.async {
-            self.progressBar.maxValue = Double(totalBytesExpectedToWrite)
             self.progressBar.doubleValue = Double(totalBytesWritten)
+            self.progressBar.maxValue = Double(totalBytesExpectedToWrite)
         }
     }
 
     // MARK: - Private
 
+    /// Set the status label text.
     private func setStatus(_ s: String) {
         DispatchQueue.main.async {
             self.statusLabel.cell?.title = s
         }
-    }
-
-    private func unmount(path: String) {
-        Process.launchedProcess(
-            launchPath: "/usr/bin/hdiutil",
-            arguments: ["detach", path]
-        ).waitUntilExit()
     }
 }

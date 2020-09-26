@@ -12,9 +12,9 @@ import Cocoa
 
     // MARK: - Ivars
 
-    private var mirrors = Bundle.main
+    private lazy var mirrors = Bundle.main
         .infoDictionary?["TBLMirrors"] as! [String]
-    private var selectedMirrorIndex = UserDefaults.standard
+    private lazy var selectedMirrorIndex = UserDefaults.standard
         .integer(forKey: "TBLMirrorSelectedIndex")
     private var shouldSave = false
     private var useProxy = false
@@ -72,7 +72,6 @@ import Cocoa
                 mirrorPicker.indexOfSelectedItem,
                 forKey: "TBLMirrorSelectedIndex"
             )
-            def.synchronize()
         }
     }
 
@@ -101,9 +100,7 @@ import Cocoa
             }
         }
         for path in [kTorBrowserAppPath, kTorBrowserVersionPath] {
-            if FileManager.default.fileExists(atPath: path) {
-                try! FileManager.default.removeItem(atPath: path)
-            }
+            removeIfExists(path: path)
         }
         startDownloader(proxy: useProxy ? proxyAddress : nil)
         settingsWindow.close()
