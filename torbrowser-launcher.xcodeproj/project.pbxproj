@@ -14,8 +14,8 @@
 		26D9D1CE2515D2AA00253C00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9D1CD2515D2AA00253C00 /* AppDelegate.swift */; };
 		26D9D1D02515D2AB00253C00 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26D9D1CF2515D2AB00253C00 /* Assets.xcassets */; };
 		26D9D1D32515D2AB00253C00 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 26D9D1D12515D2AB00253C00 /* MainMenu.xib */; };
-		26D9D1DF2515D2AB00253C00 /* torbrowser_launcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9D1DE2515D2AB00253C00 /* torbrowser_launcherTests.swift */; };
-		26D9D1EA2515D2AB00253C00 /* torbrowser_launcherUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9D1E92515D2AB00253C00 /* torbrowser_launcherUITests.swift */; };
+		26D9D1DF2515D2AB00253C00 /* TorBrowserLauncherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9D1DE2515D2AB00253C00 /* TorBrowserLauncherTests.swift */; };
+		26D9D1EA2515D2AB00253C00 /* TorBrowserLauncherUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9D1E92515D2AB00253C00 /* TorBrowserLauncherUITests.swift */; };
 		26D9D1FB2516407E00253C00 /* LauncherWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9D1FA2516407E00253C00 /* LauncherWindow.swift */; };
 /* End PBXBuildFile section */
 
@@ -51,10 +51,10 @@
 		26D9D1D22515D2AB00253C00 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		26D9D1D42515D2AB00253C00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		26D9D1DA2515D2AB00253C00 /* torbrowser-launcherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "torbrowser-launcherTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		26D9D1DE2515D2AB00253C00 /* torbrowser_launcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = torbrowser_launcherTests.swift; sourceTree = "<group>"; };
+		26D9D1DE2515D2AB00253C00 /* TorBrowserLauncherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorBrowserLauncherTests.swift; sourceTree = "<group>"; };
 		26D9D1E02515D2AB00253C00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		26D9D1E52515D2AB00253C00 /* torbrowser-launcherUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "torbrowser-launcherUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		26D9D1E92515D2AB00253C00 /* torbrowser_launcherUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = torbrowser_launcherUITests.swift; sourceTree = "<group>"; };
+		26D9D1E92515D2AB00253C00 /* TorBrowserLauncherUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorBrowserLauncherUITests.swift; sourceTree = "<group>"; };
 		26D9D1EB2515D2AB00253C00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		26D9D1FA2516407E00253C00 /* LauncherWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherWindow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,7 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				26D9D1E02515D2AB00253C00 /* Info.plist */,
-				26D9D1DE2515D2AB00253C00 /* torbrowser_launcherTests.swift */,
+				26D9D1DE2515D2AB00253C00 /* TorBrowserLauncherTests.swift */,
 			);
 			path = "torbrowser-launcherTests";
 			sourceTree = "<group>";
@@ -149,7 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				26D9D1EB2515D2AB00253C00 /* Info.plist */,
-				26D9D1E92515D2AB00253C00 /* torbrowser_launcherUITests.swift */,
+				26D9D1E92515D2AB00253C00 /* TorBrowserLauncherUITests.swift */,
 			);
 			path = "torbrowser-launcherUITests";
 			sourceTree = "<group>";
@@ -298,7 +298,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				26D9D1DF2515D2AB00253C00 /* torbrowser_launcherTests.swift in Sources */,
+				26D9D1DF2515D2AB00253C00 /* TorBrowserLauncherTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,7 +306,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				26D9D1EA2515D2AB00253C00 /* torbrowser_launcherUITests.swift in Sources */,
+				26D9D1EA2515D2AB00253C00 /* TorBrowserLauncherUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

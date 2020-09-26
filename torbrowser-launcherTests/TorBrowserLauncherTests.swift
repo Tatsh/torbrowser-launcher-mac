@@ -8,7 +8,7 @@
 import XCTest
 @testable import Tor_Browser_Launcher
 
-class torbrowser_launcherTests: XCTestCase {
+class TorBrowserLauncherTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
