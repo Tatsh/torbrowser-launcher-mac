@@ -192,16 +192,20 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                         // MARK: Find matching locale version
 
                         var binary: String?
-                        for localeCandidate in locales() {
-                            binary = downloads
-                                .downloads[kJSONKeyMacOS]![localeCandidate]?[kJSONKeyBinary]!
-                                .replacingOccurrences(
-                                    of: kDefaultMirror,
-                                    with: mirror
-                                )
-                            if binary != nil {
-                                break
+                        if !downloads.downloads.isEmpty {
+                            for localeCandidate in locales() {
+                                binary = downloads
+                                    .downloads[kJSONKeyMacOS]![localeCandidate]?[kJSONKeyBinary]!
+                                    .replacingOccurrences(
+                                        of: kDefaultMirror,
+                                        with: mirror
+                                    )
+                                if binary != nil {
+                                    break
+                                }
                             }
+                        } else {
+                            binary = "\(mirror)torbrowser/\(downloads.version)/TorBrowser-\(downloads.version)-osx64_\(locales()[0]).dmg"
                         }
                         if binary == nil {
                             self.setStatus(NSLocalizedString(
@@ -209,7 +213,8 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                                 value: "Failed to get a URL",
                                 comment: "Displayed when a download URL for Tor Browser cannot be found"
                             ))
-                            delayedQuit(0.2)
+                            delayedQuit(2)
+                            return
                         }
 
                         // MARK: Launch if already installed
