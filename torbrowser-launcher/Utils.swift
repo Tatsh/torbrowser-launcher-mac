@@ -134,7 +134,10 @@ func removeIfExists(path: String) {
 }
 
 func locales() -> [String] {
-    let locale = NSLocale.preferredLanguages[0]
+    var locale = NSLocale.preferredLanguages[0]
+    if locale.hasPrefix("en-") {
+        locale = "en-US"
+    }
     var locales =
         [
             locale.replacingOccurrences(of: "-Hans", with: "-CN")
