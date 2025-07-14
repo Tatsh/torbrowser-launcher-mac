@@ -1,258 +1,724 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<?xml version="1.0" encoding="UTF-8" ?>
+<document
+  type="com.apple.InterfaceBuilder3.Cocoa.XIB"
+  version="3.0"
+  toolsVersion="17156"
+  targetRuntime="MacOSX.Cocoa"
+  propertyAccessControl="none"
+  useAutolayout="YES"
+  customObjectInstantitationMethod="direct"
+>
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
-        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <deployment identifier="macosx" />
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156" />
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0" />
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
             <connections>
-                <outlet property="delegate" destination="Voe-Tx-rLC" id="GzC-gU-4Uq"/>
+                <outlet property="delegate" destination="Voe-Tx-rLC" id="GzC-gU-4Uq" />
             </connections>
         </customObject>
-        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Tor_Browser_Launcher" customModuleProvider="target">
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder" />
+        <customObject id="-3" userLabel="Application" customClass="NSObject" />
+        <customObject
+      id="Voe-Tx-rLC"
+      customClass="AppDelegate"
+      customModule="Tor_Browser_Launcher"
+      customModuleProvider="target"
+    >
             <connections>
-                <outlet property="downloadOverSystemTorCheckbox" destination="j4l-BU-vrg" id="a0R-Tq-6kq"/>
-                <outlet property="mirrorPicker" destination="nzR-zV-QMb" id="Tcj-oq-2se"/>
-                <outlet property="settingsWindow" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
-                <outlet property="statusLabel" destination="nG0-sF-m7S" id="xog-EP-I1a"/>
-                <outlet property="torServerTextField" destination="XJa-Qj-ZCj" id="He6-H5-E5q"/>
+                <outlet
+          property="downloadOverSystemTorCheckbox"
+          destination="j4l-BU-vrg"
+          id="a0R-Tq-6kq"
+        />
+                <outlet property="mirrorPicker" destination="nzR-zV-QMb" id="Tcj-oq-2se" />
+                <outlet property="settingsWindow" destination="QvC-M9-y7g" id="gIp-Ho-8D9" />
+                <outlet property="statusLabel" destination="nG0-sF-m7S" id="xog-EP-I1a" />
+                <outlet property="torServerTextField" destination="XJa-Qj-ZCj" id="He6-H5-E5q" />
             </connections>
         </customObject>
-        <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
+        <customObject id="YLy-65-1bz" customClass="NSFontManager" />
         <menu title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
             <items>
                 <menuItem title="Tor Browser Launcher" id="1Xt-HY-uBw">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Tor Browser Launcher" systemMenu="apple" id="uQy-DD-JDr">
+                    <modifierMask key="keyEquivalentModifierMask" />
+                    <menu
+            key="submenu"
+            title="Tor Browser Launcher"
+            systemMenu="apple"
+            id="uQy-DD-JDr"
+          >
                         <items>
                             <menuItem title="About Tor Browser Launcher" id="5kV-Vb-QxS">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <modifierMask key="keyEquivalentModifierMask" />
                                 <connections>
-                                    <action selector="orderFrontStandardAboutPanel:" target="-1" id="Exp-CZ-Vem"/>
+                                    <action
+                    selector="orderFrontStandardAboutPanel:"
+                    target="-1"
+                    id="Exp-CZ-Vem"
+                  />
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="4je-JR-u6R"/>
-                            <menuItem title="Hide Tor Browser Launcher" keyEquivalent="h" id="Olw-nP-bQN">
+                            <menuItem isSeparatorItem="YES" id="4je-JR-u6R" />
+                            <menuItem
+                title="Hide Tor Browser Launcher"
+                keyEquivalent="h"
+                id="Olw-nP-bQN"
+              >
                                 <connections>
-                                    <action selector="hide:" target="-1" id="PnN-Uc-m68"/>
+                                    <action selector="hide:" target="-1" id="PnN-Uc-m68" />
                                 </connections>
                             </menuItem>
                             <menuItem title="Hide Others" keyEquivalent="h" id="Vdr-fp-XzO">
-                                <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                <modifierMask
+                  key="keyEquivalentModifierMask"
+                  option="YES"
+                  command="YES"
+                />
                                 <connections>
-                                    <action selector="hideOtherApplications:" target="-1" id="VT4-aY-XCT"/>
+                                    <action
+                    selector="hideOtherApplications:"
+                    target="-1"
+                    id="VT4-aY-XCT"
+                  />
                                 </connections>
                             </menuItem>
                             <menuItem title="Show All" id="Kd2-mp-pUS">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <modifierMask key="keyEquivalentModifierMask" />
                                 <connections>
-                                    <action selector="unhideAllApplications:" target="-1" id="Dhg-Le-xox"/>
+                                    <action
+                    selector="unhideAllApplications:"
+                    target="-1"
+                    id="Dhg-Le-xox"
+                  />
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="kCx-OE-vgT"/>
-                            <menuItem title="Quit Tor Browser Launcher" keyEquivalent="q" id="4sb-4s-VLi">
+                            <menuItem isSeparatorItem="YES" id="kCx-OE-vgT" />
+                            <menuItem
+                title="Quit Tor Browser Launcher"
+                keyEquivalent="q"
+                id="4sb-4s-VLi"
+              >
                                 <connections>
-                                    <action selector="terminate:" target="-1" id="Te7-pn-YzF"/>
+                                    <action selector="terminate:" target="-1" id="Te7-pn-YzF" />
                                 </connections>
                             </menuItem>
                         </items>
                     </menu>
                 </menuItem>
                 <menuItem title="Edit" id="5QF-Oa-p0T">
-                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <modifierMask key="keyEquivalentModifierMask" />
                     <menu key="submenu" title="Edit" id="W48-6f-4Dl">
                         <items>
                             <menuItem title="Undo" keyEquivalent="z" id="dRJ-4n-Yzg">
                                 <connections>
-                                    <action selector="undo:" target="-1" id="M6e-cu-g7V"/>
+                                    <action selector="undo:" target="-1" id="M6e-cu-g7V" />
                                 </connections>
                             </menuItem>
                             <menuItem title="Redo" keyEquivalent="Z" id="6dh-zS-Vam">
                                 <connections>
-                                    <action selector="redo:" target="-1" id="oIA-Rs-6OD"/>
+                                    <action selector="redo:" target="-1" id="oIA-Rs-6OD" />
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="WRV-NI-Exz"/>
+                            <menuItem isSeparatorItem="YES" id="WRV-NI-Exz" />
                             <menuItem title="Cut" keyEquivalent="x" id="uRl-iY-unG">
                                 <connections>
-                                    <action selector="cut:" target="-1" id="YJe-68-I9s"/>
+                                    <action selector="cut:" target="-1" id="YJe-68-I9s" />
                                 </connections>
                             </menuItem>
                             <menuItem title="Copy" keyEquivalent="c" id="x3v-GG-iWU">
                                 <connections>
-                                    <action selector="copy:" target="-1" id="G1f-GL-Joy"/>
+                                    <action selector="copy:" target="-1" id="G1f-GL-Joy" />
                                 </connections>
                             </menuItem>
                             <menuItem title="Paste" keyEquivalent="v" id="gVA-U4-sdL">
                                 <connections>
-                                    <action selector="paste:" target="-1" id="UvS-8e-Qdg"/>
+                                    <action selector="paste:" target="-1" id="UvS-8e-Qdg" />
                                 </connections>
                             </menuItem>
                             <menuItem title="Delete" id="pa3-QI-u2k">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <modifierMask key="keyEquivalentModifierMask" />
                                 <connections>
-                                    <action selector="delete:" target="-1" id="0Mk-Ml-PaM"/>
+                                    <action selector="delete:" target="-1" id="0Mk-Ml-PaM" />
                                 </connections>
                             </menuItem>
                             <menuItem title="Select All" keyEquivalent="a" id="Ruw-6m-B2m">
                                 <connections>
-                                    <action selector="selectAll:" target="-1" id="VNm-Mi-diN"/>
+                                    <action selector="selectAll:" target="-1" id="VNm-Mi-diN" />
                                 </connections>
                             </menuItem>
                         </items>
                     </menu>
                 </menuItem>
                 <menuItem title="Window" id="aUF-d1-5bR">
-                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <modifierMask key="keyEquivalentModifierMask" />
                     <menu key="submenu" title="Window" systemMenu="window" id="Td7-aD-5lo">
                         <items>
                             <menuItem title="Bring All to Front" id="LE2-aR-0XJ">
-                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <modifierMask key="keyEquivalentModifierMask" />
                                 <connections>
-                                    <action selector="arrangeInFront:" target="-1" id="DRN-fu-gQh"/>
+                                    <action
+                    selector="arrangeInFront:"
+                    target="-1"
+                    id="DRN-fu-gQh"
+                  />
                                 </connections>
                             </menuItem>
                         </items>
                     </menu>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="70" y="-481"/>
+            <point key="canvasLocation" x="70" y="-481" />
         </menu>
-        <window title="Tor Browser Launcher Settings" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" tabbingMode="disallowed" id="QvC-M9-y7g">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
-            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="480" height="151"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+        <window
+      title="Tor Browser Launcher Settings"
+      allowsToolTipsWhenApplicationIsInactive="NO"
+      autorecalculatesKeyViewLoop="NO"
+      releasedWhenClosed="NO"
+      visibleAtLaunch="NO"
+      animationBehavior="default"
+      tabbingMode="disallowed"
+      id="QvC-M9-y7g"
+    >
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" />
+            <windowPositionMask
+        key="initialPositionMask"
+        leftStrut="YES"
+        rightStrut="YES"
+        topStrut="YES"
+        bottomStrut="YES"
+      />
+            <rect key="contentRect" x="335" y="390" width="480" height="151" />
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177" />
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="151"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <rect key="frame" x="0.0" y="0.0" width="480" height="151" />
+                <autoresizingMask key="autoresizingMask" />
                 <subviews>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="j4l-BU-vrg">
-                        <rect key="frame" x="18" y="115" width="182" height="18"/>
-                        <buttonCell key="cell" type="check" title="Download over system Tor" bezelStyle="regularSquare" imagePosition="left" inset="2" id="uxL-4M-2I5">
-                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                            <font key="font" metaFont="system"/>
+                    <button
+            verticalHuggingPriority="750"
+            translatesAutoresizingMaskIntoConstraints="NO"
+            id="j4l-BU-vrg"
+          >
+                        <rect key="frame" x="18" y="115" width="182" height="18" />
+                        <buttonCell
+              key="cell"
+              type="check"
+              title="Download over system Tor"
+              bezelStyle="regularSquare"
+              imagePosition="left"
+              inset="2"
+              id="uxL-4M-2I5"
+            >
+                            <behavior
+                key="behavior"
+                changeContents="YES"
+                doesNotDimImage="YES"
+                lightByContents="YES"
+              />
+                            <font key="font" metaFont="system" />
                         </buttonCell>
                     </button>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XJa-Qj-ZCj">
-                        <rect key="frame" x="91" y="88" width="206" height="21"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="127.0.0.1:9010" drawsBackground="YES" id="vwF-fU-QEv">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    <textField
+            verticalHuggingPriority="750"
+            translatesAutoresizingMaskIntoConstraints="NO"
+            id="XJa-Qj-ZCj"
+          >
+                        <rect key="frame" x="91" y="88" width="206" height="21" />
+                        <textFieldCell
+              key="cell"
+              scrollable="YES"
+              lineBreakMode="clipping"
+              selectable="YES"
+              editable="YES"
+              sendsActionOnEndEditing="YES"
+              borderStyle="bezel"
+              title="127.0.0.1:9010"
+              drawsBackground="YES"
+              id="vwF-fU-QEv"
+            >
+                            <font key="font" metaFont="system" />
+                            <color
+                key="textColor"
+                name="controlTextColor"
+                catalog="System"
+                colorSpace="catalog"
+              />
+                            <color
+                key="backgroundColor"
+                name="textBackgroundColor"
+                catalog="System"
+                colorSpace="catalog"
+              />
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cLN-wf-4tr">
-                        <rect key="frame" x="20" y="93" width="65" height="16"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="Tor server" id="7EK-dt-slc">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    <textField
+            horizontalHuggingPriority="251"
+            verticalHuggingPriority="750"
+            translatesAutoresizingMaskIntoConstraints="NO"
+            id="cLN-wf-4tr"
+          >
+                        <rect key="frame" x="20" y="93" width="65" height="16" />
+                        <textFieldCell
+              key="cell"
+              lineBreakMode="clipping"
+              title="Tor server"
+              id="7EK-dt-slc"
+            >
+                            <font key="font" metaFont="system" />
+                            <color
+                key="textColor"
+                name="labelColor"
+                catalog="System"
+                colorSpace="catalog"
+              />
+                            <color
+                key="backgroundColor"
+                name="textBackgroundColor"
+                catalog="System"
+                colorSpace="catalog"
+              />
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VJh-au-uAV">
-                        <rect key="frame" x="20" y="69" width="41" height="16"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="Mirror" id="RL3-FD-7oh">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    <textField
+            horizontalHuggingPriority="251"
+            verticalHuggingPriority="750"
+            translatesAutoresizingMaskIntoConstraints="NO"
+            id="VJh-au-uAV"
+          >
+                        <rect key="frame" x="20" y="69" width="41" height="16" />
+                        <textFieldCell
+              key="cell"
+              lineBreakMode="clipping"
+              title="Mirror"
+              id="RL3-FD-7oh"
+            >
+                            <font key="font" metaFont="system" />
+                            <color
+                key="textColor"
+                name="labelColor"
+                catalog="System"
+                colorSpace="catalog"
+              />
+                            <color
+                key="backgroundColor"
+                name="textBackgroundColor"
+                catalog="System"
+                colorSpace="catalog"
+              />
                         </textFieldCell>
                     </textField>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KXO-zU-mia">
-                        <rect key="frame" x="299" y="81" width="179" height="32"/>
-                        <buttonCell key="cell" type="push" title="Reinstall Tor Browser" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WhO-br-yEf">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
+                    <button
+            verticalHuggingPriority="750"
+            translatesAutoresizingMaskIntoConstraints="NO"
+            id="KXO-zU-mia"
+          >
+                        <rect key="frame" x="299" y="81" width="179" height="32" />
+                        <buttonCell
+              key="cell"
+              type="push"
+              title="Reinstall Tor Browser"
+              bezelStyle="rounded"
+              alignment="center"
+              borderStyle="border"
+              imageScaling="proportionallyDown"
+              inset="2"
+              id="WhO-br-yEf"
+            >
+                            <behavior
+                key="behavior"
+                pushIn="YES"
+                lightByBackground="YES"
+                lightByGray="YES"
+              />
+                            <font key="font" metaFont="system" />
                         </buttonCell>
                         <connections>
-                            <action selector="didPressReinstallWithSender:" target="Voe-Tx-rLC" id="hNc-C0-kdW"/>
+                            <action
+                selector="didPressReinstallWithSender:"
+                target="Voe-Tx-rLC"
+                id="hNc-C0-kdW"
+              />
                         </connections>
                     </button>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YCh-sk-Fu3">
-                        <rect key="frame" x="303" y="117" width="47" height="16"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="Status:" id="aE0-H6-vOu">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    <textField
+            horizontalHuggingPriority="251"
+            verticalHuggingPriority="750"
+            translatesAutoresizingMaskIntoConstraints="NO"
+            id="YCh-sk-Fu3"
+          >
+                        <rect key="frame" x="303" y="117" width="47" height="16" />
+                        <textFieldCell
+              key="cell"
+              lineBreakMode="clipping"
+              title="Status:"
+              id="aE0-H6-vOu"
+            >
+                            <font key="font" metaFont="system" />
+                            <color
+                key="textColor"
+                name="labelColor"
+                catalog="System"
+                colorSpace="catalog"
+              />
+                            <color
+                key="backgroundColor"
+                name="textBackgroundColor"
+                catalog="System"
+                colorSpace="catalog"
+              />
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nG0-sF-m7S">
-                        <rect key="frame" x="354" y="117" width="92" height="16"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="not installed" id="cpB-Xc-pDt">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    <textField
+            horizontalHuggingPriority="251"
+            verticalHuggingPriority="750"
+            translatesAutoresizingMaskIntoConstraints="NO"
+            id="nG0-sF-m7S"
+          >
+                        <rect key="frame" x="354" y="117" width="92" height="16" />
+                        <textFieldCell
+              key="cell"
+              lineBreakMode="clipping"
+              title="not installed"
+              id="cpB-Xc-pDt"
+            >
+                            <font key="font" metaFont="system" />
+                            <color
+                key="textColor"
+                name="labelColor"
+                catalog="System"
+                colorSpace="catalog"
+              />
+                            <color
+                key="backgroundColor"
+                name="textBackgroundColor"
+                catalog="System"
+                colorSpace="catalog"
+              />
                         </textFieldCell>
                     </textField>
-                    <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nzR-zV-QMb">
-                        <rect key="frame" x="91" y="57" width="384" height="25"/>
-                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="5" id="7Hv-lm-6gk">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    <comboBox
+            verticalHuggingPriority="750"
+            translatesAutoresizingMaskIntoConstraints="NO"
+            id="nzR-zV-QMb"
+          >
+                        <rect key="frame" x="91" y="57" width="384" height="25" />
+                        <comboBoxCell
+              key="cell"
+              scrollable="YES"
+              lineBreakMode="clipping"
+              selectable="YES"
+              editable="YES"
+              sendsActionOnEndEditing="YES"
+              borderStyle="bezel"
+              drawsBackground="YES"
+              completes="NO"
+              usesDataSource="YES"
+              numberOfVisibleItems="5"
+              id="7Hv-lm-6gk"
+            >
+                            <font key="font" metaFont="system" />
+                            <color
+                key="textColor"
+                name="controlTextColor"
+                catalog="System"
+                colorSpace="catalog"
+              />
+                            <color
+                key="backgroundColor"
+                name="textBackgroundColor"
+                catalog="System"
+                colorSpace="catalog"
+              />
                         </comboBoxCell>
                         <connections>
-                            <outlet property="dataSource" destination="Voe-Tx-rLC" id="NUq-qH-tSq"/>
+                            <outlet
+                property="dataSource"
+                destination="Voe-Tx-rLC"
+                id="NUq-qH-tSq"
+              />
                         </connections>
                     </comboBox>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8sr-ov-Yjr">
-                        <rect key="frame" x="362" y="13" width="108" height="32"/>
-                        <buttonCell key="cell" type="push" title="Save &amp; Exit" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="b4n-es-iI2">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
+                    <button
+            verticalHuggingPriority="750"
+            translatesAutoresizingMaskIntoConstraints="NO"
+            id="8sr-ov-Yjr"
+          >
+                        <rect key="frame" x="362" y="13" width="108" height="32" />
+                        <buttonCell
+              key="cell"
+              type="push"
+              title="Save &amp; Exit"
+              bezelStyle="rounded"
+              alignment="center"
+              borderStyle="border"
+              imageScaling="proportionallyDown"
+              inset="2"
+              id="b4n-es-iI2"
+            >
+                            <behavior
+                key="behavior"
+                pushIn="YES"
+                lightByBackground="YES"
+                lightByGray="YES"
+              />
+                            <font key="font" metaFont="system" />
                             <connections>
-                                <action selector="saveAndExit:" target="Voe-Tx-rLC" id="Rc3-xh-seI"/>
+                                <action
+                  selector="saveAndExit:"
+                  target="Voe-Tx-rLC"
+                  id="Rc3-xh-seI"
+                />
                             </connections>
                         </buttonCell>
                     </button>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UVa-wX-Qb6">
-                        <rect key="frame" x="285" y="13" width="82" height="32"/>
-                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MY2-xA-rGP">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
+                    <button
+            verticalHuggingPriority="750"
+            translatesAutoresizingMaskIntoConstraints="NO"
+            id="UVa-wX-Qb6"
+          >
+                        <rect key="frame" x="285" y="13" width="82" height="32" />
+                        <buttonCell
+              key="cell"
+              type="push"
+              title="Cancel"
+              bezelStyle="rounded"
+              alignment="center"
+              borderStyle="border"
+              imageScaling="proportionallyDown"
+              inset="2"
+              id="MY2-xA-rGP"
+            >
+                            <behavior
+                key="behavior"
+                pushIn="YES"
+                lightByBackground="YES"
+                lightByGray="YES"
+              />
+                            <font key="font" metaFont="system" />
                             <string key="keyEquivalent" base64-UTF8="YES">
 Gw
 </string>
                         </buttonCell>
                         <connections>
-                            <action selector="cancel:" target="Voe-Tx-rLC" id="tm2-56-Cm1"/>
+                            <action selector="cancel:" target="Voe-Tx-rLC" id="tm2-56-Cm1" />
                         </connections>
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="nG0-sF-m7S" secondAttribute="trailing" constant="36" id="1gm-b8-U43"/>
-                    <constraint firstItem="cLN-wf-4tr" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="42" id="1oy-Rq-x1k"/>
-                    <constraint firstItem="cLN-wf-4tr" firstAttribute="top" secondItem="j4l-BU-vrg" secondAttribute="bottom" constant="8" symbolic="YES" id="3qz-z0-Qui"/>
-                    <constraint firstItem="nzR-zV-QMb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="VJh-au-uAV" secondAttribute="trailing" constant="8" symbolic="YES" id="88j-Q9-oWB"/>
-                    <constraint firstItem="UVa-wX-Qb6" firstAttribute="centerX" secondItem="YCh-sk-Fu3" secondAttribute="centerX" id="9Ji-lm-lE5"/>
-                    <constraint firstItem="KXO-zU-mia" firstAttribute="leading" secondItem="XJa-Qj-ZCj" secondAttribute="trailing" constant="8" symbolic="YES" id="H3h-sd-xYR"/>
-                    <constraint firstAttribute="trailing" secondItem="UVa-wX-Qb6" secondAttribute="trailing" constant="119" id="Jjl-OI-Lau"/>
-                    <constraint firstItem="j4l-BU-vrg" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="Kbb-J2-8hx"/>
-                    <constraint firstItem="cLN-wf-4tr" firstAttribute="top" secondItem="XJa-Qj-ZCj" secondAttribute="top" id="OJl-JU-1d6"/>
-                    <constraint firstItem="UVa-wX-Qb6" firstAttribute="top" secondItem="nzR-zV-QMb" secondAttribute="bottom" constant="20" symbolic="YES" id="QJy-5p-ZfT"/>
-                    <constraint firstItem="8sr-ov-Yjr" firstAttribute="top" secondItem="nzR-zV-QMb" secondAttribute="bottom" constant="20" symbolic="YES" id="S96-0q-RGJ"/>
-                    <constraint firstItem="cLN-wf-4tr" firstAttribute="top" secondItem="KXO-zU-mia" secondAttribute="top" id="S9v-LM-gzQ"/>
-                    <constraint firstItem="nzR-zV-QMb" firstAttribute="top" secondItem="KXO-zU-mia" secondAttribute="bottom" constant="8" id="TzD-Cf-xpK"/>
-                    <constraint firstItem="KXO-zU-mia" firstAttribute="trailing" secondItem="nzR-zV-QMb" secondAttribute="trailing" id="V2H-Zh-3RN"/>
-                    <constraint firstItem="VJh-au-uAV" firstAttribute="top" secondItem="cLN-wf-4tr" secondAttribute="bottom" constant="8" symbolic="YES" id="blJ-ji-jOk"/>
-                    <constraint firstItem="KXO-zU-mia" firstAttribute="trailing" secondItem="8sr-ov-Yjr" secondAttribute="trailing" constant="8" id="esU-S3-ZZv"/>
-                    <constraint firstItem="cLN-wf-4tr" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="22" id="ggQ-e0-db8"/>
-                    <constraint firstItem="j4l-BU-vrg" firstAttribute="bottom" secondItem="nG0-sF-m7S" secondAttribute="bottom" id="jzU-yN-iJH"/>
-                    <constraint firstItem="cLN-wf-4tr" firstAttribute="leading" secondItem="VJh-au-uAV" secondAttribute="leading" id="o0C-Va-tIk"/>
-                    <constraint firstItem="XJa-Qj-ZCj" firstAttribute="leading" secondItem="cLN-wf-4tr" secondAttribute="trailing" constant="8" symbolic="YES" id="oTn-pl-Cau"/>
-                    <constraint firstItem="8sr-ov-Yjr" firstAttribute="leading" secondItem="UVa-wX-Qb6" secondAttribute="trailing" constant="7" id="rUe-fJ-0HM"/>
-                    <constraint firstItem="KXO-zU-mia" firstAttribute="leading" secondItem="YCh-sk-Fu3" secondAttribute="leading" id="sal-6B-han"/>
-                    <constraint firstItem="nG0-sF-m7S" firstAttribute="leading" secondItem="YCh-sk-Fu3" secondAttribute="trailing" constant="8" symbolic="YES" id="tJV-Sh-Qpt"/>
-                    <constraint firstItem="nzR-zV-QMb" firstAttribute="leading" secondItem="XJa-Qj-ZCj" secondAttribute="leading" id="thu-Ee-MMh"/>
-                    <constraint firstItem="YCh-sk-Fu3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="j4l-BU-vrg" secondAttribute="trailing" constant="8" symbolic="YES" id="uHs-1G-Yq4"/>
-                    <constraint firstItem="j4l-BU-vrg" firstAttribute="bottom" secondItem="YCh-sk-Fu3" secondAttribute="bottom" id="zR2-ab-Rjt"/>
+                    <constraint
+            firstAttribute="trailing"
+            secondItem="nG0-sF-m7S"
+            secondAttribute="trailing"
+            constant="36"
+            id="1gm-b8-U43"
+          />
+                    <constraint
+            firstItem="cLN-wf-4tr"
+            firstAttribute="top"
+            secondItem="EiT-Mj-1SZ"
+            secondAttribute="top"
+            constant="42"
+            id="1oy-Rq-x1k"
+          />
+                    <constraint
+            firstItem="cLN-wf-4tr"
+            firstAttribute="top"
+            secondItem="j4l-BU-vrg"
+            secondAttribute="bottom"
+            constant="8"
+            symbolic="YES"
+            id="3qz-z0-Qui"
+          />
+                    <constraint
+            firstItem="nzR-zV-QMb"
+            firstAttribute="leading"
+            relation="greaterThanOrEqual"
+            secondItem="VJh-au-uAV"
+            secondAttribute="trailing"
+            constant="8"
+            symbolic="YES"
+            id="88j-Q9-oWB"
+          />
+                    <constraint
+            firstItem="UVa-wX-Qb6"
+            firstAttribute="centerX"
+            secondItem="YCh-sk-Fu3"
+            secondAttribute="centerX"
+            id="9Ji-lm-lE5"
+          />
+                    <constraint
+            firstItem="KXO-zU-mia"
+            firstAttribute="leading"
+            secondItem="XJa-Qj-ZCj"
+            secondAttribute="trailing"
+            constant="8"
+            symbolic="YES"
+            id="H3h-sd-xYR"
+          />
+                    <constraint
+            firstAttribute="trailing"
+            secondItem="UVa-wX-Qb6"
+            secondAttribute="trailing"
+            constant="119"
+            id="Jjl-OI-Lau"
+          />
+                    <constraint
+            firstItem="j4l-BU-vrg"
+            firstAttribute="leading"
+            secondItem="EiT-Mj-1SZ"
+            secondAttribute="leading"
+            constant="20"
+            symbolic="YES"
+            id="Kbb-J2-8hx"
+          />
+                    <constraint
+            firstItem="cLN-wf-4tr"
+            firstAttribute="top"
+            secondItem="XJa-Qj-ZCj"
+            secondAttribute="top"
+            id="OJl-JU-1d6"
+          />
+                    <constraint
+            firstItem="UVa-wX-Qb6"
+            firstAttribute="top"
+            secondItem="nzR-zV-QMb"
+            secondAttribute="bottom"
+            constant="20"
+            symbolic="YES"
+            id="QJy-5p-ZfT"
+          />
+                    <constraint
+            firstItem="8sr-ov-Yjr"
+            firstAttribute="top"
+            secondItem="nzR-zV-QMb"
+            secondAttribute="bottom"
+            constant="20"
+            symbolic="YES"
+            id="S96-0q-RGJ"
+          />
+                    <constraint
+            firstItem="cLN-wf-4tr"
+            firstAttribute="top"
+            secondItem="KXO-zU-mia"
+            secondAttribute="top"
+            id="S9v-LM-gzQ"
+          />
+                    <constraint
+            firstItem="nzR-zV-QMb"
+            firstAttribute="top"
+            secondItem="KXO-zU-mia"
+            secondAttribute="bottom"
+            constant="8"
+            id="TzD-Cf-xpK"
+          />
+                    <constraint
+            firstItem="KXO-zU-mia"
+            firstAttribute="trailing"
+            secondItem="nzR-zV-QMb"
+            secondAttribute="trailing"
+            id="V2H-Zh-3RN"
+          />
+                    <constraint
+            firstItem="VJh-au-uAV"
+            firstAttribute="top"
+            secondItem="cLN-wf-4tr"
+            secondAttribute="bottom"
+            constant="8"
+            symbolic="YES"
+            id="blJ-ji-jOk"
+          />
+                    <constraint
+            firstItem="KXO-zU-mia"
+            firstAttribute="trailing"
+            secondItem="8sr-ov-Yjr"
+            secondAttribute="trailing"
+            constant="8"
+            id="esU-S3-ZZv"
+          />
+                    <constraint
+            firstItem="cLN-wf-4tr"
+            firstAttribute="leading"
+            secondItem="EiT-Mj-1SZ"
+            secondAttribute="leading"
+            constant="22"
+            id="ggQ-e0-db8"
+          />
+                    <constraint
+            firstItem="j4l-BU-vrg"
+            firstAttribute="bottom"
+            secondItem="nG0-sF-m7S"
+            secondAttribute="bottom"
+            id="jzU-yN-iJH"
+          />
+                    <constraint
+            firstItem="cLN-wf-4tr"
+            firstAttribute="leading"
+            secondItem="VJh-au-uAV"
+            secondAttribute="leading"
+            id="o0C-Va-tIk"
+          />
+                    <constraint
+            firstItem="XJa-Qj-ZCj"
+            firstAttribute="leading"
+            secondItem="cLN-wf-4tr"
+            secondAttribute="trailing"
+            constant="8"
+            symbolic="YES"
+            id="oTn-pl-Cau"
+          />
+                    <constraint
+            firstItem="8sr-ov-Yjr"
+            firstAttribute="leading"
+            secondItem="UVa-wX-Qb6"
+            secondAttribute="trailing"
+            constant="7"
+            id="rUe-fJ-0HM"
+          />
+                    <constraint
+            firstItem="KXO-zU-mia"
+            firstAttribute="leading"
+            secondItem="YCh-sk-Fu3"
+            secondAttribute="leading"
+            id="sal-6B-han"
+          />
+                    <constraint
+            firstItem="nG0-sF-m7S"
+            firstAttribute="leading"
+            secondItem="YCh-sk-Fu3"
+            secondAttribute="trailing"
+            constant="8"
+            symbolic="YES"
+            id="tJV-Sh-Qpt"
+          />
+                    <constraint
+            firstItem="nzR-zV-QMb"
+            firstAttribute="leading"
+            secondItem="XJa-Qj-ZCj"
+            secondAttribute="leading"
+            id="thu-Ee-MMh"
+          />
+                    <constraint
+            firstItem="YCh-sk-Fu3"
+            firstAttribute="leading"
+            relation="greaterThanOrEqual"
+            secondItem="j4l-BU-vrg"
+            secondAttribute="trailing"
+            constant="8"
+            symbolic="YES"
+            id="uHs-1G-Yq4"
+          />
+                    <constraint
+            firstItem="j4l-BU-vrg"
+            firstAttribute="bottom"
+            secondItem="YCh-sk-Fu3"
+            secondAttribute="bottom"
+            id="zR2-ab-Rjt"
+          />
                 </constraints>
             </view>
-            <point key="canvasLocation" x="-161" y="-239"/>
+            <point key="canvasLocation" x="-161" y="-239" />
         </window>
     </objects>
 </document>
