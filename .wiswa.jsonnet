@@ -29,5 +29,5 @@
     },
   },
 
-  project_type: 'c++',
+  project_type: 'swift',
 }

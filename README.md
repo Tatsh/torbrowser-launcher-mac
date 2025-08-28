@@ -2,12 +2,12 @@
 
 [![GitHub tag (with filter)](https://img.shields.io/github/v/tag/Tatsh/torbrowser-launcher-mac)](https://github.com/Tatsh/torbrowser-launcher-mac/tags)
 [![License](https://img.shields.io/github/license/Tatsh/torbrowser-launcher-mac)](https://github.com/Tatsh/torbrowser-launcher-mac/blob/master/LICENSE.txt)
-[![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/torbrowser-launcher-mac/v0.0.0/master)](https://github.com/Tatsh/torbrowser-launcher-mac/compare/v0.0.0...master)
+[![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/torbrowser-launcher-mac/v0.0.1/master)](https://github.com/Tatsh/torbrowser-launcher-mac/compare/v0.0.1...master)
 [![CodeQL](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/codeql.yml/badge.svg)](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/codeql.yml)
 [![QA](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/qa.yml/badge.svg)](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/qa.yml)
 [![Tests](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/tests.yml/badge.svg)](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/tests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/Tatsh/torbrowser-launcher-mac/badge.svg?branch=master)](https://coveralls.io/github/Tatsh/torbrowser-launcher-mac?branch=master)
-[![GitHub Pages](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/pages.yml/badge.svg)](https://tatsh.github.io/torbrowser-launcher-mac/)
+[![GitHub Pages](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/pages/pages-build-deployment/badge.svg)](https://tatsh.github.io/torbrowser-launcher-mac/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Stargazers](https://img.shields.io/github/stars/Tatsh/torbrowser-launcher-mac?logo=github&style=flat)](https://github.com/Tatsh/torbrowser-launcher-mac/stargazers)
 
