@@ -9,24 +9,9 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-### Added
-
-- Item
-
-### Fixed
-
-- Item
-
-### Changed
-
-- Item
-
-### Removed
-
-- Item
-
 ## [0.0.1] - 2025-00-00
 
 First version.
 
-[unreleased]: https://github.com/Tatsh/torbrowser-launcher-mac/compare/v0.0.0...HEAD
+[unreleased]: https://github.com/Tatsh/torbrowser-launcher-mac/compare/v0.0.1...HEAD
+[0.0.1]: https://github.com/Tatsh/torbrowser-launcher-mac/releases/tag/v0.0.1
