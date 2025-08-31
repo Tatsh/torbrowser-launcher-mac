@@ -20,8 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language:
-          - 'cpp'
+        language: ['swift']
 name: 'CodeQL'
 'on':
   pull_request:

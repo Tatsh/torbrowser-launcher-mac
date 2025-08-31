@@ -19,9 +19,12 @@
       "*.1",
       "*.har",
       "*.lock",
+      "*.pbxproj",
+      "*.xc*",
+      "*.xib",
       ".git/**",
-      ".yarn/**/*.cjs",
       ".vscode/extensions.json",
+      ".yarn/**/*.cjs",
       "dist/**",
       "man/**"
     ],
@@ -63,7 +66,7 @@
     }
   },
   "name": "torbrowser-launcher-mac",
-  "packageManager": "yarn@4.9.2",
+  "packageManager": "yarn@4.9.4",
   "prettier": {
     "endOfLine": "lf",
     "iniSpaceAroundEquals": true,
@@ -73,12 +76,6 @@
         "files": ["package.json"],
         "options": {
           "parser": "json"
-        }
-      },
-      {
-        "files": [".clang-format"],
-        "options": {
-          "parser": "yaml"
         }
       }
     ],
@@ -97,11 +94,12 @@
     "url": "git@github.com:Tatsh/torbrowser-launcher-mac.git"
   },
   "scripts": {
-    "build": "cmake --preset=default -DBUILD_DOCS=ON && cmake --build build",
-    "check-formatting": "cmake-format --check CMakeLists.txt && prettier -c . && markdownlint-cli2 '**/*.md' '#node_modules'",
-    "check-spelling": "cspell --no-progress .",
-    "format": "cmake-format -i CMakeLists.txt  && yarn prettier -w .",
-    "qa": "yarn check-spelling && yarn check-formatting"
+    "build": "cmake --preset=default && cmake --build build",
+    "check-formatting": "yarn prettier -c . && yarn markdownlint-cli2 '**/*.md' '#node_modules'",
+    "check-spelling": "yarn cspell --no-progress './**/*'  './**/.*'",
+    "format": "prettier -w . && yarn markdownlint-cli2 --fix '**/*.md' '#node_modules'",
+    "qa": "yarn check-spelling && yarn check-formatting",
+    "regen": "poetry run wiswa"
   },
-  "version": "0.0.0"
+  "version": "0.0.1"
 }

@@ -1,13 +1,4 @@
 {
-  "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
-  "[c]": {
-    "editor.defaultFormatter": "ms-vscode.cpptools",
-    "editor.tabSize": 4
-  },
-  "[cpp]": {
-    "editor.defaultFormatter": "ms-vscode.cpptools",
-    "editor.tabSize": 4
-  },
   "[jsonnet]": {
     "editor.defaultFormatter": "Grafana.vscode-jsonnet"
   },
