@@ -1,8 +1,6 @@
 import Cocoa
 
-private struct Downloads: Codable {
-    var binary: String?
-}
+private struct Downloads: Codable { var binary: String? }
 
 // MARK: - Constants
 
@@ -67,91 +65,68 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
 
         // MARK: Get the updates index
 
-        session.dataTask(with: URL(string: kUpdateIndexURI)!) { data, resp, error in
-            if error != nil {
-                self.setStatus(
-                    String.localizedStringWithFormat(
-                        NSLocalizedString(
-                            "download-window-status-error-fetching-update-index",
-                            value: "Failed to determine update path: (error: %s). Cannot continue.",
-                            comment:
-                                "Displayed when the update URL cannot be determined (likely because the site is down)."
-                        ),
-                        error?.localizedDescription
-                            ?? NSLocalizedString(
-                                "download-window-status-error-no-description",
-                                value: "(no description)",
-                                comment: "Generic \"no description\" text.")))
-                delayedQuit(10)
-                return
-            }
-
-            // MARK: Check update index response status code
-
-            let statusCode = (resp as! HTTPURLResponse).statusCode
-            if statusCode < 200 || statusCode > 299 {
-                self.setStatus(
-                    String.localizedStringWithFormat(
-                        NSLocalizedString(
-                            "download-window-status-failed-update-path",
-                            value:
-                                "Failed to determine update path (status code: %d). Cannot continue.",
-                            comment: "Displays when the HTTP status %d is not equal to 200."),
-                        statusCode))
-                delayedQuit(10)
-                return
-            }
-
-            // MARK: Find the update path in the HTML
-
-            let updatePath = findMatchInLines(
-                lines: String(data: data!, encoding: .utf8)!, regex: self.updateRE)
-            if updatePath == nil {
-                self.setStatus(
-                    NSLocalizedString(
-                        "download-window-status-failed-update-path-2",
-                        value: "Failed to determine update path. Cannot continue.",
-                        comment:
-                            "Displays when the update path (part of a URL) cannot be determined."))
-                delayedQuit(10)
-                return
-            }
-
-            // MARK: Create app support directory structure
-
-            self.setStatus(
-                String.localizedStringWithFormat(
-                    NSLocalizedString(
-                        "download-window-status-creating-app-support-dir", value: "Creating %@",
-                        comment:
-                            "Displays when a the ~/Library/Application Support/NAME directory is being created."
-                    ), kTorBrowserLauncherPath))
-            try? FileManager.default.createDirectory(
-                at: URL(fileURLWithPath: kTorBrowserLauncherPath),
-                withIntermediateDirectories: false, attributes: nil)
-
-            // MARK: Download downloads.json
-
-            self.setStatus(
-                String.localizedStringWithFormat(
-                    NSLocalizedString(
-                        "download-window-status-fetching-filename", value: "Fetching %@",
-                        comment: "Displays when a file %@ is being downloaded."), "downloads.json"))
-            let url = URL(
-                string: kUpdateURIPrefix.appending(updatePath!).appending(kUpdateURISuffix))!
-            print("Fetching \(url)")
-            session.dataTask(with: url) { data, _, error in
-                if error != nil {
-                    self.setStatus("Error occurred while fetching downloads.json")
-                    delayedQuit(0.2)
+        Task {
+            do {
+                // MARK: Get the updates index
+                let (data, resp) = try await session.data(from: URL(string: kUpdateIndexURI)!)
+                guard let httpResp = resp as? HTTPURLResponse else {
+                    self.setStatus("Invalid response")
+                    delayedQuit(10)
                     return
                 }
-                let downloads = try! JSONDecoder().decode(Downloads.self, from: data!)
+                let statusCode = httpResp.statusCode
+                if statusCode < 200 || statusCode > 299 {
+                    self.setStatus(
+                        String.localizedStringWithFormat(
+                            NSLocalizedString(
+                                "download-window-status-failed-update-path",
+                                value:
+                                    "Failed to determine update path (status code: %d). Cannot continue.",
+                                comment: "Displays when the HTTP status %d is not equal to 200."),
+                            statusCode))
+                    delayedQuit(10)
+                    return
+                }
 
-                // MARK: Find matching locale version
+                // MARK: Find the update path in the HTML
+                guard let html = String(data: data, encoding: .utf8),
+                    let updatePath = findMatchInLines(lines: html, regex: self.updateRE)
+                else {
+                    self.setStatus(
+                        NSLocalizedString(
+                            "download-window-status-failed-update-path-2",
+                            value: "Failed to determine update path. Cannot continue.",
+                            comment:
+                                "Displays when the update path (part of a URL) cannot be determined."
+                        ))
+                    delayedQuit(10)
+                    return
+                }
 
-                let binary = downloads.binary
-                if binary == nil {
+                // MARK: Create app support directory structure
+                self.setStatus(
+                    String.localizedStringWithFormat(
+                        NSLocalizedString(
+                            "download-window-status-creating-app-support-dir", value: "Creating %@",
+                            comment:
+                                "Displays when a the ~/Library/Application Support/NAME directory is being created."
+                        ), kTorBrowserLauncherPath))
+                try? FileManager.default.createDirectory(
+                    at: URL(fileURLWithPath: kTorBrowserLauncherPath),
+                    withIntermediateDirectories: false, attributes: nil)
+
+                // MARK: Download downloads.json
+                self.setStatus(
+                    String.localizedStringWithFormat(
+                        NSLocalizedString(
+                            "download-window-status-fetching-filename", value: "Fetching %@",
+                            comment: "Displays when a file %@ is being downloaded."),
+                        "downloads.json"))
+                let url = URL(
+                    string: kUpdateURIPrefix.appending(updatePath).appending(kUpdateURISuffix))!
+                let (downloadsData, _) = try await session.data(from: url)
+                let downloads = try JSONDecoder().decode(Downloads.self, from: downloadsData)
+                guard let binary = downloads.binary else {
                     self.setStatus(
                         NSLocalizedString(
                             "download-window-no-url-found", value: "Failed to get a URL",
@@ -162,8 +137,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                 }
 
                 // MARK: Launch if already installed
-
-                let basename = (binary! as NSString).lastPathComponent
+                let basename = (binary as NSString).lastPathComponent
                 if self.lastBasename == basename,
                     FileManager.default.fileExists(atPath: kTorBrowserAppPath)
                 {
@@ -175,29 +149,36 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                     delayedQuit(0.2)
                 } else {
                     // MARK: Download the DMG
-
-                    // TODO: Implement signature checking with GPG
-                    // let sig = localizedValue!["sig"]!
                     self.setStatus(
                         String.localizedStringWithFormat(
                             NSLocalizedString(
                                 "download-window-status-fetching-filename", value: "Fetching %@",
                                 comment: "Displays when the DMG is being downloaded."), basename))
-                    print("Downloading \(binary!)")
-                    print("Proxy: \(String(describing: proxy))")
-                    (proxy != nil
-                        ? backgroundURLSession(
+                    let downloadSession: URLSession
+                    if proxy != nil {
+                        downloadSession = backgroundURLSession(
                             withProxy: proxy!, identifier: kBackgroundIdentifier, delegate: self,
                             delegateQueue: OperationQueue())
-                        : URLSession(
+                    } else {
+                        downloadSession = URLSession(
                             configuration: URLSessionConfiguration.background(
                                 withIdentifier: kBackgroundIdentifier), delegate: self,
-                            delegateQueue: OperationQueue())).downloadTask(
-                                with: URL(string: binary!)!
-                        ).resume()
+                            delegateQueue: OperationQueue())
+                    }
+                    downloadSession.downloadTask(with: URL(string: binary)!).resume()
                 }
-            }.resume()
-        }.resume()
+            } catch {
+                self.setStatus(
+                    String.localizedStringWithFormat(
+                        NSLocalizedString(
+                            "download-window-status-error-fetching-update-index",
+                            value: "Failed to determine update path: (error: %s). Cannot continue.",
+                            comment:
+                                "Displayed when the update URL cannot be determined (likely because the site is down)."
+                        ), error.localizedDescription))
+                delayedQuit(10)
+            }
+        }
     }
 
     // MARK: - URL session delegate
@@ -205,9 +186,8 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
     func urlSession(
         _: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL
     ) {
-        print("@@ Finished downloading to \(location.path)")
-        let basename = ((downloadTask.currentRequest?.url!.absoluteString)! as NSString)
-            .lastPathComponent
+        let absoluteStr = ((downloadTask.currentRequest?.url!.absoluteString)! as NSString)
+        let basename = absoluteStr.lastPathComponent
         let target = location.deletingLastPathComponent().appendingPathComponent(basename)
         let tempDir = (NSTemporaryDirectory() as NSString).appendingPathComponent(
             ProcessInfo().globallyUniqueString)
@@ -284,7 +264,6 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
         _: URLSession, downloadTask _: URLSessionDownloadTask, didWriteData _: Int64,
         totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64
     ) {
-        print("Progress: \(totalBytesWritten) / \(totalBytesExpectedToWrite)")
         // MARK: Update the progress bar
 
         DispatchQueue.main.async {
