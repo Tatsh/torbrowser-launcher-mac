@@ -1,13 +1,15 @@
 import Cocoa
 
 func launchTorBrowser(_ urls: [String]?) {
-    var config = [NSWorkspace.LaunchConfigurationKey: Any]()
-    if urls != nil, !urls!.isEmpty { config[NSWorkspace.LaunchConfigurationKey.arguments] = urls }
-    do {
-        try NSWorkspace.shared.launchApplication(
-            at: URL(fileURLWithPath: kTorBrowserAppPath), options: .withoutAddingToRecents,
-            configuration: config)
-    } catch { print("Failed to launch Tor Browser: \(error)") }
+    Task {
+        let config = NSWorkspace.OpenConfiguration()
+        config.arguments = urls ?? []
+        config.addsToRecentItems = false
+        do {
+            try await NSWorkspace.shared.openApplication(
+                at: URL(fileURLWithPath: kTorBrowserAppPath), configuration: config)
+        } catch { print("Failed to launch Tor Browser: \(error)") }
+    }
 }
 
 func hdiAttach(path: String, mountPoint: String) {
@@ -48,20 +50,6 @@ func urlSessionWithProxy(_ proxy: String) -> URLSession {
         kCFNetworkProxiesHTTPProxy as AnyHashable: spl.first!,
     ]
     return URLSession(configuration: sessionConfiguration)
-}
-
-func urlSessionWithProxy(
-    _ proxy: String, delegate: URLSessionDelegate?, delegateQueue: OperationQueue?
-) -> URLSession {
-    let spl = proxy.split(separator: ":")
-    let sessionConfiguration = URLSessionConfiguration.default
-    sessionConfiguration.connectionProxyDictionary = [
-        kCFNetworkProxiesHTTPEnable as AnyHashable: true,
-        kCFNetworkProxiesHTTPPort as AnyHashable: Int(spl.last!, radix: 10)!,
-        kCFNetworkProxiesHTTPProxy as AnyHashable: spl.first!,
-    ]
-    return URLSession(
-        configuration: sessionConfiguration, delegate: delegate, delegateQueue: delegateQueue)
 }
 
 func backgroundURLSession(

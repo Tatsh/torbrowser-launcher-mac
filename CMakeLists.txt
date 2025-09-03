@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.31)
 project(TorBrowserLauncher VERSION 0.0.2 LANGUAGES C Swift)
 set(BUNDLE_IDENTIFIER sh.tat.tor-browser-launcher)
 set(PRODUCT_NAME "Tor Browser Launcher")
-set(MIN_SYSTEM_VERSION "10.15")
+set(MIN_SYSTEM_VERSION "11.0")
 
 include(GNUInstallDirs)
 include(xib_helpers.cmake)
