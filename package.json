@@ -77,6 +77,12 @@
         "options": {
           "parser": "json"
         }
+      },
+      {
+        "files": [".swift-format"],
+        "options": {
+          "parser": "json"
+        }
       }
     ],
     "plugins": [

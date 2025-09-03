@@ -1,15 +1,18 @@
 cmake_minimum_required(VERSION 3.31)
-project(torbrowser-launcher-mac VERSION 0.0.2)
-
-include(FeatureSummary)
+project(TorBrowserLauncher VERSION 0.0.2 LANGUAGES C Swift)
+set(BUNDLE_IDENTIFIER sh.tat.tor-browser-launcher)
+set(PRODUCT_NAME "Tor Browser Launcher")
+set(MIN_SYSTEM_VERSION "10.15")
 
 include(GNUInstallDirs)
-
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+include(xib_helpers.cmake)
 
 option(BUILD_DOCS "Build documentation." OFF)
 option(BUILD_TESTS "Build tests." OFF)
+set(BUNDLE_INSTALL_PREFIX
+    .
+    CACHE FILEPATH "Install the bundle to a custom directory. This can be an absolute path or \
+relative to CMAKE_INSTALL_PREFIX.")
 
 if(BUILD_DOCS)
   find_package(Doxygen REQUIRED)
@@ -24,9 +27,12 @@ if(BUILD_DOCS)
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/doc/${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION})
 endif()
 
-feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+set(CMAKE_OSX_DEPLOYMENT_TARGET ${MIN_SYSTEM_VERSION})
+add_subdirectory(${CMAKE_PROJECT_NAME})
+if (BUILD_TESTS)
+  enable_testing()
+  add_subdirectory(${CMAKE_PROJECT_NAME}Tests)
+endif()
 
-add_subdirectory(src)
-
-install(TARGETS ${CMAKE_PROJECT_NAME})
+install(TARGETS ${CMAKE_PROJECT_NAME} BUNDLE DESTINATION ${BUNDLE_INSTALL_PREFIX})
 include(CPack)

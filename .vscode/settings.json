@@ -5,7 +5,12 @@
   "[shellscript]": {
     "editor.tabSize": 4
   },
+  "[swift]": {
+    "editor.defaultFormatter": "vknabel.vscode-apple-swift-format",
+    "editor.tabSize": 4
+  },
   "cSpell.enabled": true,
+  "cmake.configureArgs": ["-DCMAKE_BUILD_TYPE=Debug"],
   "editor.codeActionsOnSave": {
     "source.fixAll": "always"
   },

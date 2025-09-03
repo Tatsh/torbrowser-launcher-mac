@@ -18,7 +18,7 @@
       id="-2"
       userLabel="File's Owner"
       customClass="LauncherWindowController"
-      customModule="torbrowser_launcher"
+      customModule="TorBrowserLauncher"
       customModuleProvider="target"
     >
             <connections>
@@ -38,7 +38,7 @@
       tabbingMode="disallowed"
       id="4Bm-Sy-v3c"
       customClass="LauncherWindowController"
-      customModule="torbrowser_launcher"
+      customModule="TorBrowserLauncher"
       customModuleProvider="target"
     >
             <windowStyleMask key="styleMask" titled="YES" closable="YES" />

@@ -24,7 +24,7 @@
         <customObject
       id="Voe-Tx-rLC"
       customClass="AppDelegate"
-      customModule="Tor_Browser_Launcher"
+      customModule="TorBrowserLauncher"
       customModuleProvider="target"
     >
             <connections>

@@ -1,6 +1,6 @@
 jobs:
   qa:
-    runs-on: 'ubuntu-latest'
+    runs-on: 'macos-latest'
     steps:
       - uses: 'actions/checkout@v5'
       - name: 'Install dependencies (Yarn)'
