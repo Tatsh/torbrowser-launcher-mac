@@ -67,7 +67,6 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
 
         Task {
             do {
-                // MARK: Get the updates index
                 let (data, resp) = try await session.data(from: URL(string: kUpdateIndexURI)!)
                 guard let httpResp = resp as? HTTPURLResponse else {
                     self.setStatus("Invalid response")

@@ -41,4 +41,3 @@
 
 /* Shows \"installed\" if Tor Browser.app is on the system from a previous run. */
 "settings-status-label-installed" = "已安装";
-
