@@ -1,7 +1,7 @@
 jobs:
   test:
-    env:
-      GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+    permissions:
+      contents: write
     runs-on: 'macos-latest'
     steps:
       - uses: 'actions/checkout@v5'
@@ -16,10 +16,20 @@ jobs:
       - name: Build
         run: cmake --build build --config ${{matrix.build-type}} --verbose
       - name: Run tests
-        run: ctest --output-on-failure -C ${{matrix.build-type}}
-      # - if: ${{ matrix.build-type == 'Debug' }}
-      #   name: Coveralls
-      #   uses: coverallsapp/github-action@v2
+        run: ctest --output-on-failure -C ${{matrix.build-type}} --test-dir build
+      - name: Generate coverage
+        if: ${{ matrix.build-type == 'Debug' }}
+        run: |
+          xcrun llvm-profdata merge -sparse \
+            $(find build/TorBrowserLauncherTests -name "*.profraw") \
+            -o default.profdata
+          xcrun llvm-cov export \
+            $(find build/TorBrowserLauncherTests -name "TorBrowserLauncherTests") \
+            -instr-profile=default.profdata \
+            -format=lcov > coverage.lcov
+      - if: ${{ matrix.build-type == 'Debug' }}
+        name: Coveralls
+        uses: coverallsapp/github-action@v2
     strategy:
       matrix:
         build-type: [Debug, Release]

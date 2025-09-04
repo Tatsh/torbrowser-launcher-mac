@@ -35,6 +35,7 @@ hexliteralcase
 htmlcov
 ibtool
 icns
+instr
 ivars
 jsonnet
 jsonschema
@@ -50,6 +51,8 @@ noverify
 objc
 pbxproj
 pipx
+profdata
+profraw
 pycache
 pyyaml
 qstringbuilder
@@ -67,6 +70,7 @@ teardown
 torbrowser
 typeattributes
 udvare
+unswizzle
 varattributes
 vcpkg
 vknabel
@@ -76,6 +80,7 @@ wrapcollections
 wrapparameters
 wyri
 xattr
+xcrun
 xctest
 xcui
 xib
