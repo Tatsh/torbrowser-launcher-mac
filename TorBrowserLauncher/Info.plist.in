@@ -4,7 +4,9 @@
 <plist version="1.0">
   <dict>
     <key>CFBundleExecutable</key>
-    <string>@CMAKE_PROJECT_NAME@</string>
+    <string>Tor Browser Launcher</string>
+    <key>CFBundleIconFile</key>
+    <string>torbrowser.icns</string>
     <key>CFBundleIdentifier</key>
     <string>@BUNDLE_IDENTIFIER@</string>
     <key>CFBundleInfoDictionaryVersion</key>

@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import TorBrowserLauncher
+@testable import foo
 
 class TorBrowserLauncherTests: XCTestCase {
 

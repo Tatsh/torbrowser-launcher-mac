@@ -33,7 +33,8 @@ endfunction()
 add_executable(${CMAKE_PROJECT_NAME} ${TBL_SRCS} ${TBL_XIBS})
 set_target_properties(
   ${CMAKE_PROJECT_NAME}
-  PROPERTIES MACOSX_BUNDLE TRUE
+  PROPERTIES OUTPUT_NAME "Tor Browser Launcher"
+             MACOSX_BUNDLE TRUE
              MACOSX_BUNDLE_GUI_IDENTIFIER "${BUNDLE_IDENTIFIER}"
              MACOSX_BUNDLE_ICON_FILE "torbrowser.icns"
              MACOSX_BUNDLE_BUNDLE_NAME "Tor Browser Launcher"
@@ -41,8 +42,9 @@ set_target_properties(
              MACOSX_BUNDLE_SHORT_VERSION_STRING "${CMAKE_PROJECT_VERSION}"
              MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in"
              XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "${BUNDLE_IDENTIFIER}"
-             XCODE_SWIFT_VERSION "5.0"
+             XCODE_ATTRIBUTE_SWIFT_VERSION "5.0"
              RESOURCE "${TBL_XIBS}")
+set_source_files_properties(torbrowser.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 # Nibs
 if(NOT ("${CMAKE_GENERATOR}" STREQUAL "Xcode"))
   find_program(IBTOOL ibtool REQUIRED)
