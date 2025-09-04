@@ -10,19 +10,16 @@ set(TBL_SRCS
     Base.lproj/MainMenu.xib)
 set(TBL_XIBS)
 set(TBL_STRINGS_EN en.lproj/LauncherWindow.strings en.lproj/MainMenu.strings)
-set(TBL_STRINGS_ZH_HANS zh-Hans.lproj/LauncherWindow.strings zh-Hans.lproj/MainMenu.strings
-                        zh-Hans.lproj/InfoPlist.strings zh-Hant.lproj/LauncherWindow.strings)
-set(FINISHED_TBL_STRINGS_EN)
-set(FINISHED_TBL_STRINGS_ZH_HANS)
+set(TBL_STRINGS_ZH_HANS zh-Hans.lproj/LauncherWindow.strings zh-Hans.lproj/MainMenu.strings zh-Hans.lproj/InfoPlist.strings zh-Hans.lproj/Localizable.strings)
 
 function(add_language output prefix items)
   file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/${prefix}")
+  set(string_files)
   foreach(_src ${items})
-    set(string_files)
     get_filename_component(_name "${_src}" NAME_WE)
     add_custom_command(
       OUTPUT "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings"
-      COMMAND printf \\xFE\\xFF > "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings"
+      COMMAND printf \\xFF\\xFE > "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings"
       COMMAND /usr/bin/iconv -f UTF-8 -t UTF-16LE "${CMAKE_CURRENT_SOURCE_DIR}/${_src}" >> "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings"
       DEPENDS "${_src}"
       VERBATIM)
@@ -56,12 +53,12 @@ endforeach()
 set_source_files_properties(${TBL_XIBS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources/Base.lproj)
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${TBL_SRCS} ${TBL_XIBS})
 # Localisation
-add_language(FINISHED_TBL_STRINGS_EN en.lproj "${TBL_STRINGS_EN}")
+add_language(FINISHED_TBL_STRINGS_EN en.lproj ${TBL_STRINGS_EN})
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${TBL_SRCS} ${FINISHED_TBL_STRINGS_EN})
-set_source_files_properties(${FINISHED_TBL_STRINGS_EN} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources/en.lproj")
-#add_language(FINISHED_TBL_STRINGS_ZH_HANS zh-Hans.lproj "${TBL_STRINGS_ZH_HANS}")
-#target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${FINISHED_TBL_STRINGS_ZH_HANS})
-#set_source_files_properties(${FINISHED_TBL_STRINGS_ZH_HANS} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources/zh-Hans.lproj")
+set_source_files_properties(${FINISHED_TBL_STRINGS_EN} PROPERTIES MACOSX_PACKAGE_LOCATION Resources/en.lproj)
+add_language(FINISHED_TBL_STRINGS_ZH_HANS zh-Hans.lproj ${TBL_STRINGS_ZH_HANS})
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${FINISHED_TBL_STRINGS_ZH_HANS})
+set_source_files_properties(${FINISHED_TBL_STRINGS_ZH_HANS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources/zh-Hans.lproj)
 # Assets
 file(GLOB TBL_ICONS CONFIGURE_DEPENDS
      "${CMAKE_CURRENT_SOURCE_DIR}/Assets.xcassets/AppIcon.appiconset/*.png")
