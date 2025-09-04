@@ -40,7 +40,8 @@ set_target_properties(
              MACOSX_BUNDLE_BUNDLE_NAME "Tor Browser Launcher"
              MACOSX_BUNDLE_BUNDLE_VERSION "${CMAKE_PROJECT_VERSION}"
              MACOSX_BUNDLE_SHORT_VERSION_STRING "${CMAKE_PROJECT_VERSION}"
-             MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in")
+             MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in"
+             XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME "AppIcon")
 # Nibs
 if("${CMAKE_GENERATOR}" STREQUAL "Xcode")
   foreach(_src ${TBL_SRCS})
@@ -67,11 +68,11 @@ else()
 endif()
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${TBL_SRCS} ${TBL_XIBS})
 # Localisation
-add_language(FINISHED_TBL_STRINGS_EN en.lproj ${TBL_STRINGS_EN})
+add_language(FINISHED_TBL_STRINGS_EN en.lproj "${TBL_STRINGS_EN}")
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${TBL_SRCS} ${FINISHED_TBL_STRINGS_EN})
 set_source_files_properties(${FINISHED_TBL_STRINGS_EN} PROPERTIES MACOSX_PACKAGE_LOCATION
                                                                   Resources/en.lproj)
-add_language(FINISHED_TBL_STRINGS_ZH_HANS zh-Hans.lproj ${TBL_STRINGS_ZH_HANS})
+add_language(FINISHED_TBL_STRINGS_ZH_HANS zh-Hans.lproj "${TBL_STRINGS_ZH_HANS}")
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${FINISHED_TBL_STRINGS_ZH_HANS})
 set_source_files_properties(${FINISHED_TBL_STRINGS_ZH_HANS} PROPERTIES MACOSX_PACKAGE_LOCATION
                                                                        Resources/zh-Hans.lproj)

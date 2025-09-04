@@ -1,7 +1,9 @@
 abstractcat
+appicon
 appiconset
 appl
 argn
+assetcatalog
 atributes
 autobuild
 autosort
