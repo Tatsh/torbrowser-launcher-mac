@@ -14,10 +14,13 @@ codeowners
 color
 colorset
 coveragerc
+coverallsapp
 cpack
+ctest
 cubicvoid
 datarootdir
 dcmake
+denable
 docstrings
 doxyfile
 endforeach
@@ -73,6 +76,7 @@ wrapcollections
 wrapparameters
 wyri
 xattr
+xctest
 xcui
 xib
 xibs

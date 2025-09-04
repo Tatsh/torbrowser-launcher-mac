@@ -1,5 +1,6 @@
 find_package(XCTest REQUIRED)
-add_library(foo STATIC ../${CMAKE_PROJECT_NAME}/Utils.swift ../${CMAKE_PROJECT_NAME}/LauncherWindow.swift)
+add_library(foo STATIC ../${CMAKE_PROJECT_NAME}/Utils.swift
+                       ../${CMAKE_PROJECT_NAME}/LauncherWindow.swift)
 set_target_properties(foo PROPERTIES XCODE_ATTRIBUTE_ENABLE_TESTABILITY TRUE)
 xctest_add_bundle(${CMAKE_PROJECT_NAME}Tests foo ${CMAKE_PROJECT_NAME}Tests.swift)
 xctest_add_test(app.${CMAKE_PROJECT_NAME}Tests ${CMAKE_PROJECT_NAME}Tests)

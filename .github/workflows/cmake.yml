@@ -11,13 +11,15 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - name: Build
+      - name: Configure
         run: |
           cmake -G Xcode -B build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} \
             --install-prefix ${{github.workspace}}/build/prefix \
             -DCMAKE_APPLE_SILICON_PROCESSOR=arm64
-          cmake --build build --config ${{matrix.build-type}} --verbose
-          cmake --install ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
+      - name: Build
+        run: cmake --build build --config ${{matrix.build-type}} --verbose
+      - name: Install
+        run: cmake --install ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
       - name: Package
         run: >-
           cpack -C ${{matrix.build-type}}
