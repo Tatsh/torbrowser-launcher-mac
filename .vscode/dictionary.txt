@@ -3,7 +3,6 @@ appicon
 appiconset
 appl
 argn
-assetcatalog
 atributes
 autobuild
 autosort
@@ -32,6 +31,7 @@ haximus
 hexliteralcase
 htmlcov
 ibtool
+icns
 ivars
 jsonnet
 jsonschema
@@ -73,7 +73,6 @@ wrapcollections
 wrapparameters
 wyri
 xattr
-xcassets
 xcui
 xib
 xibs

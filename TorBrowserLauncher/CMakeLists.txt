@@ -1,51 +1,45 @@
 set(TBL_NIBS)
 set(TBL_XIBS Base.lproj/LauncherWindow.xib Base.lproj/MainMenu.xib)
-set(TBL_SRCS
-    AppDelegate.swift
-    Assets.xcassets/AccentColor.colorset/Contents.json
-    Assets.xcassets/AppIcon.appiconset/Contents.json
-    Assets.xcassets/Contents.json
-    Info.plist.in
-    LauncherWindow.swift
-    Utils.swift)
+set(TBL_SRCS AppDelegate.swift Info.plist.in LauncherWindow.swift Utils.swift torbrowser.icns)
 set(TBL_STRINGS_EN en.lproj/LauncherWindow.strings en.lproj/MainMenu.strings)
 set(TBL_STRINGS_ZH_HANS zh-Hans.lproj/InfoPlist.strings zh-Hans.lproj/LauncherWindow.strings
                         zh-Hans.lproj/Localizable.strings zh-Hans.lproj/MainMenu.strings)
 
 function(add_language output prefix items)
-if(NOT ("${CMAKE_GENERATOR}" STREQUAL "Xcode"))
-  file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/${prefix}")
-  set(string_files)
-  foreach(_src ${items})
-    get_filename_component(_name "${_src}" NAME_WE)
-    add_custom_command(
-      OUTPUT "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings"
-      COMMAND printf \\xFF\\xFE > "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings"
-      COMMAND /usr/bin/iconv -f UTF-8 -t UTF-16LE "${CMAKE_CURRENT_SOURCE_DIR}/${_src}" >>
-              "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings"
-      DEPENDS "${_src}"
-      VERBATIM)
-    list(APPEND string_files "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings")
-  endforeach()
-  set("${output}"
-      "${string_files}"
-      PARENT_SCOPE)
-    else()
-        set("${output}" "${items}" PARENT_SCOPE)
-    endif()
+  if(NOT ("${CMAKE_GENERATOR}" STREQUAL "Xcode"))
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/${prefix}")
+    set(string_files)
+    foreach(_src ${items})
+      get_filename_component(_name "${_src}" NAME_WE)
+      add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings"
+        COMMAND printf \\xFF\\xFE > "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings"
+        COMMAND /usr/bin/iconv -f UTF-8 -t UTF-16LE "${CMAKE_CURRENT_SOURCE_DIR}/${_src}" >>
+                "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings"
+        DEPENDS "${_src}"
+        VERBATIM)
+      list(APPEND string_files "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings")
+    endforeach()
+    set("${output}"
+        "${string_files}"
+        PARENT_SCOPE)
+  else()
+    set("${output}"
+        "${items}"
+        PARENT_SCOPE)
+  endif()
 endfunction()
 
 add_executable(${CMAKE_PROJECT_NAME} ${TBL_SRCS} ${TBL_XIBS})
 set_target_properties(
   ${CMAKE_PROJECT_NAME}
   PROPERTIES MACOSX_BUNDLE TRUE
-             MACOSX_BUNDLE_GUI_IDENTIFIER ${BUNDLE_IDENTIFIER}
+             MACOSX_BUNDLE_GUI_IDENTIFIER "${BUNDLE_IDENTIFIER}"
+             MACOSX_BUNDLE_ICON_FILE "torbrowser.icns"
              MACOSX_BUNDLE_BUNDLE_NAME "Tor Browser Launcher"
              MACOSX_BUNDLE_BUNDLE_VERSION "${CMAKE_PROJECT_VERSION}"
              MACOSX_BUNDLE_SHORT_VERSION_STRING "${CMAKE_PROJECT_VERSION}"
              MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in"
-             XCODE_ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME "AccentColor"
-             XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME "AppIcon"
              XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "${BUNDLE_IDENTIFIER}"
              XCODE_SWIFT_VERSION "5.0"
              RESOURCE "${TBL_XIBS}")
@@ -68,25 +62,11 @@ endif()
 # Localisation
 add_language(FINISHED_TBL_STRINGS_EN en.lproj "${TBL_STRINGS_EN}")
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${TBL_SRCS} ${FINISHED_TBL_STRINGS_EN})
-set_source_files_properties(${FINISHED_TBL_STRINGS_EN} PROPERTIES MACOSX_PACKAGE_LOCATION
-                                                                  Resources)
+set_source_files_properties(${FINISHED_TBL_STRINGS_EN} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 add_language(FINISHED_TBL_STRINGS_ZH_HANS zh-Hans.lproj "${TBL_STRINGS_ZH_HANS}")
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${FINISHED_TBL_STRINGS_ZH_HANS})
 set_source_files_properties(${FINISHED_TBL_STRINGS_ZH_HANS} PROPERTIES MACOSX_PACKAGE_LOCATION
-                                                                       Resources)
-# Assets
-file(GLOB TBL_ICONS CONFIGURE_DEPENDS
-     "${CMAKE_CURRENT_SOURCE_DIR}/Assets.xcassets/AppIcon.appiconset/*.png")
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${TBL_SRCS} ${TBL_ICONS})
-set_source_files_properties(Assets.xcassets PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-set_source_files_properties(
-  Assets.xcassets/AccentColor.colorset/Contents.json
-  PROPERTIES MACOSX_PACKAGE_LOCATION Resources/Assets.xcassets/AccentColor.colorset)
-set_source_files_properties(
-  Assets.xcassets/AppIcon.appiconset/Contents.json ${TBL_ICONS}
-  PROPERTIES MACOSX_PACKAGE_LOCATION Resources/Assets.xcassets/AppIcon.appiconset)
-set_source_files_properties(Assets.xcassets/Contents.json PROPERTIES MACOSX_PACKAGE_LOCATION
-                                                                     Resources/Assets.xcassets)
+                                                                       Resources/zh-Hans.lproj)
 
 install(TARGETS ${CMAKE_PROJECT_NAME} BUNDLE DESTINATION ${BUNDLE_INSTALL_PREFIX})
 set(CPACK_GENERATOR DragNDrop ZIP)

@@ -25,16 +25,6 @@
     <string>MainMenu</string>
     <key>NSPrincipalClass</key>
     <string>NSApplication</string>
-    <key>CFBundleIcons</key>
-    <dict>
-      <key>CFBundlePrimaryIcon</key>
-      <dict>
-        <key>CFBundleIconFiles</key>
-        <array>
-          <string>Assets</string>
-        </array>
-      </dict>
-    </dict>
     <key>TBLMirrors</key>
     <array>
       <string>https://dist.torproject.org/</string>
