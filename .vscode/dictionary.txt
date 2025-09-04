@@ -19,8 +19,8 @@ cpack
 ctest
 cubicvoid
 datarootdir
+dbuild
 dcmake
-denable
 docstrings
 doxyfile
 endforeach
