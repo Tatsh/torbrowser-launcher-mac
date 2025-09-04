@@ -101,9 +101,9 @@
   },
   "scripts": {
     "build": "cmake --preset=default && cmake --build build",
-    "check-formatting": "yarn prettier -c . && yarn markdownlint-cli2 '**/*.md' '#node_modules'",
+    "check-formatting": "cmake-format --check CMakeLists.txt TorBrowserLauncher/CMakeLists.txt TorBrowserLauncherTests/CMakeLists.txt && yarn prettier -c . && yarn markdownlint-cli2 '**/*.md' '#node_modules'",
     "check-spelling": "yarn cspell --no-progress './**/*'  './**/.*'",
-    "format": "prettier -w . && yarn markdownlint-cli2 --fix '**/*.md' '#node_modules'",
+    "format": "cmake-format -i CMakeLists.txt TorBrowserLauncher/CMakeLists.txt TorBrowserLauncherTests/CMakeLists.txt && prettier -w . && yarn markdownlint-cli2 --fix '**/*.md' '#node_modules'",
     "qa": "yarn check-spelling && yarn check-formatting",
     "regen": "poetry run wiswa"
   },

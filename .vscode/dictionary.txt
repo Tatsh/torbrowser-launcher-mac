@@ -12,8 +12,10 @@ codeowners
 color
 colorset
 coveragerc
+cpack
 cubicvoid
 datarootdir
+dcmake
 docstrings
 doxyfile
 endforeach
@@ -23,6 +25,7 @@ exponentcase
 fileprivate
 fsystem
 funcattributes
+haximus
 hexliteralcase
 htmlcov
 ibtool
@@ -48,6 +51,7 @@ recents
 regen
 resp
 schemafile
+softprops
 srcs
 strequal
 strongified
@@ -64,6 +68,7 @@ wiswa
 wraparguments
 wrapcollections
 wrapparameters
+wyri
 xattr
 xcassets
 xcui

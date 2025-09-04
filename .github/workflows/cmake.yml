@@ -1,0 +1,39 @@
+name: C/C++ CI
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - run: |
+          cmake -G Xcode -B build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} \
+            --install-prefix ${{github.workspace}}/build/prefix \
+            -DCMAKE_APPLE_SILICON_PROCESSOR=arm64
+          cmake --build build --config ${{matrix.build-type}} --verbose
+          cmake --install ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
+      - name: Package
+        run: >-
+          cpack -C ${{matrix.build-type}}
+          --config ${{github.workspace}}/build/CPackConfig.cmake --verbose
+      - name: Get Latest Tag
+        id: latest_tag
+        uses: WyriHaximus/github-action-get-previous-tag@v1
+        with:
+          fallback: v0.8.3
+      - name: Upload package
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{github.workspace}}/torbrowser-launcher-*.zip
+            ${{github.workspace}}/torbrowser-launcher-*.dmg
+          tag_name: ${{ steps.latest_tag.outputs.tag }}
+    strategy:
+      fail-fast: false
+      matrix:
+        build-type: [Debug, Release]
