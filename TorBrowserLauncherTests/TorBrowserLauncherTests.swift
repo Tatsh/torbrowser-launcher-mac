@@ -1,13 +1,6 @@
-//
-//  torbrowser_launcherTests.swift
-//  torbrowser-launcherTests
-//
-//  Created by Tatsh on 2020-09-19.
-//
-
 import XCTest
 
-// @testable import TorBrowserLauncher
+@testable import TorBrowserLauncher
 
 class TorBrowserLauncherTests: XCTestCase {
 

@@ -9,19 +9,45 @@ set(TBL_SRCS
     Base.lproj/LauncherWindow.xib
     Base.lproj/MainMenu.xib)
 set(TBL_XIBS)
+set(TBL_STRINGS_EN en.lproj/LauncherWindow.strings en.lproj/MainMenu.strings)
+set(TBL_STRINGS_ZH_HANS zh-Hans.lproj/LauncherWindow.strings zh-Hans.lproj/MainMenu.strings
+                        zh-Hans.lproj/InfoPlist.strings zh-Hant.lproj/LauncherWindow.strings)
+set(FINISHED_TBL_STRINGS_EN)
+set(FINISHED_TBL_STRINGS_ZH_HANS)
+
+function(add_language output prefix items)
+  foreach(_src ${items})
+    get_filename_component(_name "${_src}" NAME)
+    add_custom_command(
+      OUTPUT "${CMAKE_BINARY_DIR}/${prefix}/${_name}"
+      COMMAND iconv -t UTF16LE "${_src}" -o "${CMAKE_BINARY_DIR}/${prefix}/${_name}"
+      DEPENDS "${_src}"
+      VERBATIM)
+    list(APPEND "${output}" "${CMAKE_BINARY_DIR}/${_src}.strings")
+  endforeach()
+  set_source_files_properties(${output} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources/${prefix}")
+endfunction()
 
 add_executable(${CMAKE_PROJECT_NAME} ${TBL_SRCS})
+# Nibs
+find_program(IBTOOL ibtool REQUIRED)
 foreach(_src ${TBL_SRCS})
   if(_src MATCHES ".+\\.xib$")
     get_filename_component(_name "${_src}" NAME_WE)
     add_custom_command(
-      OUTPUT "${_src}.nib"
+      OUTPUT "${_name}.nib"
       COMMAND ${IBTOOL} --compile "${_name}.nib" "${_src}"
       DEPENDS "${_src}"
       VERBATIM)
     list(APPEND TBL_XIBS "${_name}.nib")
   endif()
 endforeach()
+set_source_files_properties(${TBL_XIBS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources/Base.lproj)
+# Localisation
+add_language(FINISHED_TBL_STRINGS_EN en.lproj "${TBL_STRINGS_EN}")
+add_language(FINISHED_TBL_STRINGS_ZH_HANS zh-Hans.lproj "${TBL_STRINGS_ZH_HANS}")
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${FINISHED_TBL_STRINGS_EN})
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${FINISHED_TBL_STRINGS_ZH_HANS})
 # Assets
 file(GLOB TBL_ICONS CONFIGURE_DEPENDS
      "${CMAKE_CURRENT_SOURCE_DIR}/Assets.xcassets/AppIcon.appiconset/*.png")

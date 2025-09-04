@@ -5,6 +5,7 @@
 *.libjsonnet
 *.lock
 *.log
+*.swift
 *~
 .*.swp
 .*_cache/

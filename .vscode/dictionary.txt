@@ -3,6 +3,7 @@ appiconset
 appl
 argn
 atributes
+autobuild
 autosort
 bsky
 buildsystems

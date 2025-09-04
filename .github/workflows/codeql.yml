@@ -13,6 +13,12 @@ jobs:
         uses: 'github/codeql-action/init@v3'
         with:
           languages: '${{ matrix.language }}'
+      - name: Build
+        run: |
+          cmake -G Xcode -B build -DCMAKE_BUILD_TYPE=Debug \
+            --install-prefix ${{github.workspace}}/build/prefix \
+            -DCMAKE_APPLE_SILICON_PROCESSOR=arm64
+          cmake --build build --config Debug --verbose
       - name: 'Perform CodeQL Analysis'
         uses: 'github/codeql-action/analyze@v3'
         with:

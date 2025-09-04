@@ -2,13 +2,15 @@ cmake_minimum_required(VERSION 3.31)
 project(
   TorBrowserLauncher
   VERSION 0.0.2
-  LANGUAGES C Swift)
-set(BUNDLE_IDENTIFIER sh.tat.tor-browser-launcher)
+  LANGUAGES C Swift
+  DESCRIPTION "Tor Browser Launcher for macOS, inspired by the Linux version."
+  HOMEPAGE_URL "https://github.com/Tatsh/torbrowser-launcher-mac")
+set(GITHUB_SLUG "torbrowser-launcher-mac")
+set(BUNDLE_IDENTIFIER "sh.tat.${GITHUB_SLUG}")
 set(PRODUCT_NAME "Tor Browser Launcher")
 set(MIN_SYSTEM_VERSION "11.0")
 
 include(GNUInstallDirs)
-include(xib_helpers.cmake)
 
 option(BUILD_DOCS "Build documentation." OFF)
 option(BUILD_TESTS "Build tests." OFF)

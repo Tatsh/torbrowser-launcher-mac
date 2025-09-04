@@ -24,6 +24,12 @@ You might want to check out the [security design doc](https://github.com/micahfl
 
 ![Tor Browser Launcher screenshot](/screenshot.png)
 
+To view the settings dialogue, use a terminal and pass `--settings`:
+
+```shell
+open '/Applications/Tor Browser Launcher.app' --args --settings
+```
+
 ## Uninstallation
 
 Delete and app bundle (or uninstall it with your package manager) and run the following commands:

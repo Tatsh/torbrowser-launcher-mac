@@ -37,7 +37,7 @@
     ],
     "useGitignore": true
   },
-  "description": "TorBrowser Launcher for macOS, inspired by the Linux version.",
+  "description": "Tor Browser Launcher for macOS, inspired by the Linux version.",
   "devDependencies": {
     "@prettier/plugin-xml": "^3.4.2",
     "cspell": "^9.2.1",
@@ -101,9 +101,9 @@
   },
   "scripts": {
     "build": "cmake --preset=default && cmake --build build",
-    "check-formatting": "cmake-format --check CMakeLists.txt TorBrowserLauncher/CMakeLists.txt TorBrowserLauncherTests/CMakeLists.txt && yarn prettier -c . && yarn markdownlint-cli2 '**/*.md' '#node_modules'",
+    "check-formatting": "swift-format lint -r . && cmake-format --check CMakeLists.txt TorBrowserLauncher/CMakeLists.txt TorBrowserLauncherTests/CMakeLists.txt && yarn prettier -c . && yarn markdownlint-cli2 '**/*.md' '#node_modules'",
     "check-spelling": "yarn cspell --no-progress './**/*'  './**/.*'",
-    "format": "cmake-format -i CMakeLists.txt TorBrowserLauncher/CMakeLists.txt TorBrowserLauncherTests/CMakeLists.txt && prettier -w . && yarn markdownlint-cli2 --fix '**/*.md' '#node_modules'",
+    "format": "swift-format -i -r . && cmake-format -i CMakeLists.txt TorBrowserLauncher/CMakeLists.txt TorBrowserLauncherTests/CMakeLists.txt && prettier -w . && yarn markdownlint-cli2 --fix '**/*.md' '#node_modules'",
     "qa": "yarn check-spelling && yarn check-formatting",
     "regen": "poetry run wiswa"
   },
