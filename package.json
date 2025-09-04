@@ -83,6 +83,12 @@
         "options": {
           "parser": "json"
         }
+      },
+      {
+        "files": ["*.plist", "*.plist.in"],
+        "options": {
+          "parser": "xml"
+        }
       }
     ],
     "plugins": [

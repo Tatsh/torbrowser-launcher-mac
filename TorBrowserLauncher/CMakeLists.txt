@@ -1,16 +1,17 @@
 set(TBL_SRCS
     AppDelegate.swift
-    LauncherWindow.swift
-    Utils.swift
-    Info.plist.in
     Assets.xcassets/AccentColor.colorset/Contents.json
     Assets.xcassets/AppIcon.appiconset/Contents.json
     Assets.xcassets/Contents.json
     Base.lproj/LauncherWindow.xib
-    Base.lproj/MainMenu.xib)
+    Base.lproj/MainMenu.xib
+    Info.plist.in
+    LauncherWindow.swift
+    Utils.swift)
 set(TBL_XIBS)
 set(TBL_STRINGS_EN en.lproj/LauncherWindow.strings en.lproj/MainMenu.strings)
-set(TBL_STRINGS_ZH_HANS zh-Hans.lproj/LauncherWindow.strings zh-Hans.lproj/MainMenu.strings zh-Hans.lproj/InfoPlist.strings zh-Hans.lproj/Localizable.strings)
+set(TBL_STRINGS_ZH_HANS zh-Hans.lproj/InfoPlist.strings zh-Hans.lproj/LauncherWindow.strings
+                        zh-Hans.lproj/Localizable.strings zh-Hans.lproj/MainMenu.strings)
 
 function(add_language output prefix items)
   file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/${prefix}")
@@ -20,12 +21,15 @@ function(add_language output prefix items)
     add_custom_command(
       OUTPUT "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings"
       COMMAND printf \\xFF\\xFE > "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings"
-      COMMAND /usr/bin/iconv -f UTF-8 -t UTF-16LE "${CMAKE_CURRENT_SOURCE_DIR}/${_src}" >> "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings"
+      COMMAND /usr/bin/iconv -f UTF-8 -t UTF-16LE "${CMAKE_CURRENT_SOURCE_DIR}/${_src}" >>
+              "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings"
       DEPENDS "${_src}"
       VERBATIM)
     list(APPEND string_files "${CMAKE_BINARY_DIR}/${prefix}/${_name}.strings")
   endforeach()
-  set("${output}" "${string_files}" PARENT_SCOPE)
+  set("${output}"
+      "${string_files}"
+      PARENT_SCOPE)
 endfunction()
 
 add_executable(${CMAKE_PROJECT_NAME} ${TBL_SRCS})
@@ -38,27 +42,39 @@ set_target_properties(
              MACOSX_BUNDLE_SHORT_VERSION_STRING "${CMAKE_PROJECT_VERSION}"
              MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in")
 # Nibs
-find_program(IBTOOL ibtool REQUIRED)
-foreach(_src ${TBL_SRCS})
-  if(_src MATCHES ".+\\.xib$")
-    get_filename_component(_name "${_src}" NAME_WE)
-    add_custom_command(
-      OUTPUT "${CMAKE_BINARY_DIR}/${_name}.nib"
-      COMMAND ${IBTOOL} --compile "${CMAKE_BINARY_DIR}/${_name}.nib" "${CMAKE_CURRENT_SOURCE_DIR}/${_src}"
-      DEPENDS "${_src}"
-      VERBATIM)
-    list(APPEND TBL_XIBS "${CMAKE_BINARY_DIR}/${_name}.nib")
-  endif()
-endforeach()
-set_source_files_properties(${TBL_XIBS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources/Base.lproj)
+if("${CMAKE_GENERATOR}" STREQUAL "Xcode")
+  foreach(_src ${TBL_SRCS})
+    if(_src MATCHES ".+\\.xib$")
+      get_filename_component(_full_path "${_src}" ABSOLUTE)
+      list(APPEND TBL_XIBS "${_full_path}")
+    endif()
+  endforeach()
+else()
+  find_program(IBTOOL ibtool REQUIRED)
+  foreach(_src ${TBL_SRCS})
+    if(_src MATCHES ".+\\.xib$")
+      get_filename_component(_name "${_src}" NAME_WE)
+      get_filename_component(_full_path "${_src}" ABSOLUTE)
+      add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/${_name}.nib"
+        COMMAND ${IBTOOL} --compile "${CMAKE_BINARY_DIR}/${_name}.nib" "${_full_path}"
+        DEPENDS "${_src}"
+        VERBATIM)
+      list(APPEND TBL_XIBS "${CMAKE_BINARY_DIR}/${_name}.nib")
+    endif()
+  endforeach()
+  set_source_files_properties(${TBL_XIBS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources/Base.lproj)
+endif()
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${TBL_SRCS} ${TBL_XIBS})
 # Localisation
 add_language(FINISHED_TBL_STRINGS_EN en.lproj ${TBL_STRINGS_EN})
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${TBL_SRCS} ${FINISHED_TBL_STRINGS_EN})
-set_source_files_properties(${FINISHED_TBL_STRINGS_EN} PROPERTIES MACOSX_PACKAGE_LOCATION Resources/en.lproj)
+set_source_files_properties(${FINISHED_TBL_STRINGS_EN} PROPERTIES MACOSX_PACKAGE_LOCATION
+                                                                  Resources/en.lproj)
 add_language(FINISHED_TBL_STRINGS_ZH_HANS zh-Hans.lproj ${TBL_STRINGS_ZH_HANS})
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${FINISHED_TBL_STRINGS_ZH_HANS})
-set_source_files_properties(${FINISHED_TBL_STRINGS_ZH_HANS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources/zh-Hans.lproj)
+set_source_files_properties(${FINISHED_TBL_STRINGS_ZH_HANS} PROPERTIES MACOSX_PACKAGE_LOCATION
+                                                                       Resources/zh-Hans.lproj)
 # Assets
 file(GLOB TBL_ICONS CONFIGURE_DEPENDS
      "${CMAKE_CURRENT_SOURCE_DIR}/Assets.xcassets/AppIcon.appiconset/*.png")
@@ -84,5 +100,5 @@ else()
   set(__cpack_system_name Darwin-x86_64)
 endif()
 set(CPACK_PACKAGE_FILE_NAME
-    torbrowser-launcher-${CMAKE_PROJECT_VERSION}-${__cpack_system_name}-${CMAKE_BUILD_TYPE})
+    ${GITHUB_SLUG}-${CMAKE_PROJECT_VERSION}-${__cpack_system_name}-${CMAKE_BUILD_TYPE})
 include(CPack)
