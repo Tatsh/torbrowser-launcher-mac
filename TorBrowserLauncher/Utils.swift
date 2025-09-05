@@ -1,17 +1,5 @@
 import Cocoa
 
-func launchTorBrowser(_ urls: [String]?) {
-    Task {
-        let config = NSWorkspace.OpenConfiguration()
-        config.arguments = urls ?? []
-        config.addsToRecentItems = false
-        do {
-            try await NSWorkspace.shared.openApplication(
-                at: URL(fileURLWithPath: kTorBrowserAppPath), configuration: config)
-        } catch { print("Failed to launch Tor Browser: \(error)") }
-    }
-}
-
 func hdiAttach(path: String, mountPoint: String) {
     Process.launchedProcess(
         launchPath: "/usr/bin/hdiutil",
@@ -29,12 +17,6 @@ func hdiDetach(path: String) {
         .waitUntilExit()
 }
 
-func quit() { DispatchQueue.main.async { NSApp.terminate(nil) } }
-
-func delayedQuit(_ offset: Double) {
-    DispatchQueue.main.asyncAfter(deadline: .now() + offset) { NSApp.terminate(nil) }
-}
-
 func removeQuarantineExtendedAttributes(path: String) {
     Process.launchedProcess(
         launchPath: "/usr/bin/xattr", arguments: ["-dr", "com.apple.quarantine", path]
@@ -47,7 +29,7 @@ func urlSessionWithProxy(_ proxy: String) -> URLSession {
     sessionConfiguration.connectionProxyDictionary = [
         kCFNetworkProxiesHTTPEnable as AnyHashable: true,
         kCFNetworkProxiesHTTPPort as AnyHashable: Int(spl.last!, radix: 10)!,
-        kCFNetworkProxiesHTTPProxy as AnyHashable: spl.first!,
+        kCFNetworkProxiesHTTPProxy as AnyHashable: String(spl.first!),
     ]
     return URLSession(configuration: sessionConfiguration)
 }
@@ -61,7 +43,7 @@ func backgroundURLSession(
     sessionConfiguration.connectionProxyDictionary = [
         kCFNetworkProxiesHTTPEnable as AnyHashable: true,
         kCFNetworkProxiesHTTPPort as AnyHashable: Int(spl.last!, radix: 10)!,
-        kCFNetworkProxiesHTTPProxy as AnyHashable: spl.first!,
+        kCFNetworkProxiesHTTPProxy as AnyHashable: String(spl.first!),
     ]
     return URLSession(
         configuration: sessionConfiguration, delegate: delegate, delegateQueue: delegateQueue)
@@ -72,7 +54,11 @@ func findMatchInLines(lines: String, regex: NSRegularExpression) -> String? {
         if let m = regex.firstMatch(
             in: String(line), options: [], range: NSRange(location: 0, length: line.count))
         {
-            return (String(line) as NSString).substring(with: m.range(at: 1))
+            if m.numberOfRanges > 1 {
+                return (String(line) as NSString).substring(with: m.range(at: 1))
+            } else {
+                return nil
+            }
         }
     }
     return nil
@@ -86,3 +72,22 @@ func removeIfExists(path: String) {
         }
     }
 }
+
+// LCOV_EXCL_START
+func launchTorBrowser(_ urls: [String]?) {
+    Task {
+        let config = NSWorkspace.OpenConfiguration()
+        config.arguments = urls ?? []
+        config.addsToRecentItems = false
+        do {
+            try await NSWorkspace.shared.openApplication(
+                at: URL(fileURLWithPath: kTorBrowserAppPath), configuration: config)
+        } catch { print("Failed to launch Tor Browser: \(error)") }
+    }
+}
+
+func quit() { DispatchQueue.main.async { NSApp.terminate(nil) } }
+
+func delayedQuit(_ offset: Double) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + offset) { NSApp.terminate(nil) }
+}  // LCOV_EXCL_STOP

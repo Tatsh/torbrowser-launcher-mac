@@ -10,7 +10,6 @@
     "editor.tabSize": 4
   },
   "cSpell.enabled": true,
-  "cmake.configureArgs": ["-DCMAKE_BUILD_TYPE=Debug"],
   "editor.codeActionsOnSave": {
     "source.fixAll": "always"
   },

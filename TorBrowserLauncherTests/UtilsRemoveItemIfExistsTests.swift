@@ -1,15 +1,14 @@
-import XCTest
 import ObjectiveC.runtime
+import XCTest
 
-@testable import foo
+@testable import tbl
 
 var fileExistsCalled = false
 var removeItemCalled = false
 var shouldFileExist = false
 var shouldThrowOnRemove = false
 
-class MockFileManager: FileManager {
-
+final class MockFileManager: FileManager {
     @objc func mock_fileExists(atPath path: String) -> Bool {
         fileExistsCalled = true
         return shouldFileExist
@@ -17,14 +16,11 @@ class MockFileManager: FileManager {
 
     @objc func mock_removeItem(at url: URL) throws {
         removeItemCalled = true
-        if shouldThrowOnRemove {
-            throw NSError(domain: "MockError", code: 1, userInfo: nil)
-        }
+        if shouldThrowOnRemove { throw NSError(domain: "MockError", code: 1, userInfo: nil) }
     }
 }
 
-class UtilsRemoveItemIfExistsTests: XCTestCase {
-
+final class UtilsRemoveItemIfExistsTests: XCTestCase {
     var mockFileManager: MockFileManager!
 
     override func setUpWithError() throws {
@@ -38,14 +34,18 @@ class UtilsRemoveItemIfExistsTests: XCTestCase {
     }
 
     func swizzleFileManagerMethods() {
-        let originalFileExists = class_getInstanceMethod(FileManager.self, #selector(FileManager.fileExists(atPath:)))
-        let mockFileExists = class_getInstanceMethod(MockFileManager.self, #selector(MockFileManager.mock_fileExists(atPath:)))
+        let originalFileExists = class_getInstanceMethod(
+            FileManager.self, #selector(FileManager.fileExists(atPath:)))
+        let mockFileExists = class_getInstanceMethod(
+            MockFileManager.self, #selector(MockFileManager.mock_fileExists(atPath:)))
         if let originalFileExists = originalFileExists, let mockFileExists = mockFileExists {
             method_exchangeImplementations(originalFileExists, mockFileExists)
         }
 
-        let originalRemoveItem = class_getInstanceMethod(FileManager.self, #selector(FileManager.removeItem(at:)))
-        let mockRemoveItem = class_getInstanceMethod(MockFileManager.self, #selector(MockFileManager.mock_removeItem(at:)))
+        let originalRemoveItem = class_getInstanceMethod(
+            FileManager.self, #selector(FileManager.removeItem(at:)))
+        let mockRemoveItem = class_getInstanceMethod(
+            MockFileManager.self, #selector(MockFileManager.mock_removeItem(at:)))
         if let originalRemoveItem = originalRemoveItem, let mockRemoveItem = mockRemoveItem {
             method_exchangeImplementations(originalRemoveItem, mockRemoveItem)
         }
@@ -84,4 +84,3 @@ class UtilsRemoveItemIfExistsTests: XCTestCase {
         XCTAssertTrue(removeItemCalled)
     }
 }
-
