@@ -1,0 +1,26 @@
+/* Displays when the \"Tor Browser.app\" is being copied. */
+"download-status-window-copying-app-bundle" = "正在复制程序包";
+
+/* Displays when the DMG is being attached (mounted). */
+"download-status-window-mounting-image" = "正在挂载 %@";
+
+/* Displays when the old version of \"Tor Browser.app\" is being deleted. */
+"download-status-window-removing-old-version" = "正在删除旧版本";
+
+/* Displays when the com.apple.quarantine extended file attribute is being removed. */
+"download-status-window-removing-quarantine-attributes" = "正在去除隔离属性";
+
+/* Displays when a the ~/Library/Application Support/NAME directory is being created. */
+"download-window-status-creating-app-support-dir" = "正在创建 %@";
+
+/* Displays when the HTTP status %d is not equal to 200. */
+"download-window-status-failed-update-path" = "判定更新网址失败：（状态代码：%s）。无法继续。";
+
+/* Displays when a file %@ is being downloaded. */
+"download-window-status-fetching-filename" = "正在获取 %@";
+
+/* Displayed when the update URL is being generated (first step of the process). */
+"download-window-status-label-getting-update-url" = "正在获取更新网址";
+
+/* Displayed when Tor Browser is starting */
+"download-window-status-launching" = "正在启动 Tor Browser";

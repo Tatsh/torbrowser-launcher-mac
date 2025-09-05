@@ -35,6 +35,6 @@ open '/Applications/Tor Browser Launcher.app' --args --settings
 Delete and app bundle (or uninstall it with your package manager) and run the following commands:
 
 ```sh
-defaults delete sh.tat.abstractcat.torbrowser-launcher
-rm -fR ~/Library/Application\ Support/Tor\ Browser\ Launcher/
+defaults delete sh.tat.torbrowser-launcher
+rm -fR "${HOME}/Library/Application Support/Tor Browser Launcher"
 ```

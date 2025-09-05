@@ -1,88 +1,97 @@
 import Cocoa
+import TorBrowserLauncherLib
 
+/// The application delegate.
 @NSApplicationMain class AppDelegate: NSObject, NSApplicationDelegate, NSComboBoxDataSource {
     // MARK: - Outlets
 
+    /// Checkbox to download over system Tor.
     @IBOutlet var downloadOverSystemTorCheckbox: NSButton!
+    /// Mirror picker combo box.
     @IBOutlet var mirrorPicker: NSComboBox!
+    /// Settings window.
     @IBOutlet var settingsWindow: NSWindow!
+    /// Status label.
     @IBOutlet var statusLabel: NSTextField!
+    /// Tor server text field.
     @IBOutlet var torServerTextField: NSTextField!
 
     // MARK: - Ivars
-
     private lazy var mirrors = Bundle.main.infoDictionary?["TBLMirrors"] as! [String]
-    private lazy var selectedMirrorIndex = UserDefaults.standard.integer(
-        forKey: "TBLMirrorSelectedIndex")
+    private lazy var settings = Settings.load()
     private var shouldSave = false
-    private var useProxy = false
-    private var proxyAddress = "127.0.0.1:9010"
 
     // MARK: - Application delegate
 
+    /// The application should quit when the last window is closed.
+    /// - Parameter _: The application.
+    /// - Returns: true
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool { return true }
 
+    /// On launch, read settings and either show the settings window or start downloading.
+    /// - Parameter _: The notification.
     func applicationDidFinishLaunching(_: Notification) {
-        let def = UserDefaults.standard
-        useProxy = def.bool(forKey: "TBLDownloadOverSystemTor")
-        proxyAddress = def.string(forKey: "TBLTorSOCKSAddress") ?? "127.0.0.1:9010"
-        downloadOverSystemTorCheckbox?.state = useProxy ? .on : .off
-        torServerTextField?.stringValue = proxyAddress
-
-        if FileManager.default.fileExists(atPath: kTorBrowserVersionPath),
-            FileManager.default.fileExists(atPath: kTorBrowserAppPath)
-        {
+        downloadOverSystemTorCheckbox?.state = settings.useProxy ? .on : .off
+        torServerTextField?.stringValue = settings.proxyAddress
+        if Installer.isInstalled() {
             statusLabel.cell?.title = NSLocalizedString(
                 "settings-status-label-installed", value: "installed",
                 comment:
                     "Shows \"installed\" if Tor Browser.app is on the system from a previous run.")
         }
-
-        if !CommandLine.arguments.contains("--settings") {
-            startDownloader(proxy: useProxy ? proxyAddress : nil)
-        } else {
+        if CommandLine.arguments.contains("--settings") {
             settingsWindow.setIsVisible(true)
+        } else {
+            startDownloader(proxy: settings.useProxy ? settings.proxyAddress : nil)
         }
     }
 
+    /// When the app becomes active, update the mirror picker selection.
     func applicationWillBecomeActive(_: Notification) {
-        mirrorPicker.selectItem(at: selectedMirrorIndex)
+        mirrorPicker.selectItem(at: settings.mirrorIndex)
     }
 
+    /// On terminate, save settings if needed.
     func applicationWillTerminate(_: Notification) {
         if shouldSave {
-            let def = UserDefaults.standard
-            def.setValue(
-                downloadOverSystemTorCheckbox.state == .off ? false : true,
-                forKey: "TBLDownloadOverSystemTor")
-            def.setValue(torServerTextField.stringValue, forKey: "TBLTorSOCKSAddress")
-            def.setValue(mirrorPicker.indexOfSelectedItem, forKey: "TBLMirrorSelectedIndex")
+            settings.useProxy = (downloadOverSystemTorCheckbox.state == .on)
+            settings.proxyAddress = torServerTextField.stringValue
+            settings.mirrorIndex = mirrorPicker.indexOfSelectedItem
+            settings.save()
         }
     }
 
     // MARK: - Combo box data source
 
+    /// Combo box data source: number of items.
+    /// - Returns: The number of items.
     func numberOfItems(in _: NSComboBox) -> Int { return mirrors.count }
 
+    /// Combo box data source: item at index.
+    /// - Parameter index: The index.
+    /// - Returns: The item at the index.
     func comboBox(_: NSComboBox, objectValueForItemAt index: Int) -> Any? { return mirrors[index] }
 
     // MARK: - Actions
 
+    /// Action for when the cancel button is pressed.
+    /// - Parameter _: The sender (ignored).
     @IBAction func cancel(_: Any) { settingsWindow.close() }
 
+    /// Action for when the reinstall button is pressed.
     @IBAction func didPressReinstall(sender _: Any) {
-        for app in NSWorkspace.shared.runningApplications {
-            if let execURL = app.executableURL, execURL.lastPathComponent == "firefox",
-                execURL.absoluteString.contains("/Tor%20Browser%20Launcher/")
-            {
-                app.forceTerminate()
-            }
+        do { try Installer.uninstall() } catch {
+            statusLabel.cell?.title = String(
+                format: NSLocalizedString(
+                    "settings-status-label-uninstall-error", value: "Uninstall error: %@",
+                    comment: "Shows uninstall error message."), error.localizedDescription)
+            return
         }
-        for path in [kTorBrowserAppPath, kTorBrowserVersionPath] { removeIfExists(path: path) }
-        startDownloader(proxy: useProxy ? proxyAddress : nil)
+        startDownloader(proxy: settings.useProxy ? settings.proxyAddress : nil)
         settingsWindow.close()
     }
 
+    /// Action for when the 'Save & Exit' button is pressed.
     @IBAction func saveAndExit(_: Any) {
         shouldSave = true
         settingsWindow.close()
@@ -91,16 +100,6 @@ import Cocoa
     // MARK: - Private
 
     private func startDownloader(proxy: String?) {
-        let vc = LauncherWindowController()
-        Bundle.main.loadNibNamed(NSNib.Name("LauncherWindow"), owner: vc, topLevelObjects: nil)
-        vc.urls = Array(CommandLine.arguments[1...])
-        // Filter removes Xcode debug arguments
-        if ProcessInfo.processInfo.environment.keys.contains("__XCODE_BUILT_PRODUCTS_DIR_PATHS") {
-            vc.urls = vc.urls!.filter {
-                !$0.starts(with: "-") && $0.lowercased() != "yes" && $0.lowercased() != "no"
-                    && !$0.hasPrefix("(")
-            }
-        }
-        vc.downloadTor(proxy: proxy, mirror: mirrors[selectedMirrorIndex])
+        LauncherWindowController.setup().start(mirror: mirrors[settings.mirrorIndex], proxy: proxy)
     }
 }

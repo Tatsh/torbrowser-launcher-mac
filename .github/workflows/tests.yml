@@ -4,29 +4,26 @@ jobs:
       contents: write
     runs-on: 'macos-latest'
     steps:
-      - uses: 'actions/checkout@v5'
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Configure
-        run: |
-          cmake -G Xcode -B build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} \
-            --install-prefix ${{github.workspace}}/build/prefix \
-            -DCMAKE_APPLE_SILICON_PROCESSOR=arm64 -DBUILD_TESTS=ON
+        run: >-
+          cmake -G Xcode -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -B ${{github.workspace}}/build
+          --install-prefix ${{github.workspace}}/build/prefix -DCMAKE_APPLE_SILICON_PROCESSOR=arm64
+          -DBUILD_TESTS=ON
       - name: Build
-        run: cmake --build build --config ${{matrix.build-type}} --verbose
+        run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
       - name: Run tests
-        run: ctest --output-on-failure -C ${{matrix.build-type}} --test-dir build
+        run: ctest -C ${{matrix.build-type}} -VV --test-dir build/TorBrowserLauncherTests
       - name: Generate coverage
         if: ${{ matrix.build-type == 'Debug' }}
         run: |
-          xcrun llvm-profdata merge -sparse \
-            $(find build/TorBrowserLauncherTests -name "*.profraw") \
-            -o default.profdata
+          xcrun llvm-profdata merge -sparse build/TorBrowserLauncherTests/default.profraw -o default.profdata
           xcrun llvm-cov export \
-            $(find build/TorBrowserLauncherTests -name "TorBrowserLauncherTests") \
-            -instr-profile=default.profdata \
-            -format=lcov > coverage.lcov
+            build/TorBrowserLauncherTests/${{matrix.build-type}}/TorBrowserLauncherTests.xctest/Contents/MacOS/TorBrowserLauncherTests \
+            --ignore-filename-regex='.*TorBrowserLauncherTests/.*' \
+            -instr-profile=default.profdata -format=lcov > coverage.lcov
       - if: ${{ matrix.build-type == 'Debug' }}
         name: Coveralls
         uses: coverallsapp/github-action@v2

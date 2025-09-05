@@ -11,6 +11,7 @@ set(PRODUCT_NAME "Tor Browser Launcher")
 set(MIN_SYSTEM_VERSION "11.0")
 
 include(GNUInstallDirs)
+include(cmake/add-language.cmake)
 
 option(BUILD_TESTS "Build tests." OFF)
 set(BUNDLE_INSTALL_PREFIX
@@ -19,6 +20,8 @@ set(BUNDLE_INSTALL_PREFIX
 relative to CMAKE_INSTALL_PREFIX.")
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET ${MIN_SYSTEM_VERSION})
+set(LIBTBL ${CMAKE_PROJECT_NAME}Lib)
+add_subdirectory(${LIBTBL})
 add_subdirectory(${CMAKE_PROJECT_NAME})
 if(BUILD_TESTS)
   add_subdirectory(${CMAKE_PROJECT_NAME}Tests)
