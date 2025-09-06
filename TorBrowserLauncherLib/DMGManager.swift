@@ -1,31 +1,41 @@
 import Foundation
 
+/// File does not exist.
+public let DMGManagerFileDoesNotExistError = 2
+/// Already mounted.
+public let DMGManagerAlreadyMountedError = 1
+
+/// DMG manager class.
 public class DMGManager {
     private var currentMountedDMGPath: String? = nil
     private var mountedFile: String? = nil
 
+    /// Initialiser.
     public init() {}
 
-    deinit {
-        try? self.detach()
-        if mountedFile != nil { try? removeIfExists(url: URL(fileURLWithPath: mountedFile!)) }
-    }
-
+    /// Attach the managed DMG.
+    /// - Parameters:
+    ///   - path: The path to the DMG file.
+    ///   - mountPoint: The mount point to use.
     public func attach(path: String, mountPoint: String) throws {
         if currentMountedDMGPath == nil {
             if !FileManager.default.fileExists(atPath: path) {
-                throw NSError(domain: "DMGManager", code: 2, userInfo: [NSLocalizedDescriptionKey: "File does not exist."])
+                throw NSError(
+                    domain: "TBLDMGManager", code: DMGManagerFileDoesNotExistError,
+                    userInfo: [NSLocalizedDescriptionKey: "File does not exist."])
             }
             mountedFile = path
             currentMountedDMGPath = mountPoint
             try Self.hdiAttach(path: path, mountPoint: mountPoint)
         } else {
             throw NSError(
-                domain: "DMGManager", code: 1,
+                domain: "TBLDMGManager", code: DMGManagerAlreadyMountedError,
                 userInfo: [NSLocalizedDescriptionKey: "A DMG is already mounted."])
         }
     }
 
+    /// Detach the managed DMG.
+    /// - Throws: An error if the DMG cannot be detached.
     public func detach() throws {
         if currentMountedDMGPath != nil { try Self.hdiDetach(path: currentMountedDMGPath!) }
         currentMountedDMGPath = nil

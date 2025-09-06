@@ -1,15 +1,78 @@
 import Cocoa
+import Combine
 import TorBrowserLauncherLib
 
-private func getFilteredCommandLineArguments() -> [String] {
-    var args = Array(CommandLine.arguments[1...])
-    if ProcessInfo.processInfo.environment.keys.contains("__XCODE_BUILT_PRODUCTS_DIR_PATHS") {
-        args = args.filter {
-            !$0.starts(with: "-") && $0.lowercased() != "yes" && $0.lowercased() != "no"
-                && !$0.hasPrefix("(")
-        }
+/// File manager implementation using Foundation's FileManager.
+class TBLNSFileManager: TBLFileManager {
+    private let kXAttrURI = URL(fileURLWithPath: "/usr/bin/xattr")
+
+    func copyItem(atPath: String, toPath: String) throws {
+        try FileManager.default.copyItem(atPath: atPath, toPath: toPath)
     }
-    return args
+
+    func createDirectory(path: String, withIntermediateDirectories intermediate: Bool) throws {
+        try FileManager.default.createDirectory(
+            atPath: path, withIntermediateDirectories: intermediate)
+    }
+
+    func createDirectoryIgnoreError(
+        path: String, withIntermediateDirectories intermediate: Bool = true
+    ) {
+        try? FileManager.default.createDirectory(
+            atPath: path, withIntermediateDirectories: intermediate)
+    }
+
+    func fileExists(atPath path: String) -> Bool {
+        return FileManager.default.fileExists(atPath: path)
+    }
+
+    func moveItem(at: URL, to: URL) throws { try FileManager.default.moveItem(at: at, to: to) }
+
+    func removeIfExists(url: URL) throws {
+        if fileExists(atPath: url.path) { try FileManager.default.removeItem(at: url) }
+    }
+
+    func removeQuarantineExtendedAttribute(path: String) throws {
+        try Process.run(kXAttrURI, arguments: ["-dr", "com.apple.quarantine", path]).waitUntilExit()
+    }
+
+    func temporaryDirectory() -> String {
+        return (NSTemporaryDirectory() as NSString).appendingPathComponent(
+            ProcessInfo().globallyUniqueString)
+    }
+
+    func writeContent(content: String, toPath path: String) throws {
+        try content.write(toFile: path, atomically: true, encoding: .utf8)
+    }
+}
+
+/// Installer implementation that terminates and removes Tor Browser.
+class Installer: BaseInstaller {
+    private static var cancellable: Cancellable?
+
+    public class func uninstall(fileManager: TBLFileManager, completionHandler: (() -> Void)? = nil)
+        throws
+    {
+        let callCompletionHandler = {
+            try? fileManager.removeIfExists(url: kTorBrowserAppURI)
+            try? fileManager.removeIfExists(url: kTorBrowserVersionURI)
+            completionHandler?()
+        }
+        for app in NSWorkspace.shared.runningApplications {
+            if let execURL = app.executableURL, execURL.lastPathComponent == "firefox",
+                execURL.absoluteString.contains("/Tor%20Browser%20Launcher/")
+            {
+                cancellable = app.publisher(for: \.isTerminated).sink { isTerminated in
+                    if isTerminated {
+                        callCompletionHandler()
+                    }
+                }
+                app.terminate()
+                return
+            }
+        }
+        callCompletionHandler()
+    }
 }
 
 /// The launcher window controller, which handles downloading and installing Tor Browser.
@@ -47,11 +110,16 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
     ///   - proxy: The proxy to use, in the format "host:port", or nil to not use a proxy.
     func start(mirror: String, proxy: String?) {
         progressBar.doubleValue = 0
-        do {
-            try download(
-                mirror: mirror, proxy: proxy, urls: self.urls, delegate: self,
-                statusHandler: self.setStatus)
-        } catch { setStatusAndQuit(error.localizedDescription) }
+        let downloader = Downloader(
+            delegate: self, fileManager: TBLNSFileManager(), installerType: Installer.self,
+            launchCompletionHandler: { delayedQuit(0.2) }, mirror: mirror,
+            opener: { appURL, config in
+                DispatchQueue.main.async {
+                    NSWorkspace.shared.openApplication(at: appURL, configuration: config)
+                }
+            }, proxy: proxy, statusHandler: self.setStatus, updateIndexURI: kUpdateIndexURI,
+            urlSessionFactory: TBLURLSessionFactory(), urls: self.urls)
+        do { try downloader.download() } catch { setStatusAndQuit(error.localizedDescription) }
     }
 
     // MARK: - URL session delegate
@@ -72,11 +140,12 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
                     comment: "Displays when the download URL is nil."))
             return
         }
+        let installer = Installer(
+            absoluteURI: url.absoluteString, dmgManager: DMGManager(),
+            fileManager: TBLNSFileManager(), statusHandler: self.setStatus
+        )
         do {
-            try Installer(
-                absoluteURI: url.absoluteString, dmgManager: DMGManager(),
-                statusHandler: self.setStatus
-            ).install(location: location)
+            try installer.install(location: location)
         } catch {
             setStatusAndQuit(error.localizedDescription)
             return
@@ -85,7 +154,16 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
             NSLocalizedString(
                 "download-window-status-launching", value: "Launching Tor Browser.",
                 comment: "Displays when Tor Browser is starting."))
-        do { try Installer.launchAndQuit(urls) } catch {
+        do {
+            try Installer.launchAndQuit(
+                urls,
+                opener: { appURL, config in
+                    DispatchQueue.main.async {
+                        NSWorkspace.shared.openApplication(at: appURL, configuration: config)
+                    }
+                }
+            ) { delayedQuit(0.2) }
+        } catch {
             setStatusAndQuit(
                 String(
                     format: NSLocalizedString(
@@ -125,5 +203,56 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
     }
 
     private func quit() { DispatchQueue.main.async { NSApp.terminate(nil) } }
+}
 
+private func getFilteredCommandLineArguments() -> [String] {
+    var args = Array(CommandLine.arguments[1...])
+    if ProcessInfo.processInfo.environment.keys.contains("__XCODE_BUILT_PRODUCTS_DIR_PATHS") {
+        args = args.filter {
+            !$0.starts(with: "-") && $0.lowercased() != "yes" && $0.lowercased() != "no"
+                && !$0.hasPrefix("(")
+        }
+    }
+    return args
+}
+
+/// URL session factory implementation.
+private class TBLURLSessionFactory: URLSessionFactory {
+    func createDownloadSession(delegate: URLSessionDelegate?, proxy: String? = nil) -> URLSession {
+        if proxy != nil {
+            return backgroundURLSession(
+                withProxy: proxy!, identifier: kBackgroundIdentifier, delegate: delegate,
+                delegateQueue: OperationQueue())
+        }
+        return URLSession(
+            configuration: URLSessionConfiguration.background(
+                withIdentifier: kBackgroundIdentifier), delegate: delegate,
+            delegateQueue: OperationQueue())
+    }
+
+    func urlSessionWithProxy(_ proxy: String) -> URLSession {
+        let spl = proxy.split(separator: ":")
+        let sessionConfiguration = URLSessionConfiguration.default
+        sessionConfiguration.connectionProxyDictionary = [
+            kCFNetworkProxiesHTTPEnable as AnyHashable: true,
+            kCFNetworkProxiesHTTPPort as AnyHashable: Int(spl.last!, radix: 10)!,
+            kCFNetworkProxiesHTTPProxy as AnyHashable: String(spl.first!),
+        ]
+        return URLSession(configuration: sessionConfiguration)
+    }
+
+    private func backgroundURLSession(
+        withProxy proxy: String, identifier: String, delegate: URLSessionDelegate?,
+        delegateQueue: OperationQueue?
+    ) -> URLSession {
+        let spl = proxy.split(separator: ":")
+        let sessionConfiguration = URLSessionConfiguration.background(withIdentifier: identifier)
+        sessionConfiguration.connectionProxyDictionary = [
+            kCFNetworkProxiesHTTPEnable as AnyHashable: true,
+            kCFNetworkProxiesHTTPPort as AnyHashable: Int(spl.last!, radix: 10)!,
+            kCFNetworkProxiesHTTPProxy as AnyHashable: String(spl.first!),
+        ]
+        return URLSession(
+            configuration: sessionConfiguration, delegate: delegate, delegateQueue: delegateQueue)
+    }
 }
