@@ -1,6 +1,6 @@
 set(TBL_NIBS)
 set(TBL_XIBS Base.lproj/LauncherWindow.xib Base.lproj/MainMenu.xib)
-set(TBL_SRCS AppDelegate.swift Info.plist.in LauncherWindow.swift torbrowser.icns)
+set(TBL_SRCS AppDelegate.swift Info.plist.in LauncherWindow.swift Utils.swift torbrowser.icns)
 set(TBL_STRINGS_EN en.lproj/LauncherWindow.strings en.lproj/MainMenu.strings)
 set(TBL_STRINGS_ZH_HANS
     ../${LIBTBL}/zh-Hans.lproj/Lib.strings zh-Hans.lproj/InfoPlist.strings

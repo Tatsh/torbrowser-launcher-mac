@@ -20,6 +20,7 @@ import TorBrowserLauncherLib
     private lazy var mirrors = Bundle.main.infoDictionary?["TBLMirrors"] as! [String]
     private lazy var settings = Settings.load()
     private var shouldSave = false
+    private var fileManager = TBLNSFileManager()
 
     // MARK: - Application delegate
 
@@ -80,15 +81,20 @@ import TorBrowserLauncherLib
 
     /// Action for when the reinstall button is pressed.
     @IBAction func didPressReinstall(sender _: Any) {
-        do { try Installer.uninstall() } catch {
+        do {
+            try Installer.uninstall(fileManager: fileManager) {
+                self.settingsWindow.setIsVisible(false)
+                self.startDownloader(
+                    proxy: self.settings.useProxy ? self.settings.proxyAddress : nil)
+                self.settingsWindow.close()
+            }
+        } catch {
             statusLabel.cell?.title = String(
                 format: NSLocalizedString(
                     "settings-status-label-uninstall-error", value: "Uninstall error: %@",
                     comment: "Shows uninstall error message."), error.localizedDescription)
             return
         }
-        startDownloader(proxy: settings.useProxy ? settings.proxyAddress : nil)
-        settingsWindow.close()
     }
 
     /// Action for when the 'Save & Exit' button is pressed.
