@@ -30,11 +30,13 @@ To view the settings dialogue, use a terminal and pass `--settings`:
 open '/Applications/Tor Browser Launcher.app' --args --settings
 ```
 
-## Uninstallation
+## Troubleshooting
 
-Delete and app bundle (or uninstall it with your package manager) and run the following commands:
+To start with a clean environment, run the following commands:
 
 ```sh
-defaults delete sh.tat.torbrowser-launcher
+defaults delete sh.tat.torbrowser-launcher-mac
 rm -fR "${HOME}/Library/Application Support/Tor Browser Launcher"
 ```
+
+Then run the launcher.
