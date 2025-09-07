@@ -113,5 +113,5 @@
     "qa": "yarn check-spelling && yarn check-formatting",
     "regen": "poetry run wiswa"
   },
-  "version": "0.0.1"
+  "version": "0.1.0"
 }

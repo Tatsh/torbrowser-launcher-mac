@@ -10,7 +10,7 @@
     },
   ],
   project_name: 'torbrowser-launcher-mac',
-  version: '0.0.1',
+  version: '0.1.0',
   description: 'Tor Browser Launcher for macOS, inspired by the Linux version.',
   keywords: ['macos', 'package manager', 'tor'],
   copilot: {
