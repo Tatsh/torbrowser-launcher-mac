@@ -27,6 +27,7 @@ instr
 ivars
 jsonnet
 jsonschema
+killall
 libjsonnet
 libtbl
 lproj
@@ -59,6 +60,7 @@ volname
 wiswa
 wyri
 xattr
+xcodeproj
 xcrun
 xctest
 xibs

@@ -4,6 +4,7 @@
     "remove_path_prefixes": ["include", "src"],
     "tag_format": "v$version",
     "version_files": [
+      ".github/workflows/cmake.yml",
       ".wiswa.jsonnet",
       "CMakeLists.txt",
       "CITATION.cff",

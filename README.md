@@ -35,8 +35,9 @@ open '/Applications/Tor Browser Launcher.app' --args --settings
 To start with a clean environment, run the following commands:
 
 ```sh
+killall 'Tor Browser Launcher'  # or quit the app
 defaults delete sh.tat.torbrowser-launcher-mac
-rm -fR "${HOME}/Library/Application Support/Tor Browser Launcher"
+rm -rf "${HOME}/Library/Application Support/Tor Browser Launcher"
 ```
 
 Then run the launcher.
