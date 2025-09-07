@@ -10,6 +10,9 @@ cpack
 ctest
 dbuild
 dcmake
+docbuild
+docc
+doccarchive
 docstrings
 endforeach
 endfunction

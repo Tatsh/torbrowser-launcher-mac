@@ -7,7 +7,7 @@
 [![QA](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/qa.yml/badge.svg)](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/qa.yml)
 [![Tests](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/tests.yml/badge.svg)](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/tests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/Tatsh/torbrowser-launcher-mac/badge.svg?branch=master)](https://coveralls.io/github/Tatsh/torbrowser-launcher-mac?branch=master)
-[![GitHub Pages](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/pages/pages-build-deployment/badge.svg)](https://tatsh.github.io/torbrowser-launcher-mac/)
+[![GitHub Pages](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/pages.yml/badge.svg)](https://tatsh.github.io/torbrowser-launcher-mac/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Stargazers](https://img.shields.io/github/stars/Tatsh/torbrowser-launcher-mac?logo=github&style=flat)](https://github.com/Tatsh/torbrowser-launcher-mac/stargazers)
 

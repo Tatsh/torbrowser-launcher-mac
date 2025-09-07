@@ -110,3 +110,8 @@ Link: https://www.example.com/
 In general, do not bypass the pre-commit hooks.
 
 [PyGitUp]: https://github.com/msiemens/PyGitUp
+
+## API documentation
+
+- [Application](https://tatsh.github.io/torbrowser-launcher-mac/app/documentation/tor_browser_launcher/)
+- [Library](https://tatsh.github.io/torbrowser-launcher-mac/lib/documentation/torbrowserlauncherlib/)
