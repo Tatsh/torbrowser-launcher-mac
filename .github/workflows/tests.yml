@@ -11,7 +11,7 @@ jobs:
         run: >-
           cmake -G Xcode -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -B ${{github.workspace}}/build
           --install-prefix ${{github.workspace}}/build/prefix -DCMAKE_APPLE_SILICON_PROCESSOR=arm64
-          -DBUILD_TESTS=ON
+          -DBUILD_TESTS=ON -DCMAKE_OSX_SYSROOT=macosx
       - name: Build
         run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
       - name: Run tests
