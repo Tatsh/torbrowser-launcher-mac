@@ -65,6 +65,7 @@ volname
 wiswa
 wyri
 xattr
+xcodeproj
 xcrun
 xctest
 xibs
