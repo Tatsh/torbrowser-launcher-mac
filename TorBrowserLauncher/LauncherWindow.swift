@@ -60,8 +60,7 @@ class Installer: BaseInstaller {
         }
         for app in NSWorkspace.shared.runningApplications {
             if let execURL = app.executableURL, execURL.lastPathComponent == "firefox",
-                execURL.absoluteString.contains("/Tor%20Browser%20Launcher/")
-            {
+                execURL.absoluteString.contains("/Tor%20Browser%20Launcher/") {
                 cancellable = app.publisher(for: \.isTerminated).sink { isTerminated in
                     if isTerminated {
                         callCompletionHandler()
@@ -144,8 +143,7 @@ class LauncherWindowController: NSWindow, NSWindowDelegate, URLSessionDelegate,
             absoluteURI: url.absoluteString, dmgManager: DMGManager(),
             fileManager: TBLNSFileManager(), statusHandler: self.setStatus
         )
-        do {
-            try installer.install(location: location)
+        do { try installer.install(location: location)
         } catch {
             setStatusAndQuit(error.localizedDescription)
             return

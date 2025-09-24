@@ -1,15 +1,15 @@
 import Cocoa
 
 /// Binary URI not found in downloads.json.
-public let DownloaderNoBinaryURLError = 1
+public let downloaderNoBinaryURLError = 1
 /// Failed to convert URLResponse to HTTPURLResponse.
-public let DownloaderConversionFromURLResponseError = 2
+public let downloaderConversionFromURLResponseError = 2
 /// Failed to determine update path.
-public let DownloaderFailedToDetermineUpdatePathError = 3
+public let downloaderFailedToDetermineUpdatePathError = 3
 /// Failed to find update path in HTML.
-public let DownloaderFailedToFindUpdatePathError = 4
+public let downloaderFailedToFindUpdatePathError = 4
 /// Invalid binary URI.
-public let DownloaderInvalidBinaryURIError = 5
+public let downloaderInvalidBinaryURIError = 5
 
 private func findMatchInLines(lines: String, regex: NSRegularExpression) throws -> String {
     for line in lines.split(separator: "\n") {
@@ -20,7 +20,7 @@ private func findMatchInLines(lines: String, regex: NSRegularExpression) throws 
         }
     }
     throw NSError(
-        domain: "TBLDownloader", code: DownloaderFailedToFindUpdatePathError,
+        domain: "TBLDownloader", code: downloaderFailedToFindUpdatePathError,
         userInfo: [NSLocalizedDescriptionKey: "Failed to find update path in HTML."])
 }
 
@@ -34,12 +34,12 @@ private func throwOnStatusCode(_ resp: URLResponse) throws {
     #if !TESTING
         guard let httpResp = resp as? HTTPURLResponse else {
             throw NSError(
-                domain: "TBLDownloader", code: DownloaderConversionFromURLResponseError,
+                domain: "TBLDownloader", code: downloaderConversionFromURLResponseError,
                 userInfo: [NSLocalizedDescriptionKey: "Conversion failed."])
         }
         if httpResp.statusCode < 200 || httpResp.statusCode > 299 {
             throw NSError(
-                domain: "TBLDownloader", code: DownloaderFailedToDetermineUpdatePathError,
+                domain: "TBLDownloader", code: downloaderFailedToDetermineUpdatePathError,
                 userInfo: [
                     NSLocalizedDescriptionKey: String.localizedStringWithFormat(
                         NSLocalizedString(
@@ -56,7 +56,7 @@ private func throwOnStatusCode(_ resp: URLResponse) throws {
 private func findUpdatePath(_ data: Data) throws -> String {
     guard let html = String(data: data, encoding: .utf8) else {
         throw NSError(
-            domain: "TBLDownloader", code: DownloaderFailedToFindUpdatePathError,
+            domain: "TBLDownloader", code: downloaderFailedToFindUpdatePathError,
             userInfo: [NSLocalizedDescriptionKey: "Failed to read HTML content as UTF-8."])
     }
     return try findMatchInLines(lines: html, regex: kUpdateRE)
@@ -213,7 +213,7 @@ open class Downloader {
                 // MARK: Download the DMG
                 guard let binaryURL = URL(string: binary) else {
                     let error = NSError(
-                        domain: "TBLDownloader", code: DownloaderInvalidBinaryURIError,
+                        domain: "TBLDownloader", code: downloaderInvalidBinaryURIError,
                         userInfo: [
                             NSLocalizedDescriptionKey: NSLocalizedString(
                                 "download-window-status-invalid-binary-url", tableName: "Lib",
@@ -242,7 +242,7 @@ open class Downloader {
         let downloads = try JSONDecoder().decode(Downloads.self, from: downloadsData)
         guard let binary = downloads.binary else {
             throw NSError(
-                domain: "TBLDownloader", code: DownloaderNoBinaryURLError,
+                domain: "TBLDownloader", code: downloaderNoBinaryURLError,
                 userInfo: [
                     NSLocalizedDescriptionKey: String.localizedStringWithFormat(
                         NSLocalizedString(
