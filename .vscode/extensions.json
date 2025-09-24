@@ -23,16 +23,16 @@
     "ruiquelhas.vscode-lowercase",
     "ruiquelhas.vscode-uppercase",
     "streetsidesoftware.code-spell-checker",
-    "swiftlang.swift-vscode",
     "tamasfe.even-better-toml",
     "timonwong.shellcheck",
     "tyriar.sort-lines",
-    "vknabel.vscode-apple-swift-format",
     "wayou.vscode-todo-highlight",
     "wmaurer.change-case",
-    "vadimcn.vscode-lldb",
     "zainchen.json",
-    "zengxingxin.sort-js-object-keys"
+    "zengxingxin.sort-js-object-keys",
+    "swiftlang.swift-vscode",
+    "vknabel.vscode-apple-swift-format",
+    "vadimcn.vscode-lldb"
   ],
   "unwantedRecommendations": []
 }

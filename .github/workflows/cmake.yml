@@ -1,9 +1,4 @@
-name: Build
-on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+---
 jobs:
   build-macos:
     runs-on: macos-latest
@@ -11,6 +6,9 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+      - id: latest_tag
+        name: Get Latest Tag
+        uses: WyriHaximus/github-action-get-previous-tag@v1
       - name: Configure
         run: |
           cmake -G Xcode -B build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} \
@@ -24,12 +22,8 @@ jobs:
         run: >-
           cpack -C ${{matrix.build-type}}
           --config ${{github.workspace}}/build/CPackConfig.cmake --verbose
-      - name: Get Latest Tag
-        id: latest_tag
-        uses: WyriHaximus/github-action-get-previous-tag@v1
-        with:
-          fallback: v0.1.0
-      - name: Upload package
+      - if: ${{ github.ref_type == 'tag' }}
+        name: Upload package
         uses: softprops/action-gh-release@v2
         with:
           files: |
@@ -40,3 +34,11 @@ jobs:
       fail-fast: false
       matrix:
         build-type: [Debug, Release]
+name: Build
+'on':
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+    tags:
+      - 'v*.*.*'

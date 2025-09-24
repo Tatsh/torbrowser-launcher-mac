@@ -4,12 +4,11 @@
     "remove_path_prefixes": ["include", "src"],
     "tag_format": "v$version",
     "version_files": [
-      ".github/workflows/cmake.yml",
       ".wiswa.jsonnet",
-      "CMakeLists.txt",
       "CITATION.cff",
       "README.md",
-      "package.json"
+      "package.json",
+      "CMakeLists.txt"
     ],
     "version_provider": "npm",
     "version_scheme": "semver"
