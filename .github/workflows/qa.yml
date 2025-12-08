@@ -6,7 +6,7 @@ jobs:
       - name: 'Install dependencies (Yarn)'
         run: |
           yarn
-          pip install cmake-format pyyaml
+          pip install cmakelang pyyaml
           brew install swift-format
       - name: 'Check formatting'
         run: 'yarn check-formatting'
