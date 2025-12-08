@@ -7,7 +7,7 @@ jobs:
         run: |
           yarn
           brew install swift-format
-          pipx install cmakelang pyyaml
+          pip3 install --user cmakelang pyyaml
       - name: 'Check formatting'
         run: 'yarn check-formatting'
       - name: 'Check spelling'
