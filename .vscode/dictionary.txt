@@ -2,6 +2,7 @@ appl
 autosort
 bsky
 bytearray
+cmakelang
 codable
 codeowners
 commitizen
@@ -60,6 +61,7 @@ tblurl
 torbrowser
 udvare
 vadimcn
+venv
 vknabel
 volname
 wiswa
