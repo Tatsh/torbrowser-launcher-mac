@@ -2,6 +2,7 @@ appl
 autosort
 bsky
 bytearray
+cmakelang
 codable
 codeowners
 commitizen
@@ -23,7 +24,6 @@ foxundermoon
 fprofile
 fulfill
 fulfillment
-haximus
 ibtool
 instr
 ivars
@@ -44,6 +44,7 @@ noverify
 pbxproj
 profdata
 profraw
+pyyaml
 qstringbuilder
 resp
 schemafile
@@ -59,10 +60,10 @@ tblurl
 torbrowser
 udvare
 vadimcn
+venv
 vknabel
 volname
 wiswa
-wyri
 xattr
 xcodeproj
 xcrun
