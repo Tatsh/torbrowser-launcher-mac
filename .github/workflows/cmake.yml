@@ -22,7 +22,7 @@ jobs:
         uses: 'actions/upload-artifact@v6'
         with:
           if-no-files-found: error
-          name: torbrowser-launcher-${{matrix.build-type}}
+          name: torbrowser-launcher-${{matrix.os}}-${{matrix.build-type}}
           path: |
             ${{github.workspace}}/torbrowser-launcher-*.zip
             ${{github.workspace}}/torbrowser-launcher-*.dmg
