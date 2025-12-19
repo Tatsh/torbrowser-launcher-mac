@@ -1,19 +1,15 @@
 ---
 jobs:
   build-macos:
-    runs-on: macos-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - id: latest_tag
-        name: Get Latest Tag
-        uses: WyriHaximus/github-action-get-previous-tag@v1
       - name: Configure
         run: |
           cmake -G Xcode -B build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} \
-            --install-prefix ${{github.workspace}}/build/prefix \
-            -DCMAKE_APPLE_SILICON_PROCESSOR=arm64
+            --install-prefix ${{github.workspace}}/build/prefix
       - name: Build
         run: cmake --build build --config ${{matrix.build-type}} --verbose
       - name: Install
@@ -22,6 +18,20 @@ jobs:
         run: >-
           cpack -C ${{matrix.build-type}}
           --config ${{github.workspace}}/build/CPackConfig.cmake --verbose
+      - name: 'Upload Artifacts'
+        uses: 'actions/upload-artifact@v6'
+        with:
+          if-no-files-found: error
+          name: torbrowser-launcher-${{matrix.build-type}}
+          path: |
+            ${{github.workspace}}/torbrowser-launcher-*.zip
+            ${{github.workspace}}/torbrowser-launcher-*.dmg
+      - name: Attest
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: |
+            ${{github.workspace}}/torbrowser-launcher-*.zip
+            ${{github.workspace}}/torbrowser-launcher-*.dmg
       - if: ${{ github.ref_type == 'tag' }}
         name: Upload package
         uses: softprops/action-gh-release@v2
@@ -29,11 +39,11 @@ jobs:
           files: |
             ${{github.workspace}}/torbrowser-launcher-*.zip
             ${{github.workspace}}/torbrowser-launcher-*.dmg
-          tag_name: ${{ steps.latest_tag.outputs.tag }}
     strategy:
       fail-fast: false
       matrix:
         build-type: [Debug, Release]
+        os: [macos-latest, macos-15-intel]
 name: Build
 'on':
   pull_request:
@@ -42,3 +52,7 @@ name: Build
     branches: [master]
     tags:
       - 'v*.*.*'
+permissions:
+  attestations: write
+  contents: write
+  id-token: write
