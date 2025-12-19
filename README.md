@@ -7,12 +7,17 @@
 [![QA](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/qa.yml/badge.svg)](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/qa.yml)
 [![Tests](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/tests.yml/badge.svg)](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/tests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/Tatsh/torbrowser-launcher-mac/badge.svg?branch=master)](https://coveralls.io/github/Tatsh/torbrowser-launcher-mac?branch=master)
-[![GitHub Pages](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/pages.yml/badge.svg)](https://tatsh.github.io/torbrowser-launcher-mac/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![Dependabot](https://img.shields.io/badge/Dependabot-enabled-blue?logo=dependabot)](https://github.com/dependabot)
+[![GitHub Pages](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/pages.yml/badge.svg)](https://tatsh.github.io/torbrowser-launcher-mac/)
 [![Stargazers](https://img.shields.io/github/stars/Tatsh/torbrowser-launcher-mac?logo=github&style=flat)](https://github.com/Tatsh/torbrowser-launcher-mac/stargazers)
+[![Prettier](https://img.shields.io/badge/Prettier-enabled-black?logo=prettier)](https://prettier.io/)
 
-[![@Tatsh](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fpublic.api.bsky.app%2Fxrpc%2Fapp.bsky.actor.getProfile%2F%3Factor%3Ddid%3Aplc%3Auq42idtvuccnmtl57nsucz72%26query%3D%24.followersCount%26style%3Dsocial%26logo%3Dbluesky%26label%3DFollow%2520%40Tatsh&query=%24.followersCount&style=social&logo=bluesky&label=Follow%20%40Tatsh)](https://bsky.app/profile/Tatsh.bsky.social)
+[![@Tatsh](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fpublic.api.bsky.app%2Fxrpc%2Fapp.bsky.actor.getProfile%2F%3Factor=did%3Aplc%3Auq42idtvuccnmtl57nsucz72&query=%24.followersCount&style=social&logo=bluesky&label=Follow+%40Tatsh)](https://bsky.app/profile/Tatsh.bsky.social)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Tatsh-black?logo=buymeacoffee)](https://buymeacoffee.com/Tatsh)
+[![Libera.Chat](https://img.shields.io/badge/Libera.Chat-Tatsh-black?logo=liberadotchat)](irc://irc.libera.chat/Tatsh)
 [![Mastodon Follow](https://img.shields.io/mastodon/follow/109370961877277568?domain=hostux.social&style=social)](https://hostux.social/@Tatsh)
+[![Patreon](https://img.shields.io/badge/Patreon-Tatsh2-F96854?logo=patreon)](https://www.patreon.com/Tatsh2)
 
 Tor Browser Launcher is intended to make Tor Browser easier to install and use for macOS users. You
 install torbrowser-launcher from your distribution's package manager and it handles everything else:
