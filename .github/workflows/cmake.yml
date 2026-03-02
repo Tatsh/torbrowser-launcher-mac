@@ -27,7 +27,7 @@ jobs:
             ${{github.workspace}}/torbrowser-launcher-*.zip
             ${{github.workspace}}/torbrowser-launcher-*.dmg
       - name: Attest
-        uses: actions/attest-build-provenance@v3
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
             ${{github.workspace}}/torbrowser-launcher-*.zip
