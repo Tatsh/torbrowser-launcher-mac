@@ -43,11 +43,11 @@
         },
       ],
     },
-    scripts: {
+    scripts+: {
       build: 'cmake --preset=default && cmake --build build',
-      'check-formatting': "swift-format lint -r . && cmake-format --check CMakeLists.txt TorBrowserLauncher/CMakeLists.txt TorBrowserLauncherTests/CMakeLists.txt && yarn prettier -c . && yarn markdownlint-cli2 '**/*.md' '#node_modules'",
-      'check-spelling': "yarn cspell --no-progress './**/*'  './**/.*'",
-      format: "swift-format -i -r . && cmake-format -i CMakeLists.txt TorBrowserLauncher/CMakeLists.txt TorBrowserLauncherTests/CMakeLists.txt && prettier -w . && yarn markdownlint-cli2 --fix '**/*.md' '#node_modules'",
+      'check-formatting': "swift-format lint -r . && prettier -c . && markdownlint-cli2 --config package.json --configPointer /markdownlint-cli2 '**/*.md' '#node_modules'",
+      'check-spelling': "cspell --no-progress './**/*'  './**/.*'",
+      format: "swift-format -i -r . && prettier -w . && markdownlint-cli2 --config package.json --configPointer /markdownlint-cli2 --fix '**/*.md' '#node_modules'",
       qa: 'yarn check-spelling && yarn check-formatting',
     },
   },

@@ -6,6 +6,7 @@
 .*_cache/
 .DS_Store
 .DS_Store*
+.claude/settings.local.json
 .coverage
 .cspellcache
 .directory

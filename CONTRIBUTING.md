@@ -17,7 +17,6 @@ guidelines to help maintain code quality and consistency.
 
 - macOS 11 or later
 - Xcode latest supported for your version of macOS
-- [`cmake-format`](https://pypi.org/project/cmakelang/) in `PATH`
 - [`cmake`](https://cmake.org/) in `PATH`
 - [`pre-commit`](https://pre-commit.com/)
 - [`swift-format`](https://github.com/swiftlang/swift-format) in `PATH`

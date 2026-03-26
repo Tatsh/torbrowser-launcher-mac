@@ -1,19 +1,34 @@
 jobs:
   qa:
-    runs-on: 'macos-latest'
+    runs-on: 'ubuntu-latest'
     steps:
       - uses: 'actions/checkout@v6'
+      - name: 'Yarn cache'
+        uses: 'actions/cache@v5'
+        with:
+          key: "${{ runner.os }}-yarn-${{ hashFiles('yarn.lock', '.yarnrc.yml') }}"
+          path: '~/.yarn/berry'
+          restore-keys: '${ runner.os }}-yarn'
       - name: 'Install dependencies (Yarn)'
-        run: |
-          yarn
-          brew install swift-format
-          python3 -m venv node_modules/.venv
-          . node_modules/.venv/bin/activate
-          pip install cmakelang pyyaml
-      - name: 'Check formatting'
-        run: '. node_modules/.venv/bin/activate && yarn check-formatting'
-      - name: 'Check spelling'
+        run: 'yarn'
+      - continue-on-error: true
+        id: 'prettier'
+        name: 'Check formatting (Prettier)'
+        run: 'yarn prettier -c .'
+      - continue-on-error: true
+        id: 'markdownlint'
+        name: 'Check formatting (markdownlint)'
+        run: 'yarn markdownlint-cli2 --config package.json --configPointer /markdownlint-cli2'
+      - continue-on-error: true
+        id: 'spelling'
+        name: 'Check spelling'
         run: 'yarn check-spelling'
+      - if: 'always()'
+        name: 'Check results'
+        run: |
+          [ "${{ steps.prettier.outcome }}" = "success" ] &&
+          [ "${{ steps.markdownlint.outcome }}" = "success" ] &&
+          [ "${{ steps.spelling.outcome }}" = "success" ]
 name: 'QA'
 'on':
   pull_request:

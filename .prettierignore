@@ -2,7 +2,7 @@
 *.j2
 *.jsonnet
 *.kate-swp
-*.libjsonnet
+*.libsonnet
 *.lock
 *.log
 *.strings
