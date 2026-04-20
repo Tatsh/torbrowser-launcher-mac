@@ -1,12 +1,10 @@
 {
+  uses_user_defaults: true,
   project_name: 'torbrowser-launcher-mac',
   version: '0.1.0',
   security_policy_supported_versions: { '0.1.x': ':white_check_mark:' },
   description: 'Tor Browser Launcher for macOS, inspired by the Linux version.',
   keywords: ['macos', 'package manager', 'tor'],
-  copilot+: {
-    intro: 'torbrowser-launcher-mac is a tool for getting the latest Tor Browser and launching it, inspired by the Linux version.',
-  },
   want_codeql: false,
   want_tests: false,
   project_type: 'swift',
