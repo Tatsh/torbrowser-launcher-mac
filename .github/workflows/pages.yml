@@ -57,7 +57,7 @@ jobs:
           sed -re 's|"/|"/torbrowser-launcher-mac/docs/|g' ${{github.workspace}}/build/html/app/index.html > new && mv new ${{github.workspace}}/build/html/app/index.html
           sed -re 's|"/|"/torbrowser-launcher-mac/docs/|g' ${{github.workspace}}/build/html/lib/index.html > new && mv new ${{github.workspace}}/build/html/lib/index.html
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ${{github.workspace}}/build/html
       - id: deployment
