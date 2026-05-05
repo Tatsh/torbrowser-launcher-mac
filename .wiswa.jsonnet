@@ -4,6 +4,12 @@
   version: '0.1.0',
   security_policy_supported_versions: { '0.1.x': ':white_check_mark:' },
   description: 'Tor Browser Launcher for macOS, inspired by the Linux version.',
+  social+: {
+    custom_badges: [
+      '[![Tests](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/tests.yml/badge.svg)](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/tests.yml)',
+      '[![Coverage Status](https://coveralls.io/repos/github/Tatsh/torbrowser-launcher-mac/badge.svg?branch=master)](https://coveralls.io/github/Tatsh/torbrowser-launcher-mac?branch=master)',
+    ],
+  },
   keywords: ['macos', 'package manager', 'tor'],
   want_codeql: false,
   want_tests: false,
