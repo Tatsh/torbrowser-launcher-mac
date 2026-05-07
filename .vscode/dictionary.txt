@@ -19,6 +19,7 @@ doccarchive
 docstrings
 endforeach
 endfunction
+esac
 esbenp
 fcoverage
 foxundermoon
@@ -69,6 +70,7 @@ tbldmg
 tblns
 tblurl
 torbrowser
+tostring
 udvare
 vadimcn
 vendored
