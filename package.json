@@ -125,5 +125,5 @@
     "format": "swift-format -i -r . && prettier -w . && markdownlint-cli2 --config package.json --configPointer /markdownlint-cli2 --fix '**/*.md' '#node_modules'",
     "qa": "yarn check-spelling && yarn check-formatting"
   },
-  "version": "0.1.1"
+  "version": "0.1.2"
 }

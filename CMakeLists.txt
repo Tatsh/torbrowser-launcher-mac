@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.31)
 project(
   TorBrowserLauncher
-  VERSION 0.1.1
+  VERSION 0.1.2
   LANGUAGES C Swift
   DESCRIPTION "Tor Browser Launcher for macOS, inspired by the Linux version."
   HOMEPAGE_URL "https://github.com/Tatsh/torbrowser-launcher-mac")

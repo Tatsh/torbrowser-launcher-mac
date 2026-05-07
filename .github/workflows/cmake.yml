@@ -36,6 +36,8 @@ jobs:
         name: Upload package
         uses: softprops/action-gh-release@v3
         with:
+          draft: true
+          fail_on_unmatched_files: true
           files: |
             ${{github.workspace}}/torbrowser-launcher-*.zip
             ${{github.workspace}}/torbrowser-launcher-*.dmg

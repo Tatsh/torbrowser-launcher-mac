@@ -4,7 +4,7 @@
 
 [![GitHub tag (with filter)](https://img.shields.io/github/v/tag/Tatsh/torbrowser-launcher-mac)](https://github.com/Tatsh/torbrowser-launcher-mac/tags)
 [![License](https://img.shields.io/github/license/Tatsh/torbrowser-launcher-mac)](https://github.com/Tatsh/torbrowser-launcher-mac/blob/master/LICENSE.txt)
-[![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/torbrowser-launcher-mac/v0.1.1/master)](https://github.com/Tatsh/torbrowser-launcher-mac/compare/v0.1.1...master)
+[![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/torbrowser-launcher-mac/v0.1.2/master)](https://github.com/Tatsh/torbrowser-launcher-mac/compare/v0.1.2...master)
 [![Dependabot](https://img.shields.io/badge/Dependabot-enabled-blue?logo=dependabot)](https://github.com/dependabot)
 [![GitHub Pages](https://github.com/Tatsh/torbrowser-launcher-mac/actions/workflows/pages.yml/badge.svg)](https://tatsh.github.io/torbrowser-launcher-mac/)
 [![Stargazers](https://img.shields.io/github/stars/Tatsh/torbrowser-launcher-mac?logo=github&style=flat)](https://github.com/Tatsh/torbrowser-launcher-mac/stargazers)

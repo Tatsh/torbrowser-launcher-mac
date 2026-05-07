@@ -1,7 +1,7 @@
 {
   uses_user_defaults: true,
   project_name: 'torbrowser-launcher-mac',
-  version: '0.1.1',
+  version: '0.1.2',
   security_policy_supported_versions: { '0.1.x': ':white_check_mark:' },
   description: 'Tor Browser Launcher for macOS, inspired by the Linux version.',
   social+: {
