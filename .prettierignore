@@ -1,4 +1,5 @@
 *.1
+*.cmake
 *.j2
 *.jsonnet
 *.kate-swp

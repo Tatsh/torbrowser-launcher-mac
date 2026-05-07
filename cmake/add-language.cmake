@@ -22,4 +22,3 @@ function(add_language output prefix items)
         PARENT_SCOPE)
   endif()
 endfunction()
-
