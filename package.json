@@ -1,4 +1,9 @@
 {
+  "_wiswa": {
+    "commandLine": "wiswa",
+    "lastRun": "2026-05-07T06:26:25Z",
+    "version": "7de193a"
+  },
   "contributors": ["Andrew Udvare <audvare@gmail.com>"],
   "cspell": {
     "cache": {
@@ -110,7 +115,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Tatsh/torbrowser-launcher-mac.git"
+    "url": "git+https://github.com/Tatsh/torbrowser-launcher-mac.git"
   },
   "scripts": {
     "build": "cmake --preset=default && cmake --build build",
