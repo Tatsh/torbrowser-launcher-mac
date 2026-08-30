@@ -6,38 +6,48 @@ jobs:
   jekyll:
     outputs:
       jekyll_content: ${{ steps.save_content.outputs.jekyll_content }}
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
+        uses: actions/jekyll-build-pages@44a6e6beabd48582f863aeeb6cb2151cc1716697
       - id: save_content
         run: |
           cd _site || exit 1
           zip -9 -r ../jekyll_content.zip index.html assets
-          echo "jekyll_content=$(base64 -w 0 ../jekyll_content.zip)" >> $GITHUB_OUTPUT
+          echo "jekyll_content=$(base64 -w 0 ../jekyll_content.zip)" >> "$GITHUB_OUTPUT"
   pages:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     needs: jekyll
+    permissions:
+      contents: read
+      id-token: write
+      pages: write
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Setup Pages
-        uses: actions/configure-pages@v6
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d
       - name: Configure
         run: |
           cmake -G Xcode -B build -DCMAKE_BUILD_TYPE=Debug \
             --install-prefix ${{github.workspace}}/build/prefix \
             -DCMAKE_APPLE_SILICON_PROCESSOR=arm64
-      - name: Retrieve Jekyll content
+      - env:
+          JEKYLL_CONTENT: ${{ needs.jekyll.outputs.jekyll_content }}
+        name: Retrieve Jekyll content
         run: |
-          echo "${{ needs.jekyll.outputs.jekyll_content }}" | base64 -d > jekyll_content.zip
+          echo "$JEKYLL_CONTENT" | base64 -d > jekyll_content.zip
           unzip jekyll_content.zip -d ${{github.workspace}}/build/html
           cp screenshot.png ${{github.workspace}}/build/html/
       - name: Build documentation
@@ -57,17 +67,13 @@ jobs:
           sed -re 's|"/|"/torbrowser-launcher-mac/docs/|g' ${{github.workspace}}/build/html/app/index.html > new && mv new ${{github.workspace}}/build/html/app/index.html
           sed -re 's|"/|"/torbrowser-launcher-mac/docs/|g' ${{github.workspace}}/build/html/lib/index.html > new && mv new ${{github.workspace}}/build/html/lib/index.html
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
         with:
           path: ${{github.workspace}}/build/html
       - id: deployment
         name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128
 name: GitHub Pages
 'on':
   push:
     branches: [master]
-permissions:
-  contents: read
-  id-token: write
-  pages: write

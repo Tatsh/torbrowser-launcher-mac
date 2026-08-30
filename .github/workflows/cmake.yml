@@ -1,11 +1,16 @@
 ---
 jobs:
   build-macos:
+    permissions:
+      attestations: write
+      contents: read
+      id-token: write
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Configure
         run: |
           cmake -G Xcode -B build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} \
@@ -19,7 +24,7 @@ jobs:
           cpack -C ${{matrix.build-type}}
           --config ${{github.workspace}}/build/CPackConfig.cmake --verbose
       - name: 'Upload Artifacts'
-        uses: 'actions/upload-artifact@v7'
+        uses: 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a'
         with:
           if-no-files-found: error
           name: torbrowser-launcher-${{matrix.os}}-${{matrix.build-type}}
@@ -27,18 +32,9 @@ jobs:
             ${{github.workspace}}/torbrowser-launcher-*.zip
             ${{github.workspace}}/torbrowser-launcher-*.dmg
       - name: Attest
-        uses: actions/attest-build-provenance@v4
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8
         with:
           subject-path: |
-            ${{github.workspace}}/torbrowser-launcher-*.zip
-            ${{github.workspace}}/torbrowser-launcher-*.dmg
-      - if: ${{ github.ref_type == 'tag' }}
-        name: Upload package
-        uses: softprops/action-gh-release@v3
-        with:
-          draft: true
-          fail_on_unmatched_files: true
-          files: |
             ${{github.workspace}}/torbrowser-launcher-*.zip
             ${{github.workspace}}/torbrowser-launcher-*.dmg
     strategy:
@@ -46,6 +42,57 @@ jobs:
       matrix:
         build-type: [Debug, Release]
         os: [macos-latest, macos-15-intel]
+  publish-draft-release:
+    if: ${{ github.ref_type == 'tag' }}
+    needs: build-macos
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          merge-multiple: true
+          path: dist
+          pattern: torbrowser-launcher-*
+      - env:
+          REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        name: Verify every expected asset was built
+        run: |
+          # The expected names are derived from the tag, so a CMakeLists.txt that was never
+          # version-bumped produces no match here and blocks the release.
+          version="${TAG#v}"
+          slug="${REPO#*/}"
+          expected=()
+          missing=()
+          for arch in arm64 x86_64; do
+            for build_type in Debug Release; do
+              for ext in dmg zip; do
+                name="${slug}-${version}-Darwin-${arch}-${build_type}.${ext}"
+                expected+=("$name")
+                if [[ ! -f "dist/${name}" ]]; then
+                  missing+=("$name")
+                fi
+              done
+            done
+          done
+          if [[ ${#missing[@]} -gt 0 ]]; then
+            echo "::error::Refusing to publish ${TAG}: ${#missing[@]} of ${#expected[@]} expected assets are missing."
+            printf '::error::missing %s\n' "${missing[@]}"
+            echo 'Artifacts actually downloaded:'
+            ls -1 dist || true
+            exit 1
+          fi
+          echo "All ${#expected[@]} expected assets are present for ${TAG}."
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        name: Upload assets to draft release
+        run: |
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --draft --title "$TAG" --notes ''
+          fi
+          gh release upload "$TAG" --clobber dist/*.dmg dist/*.zip
 name: Build
 'on':
   pull_request:
@@ -54,7 +101,3 @@ name: Build
     branches: [master]
     tags:
       - 'v*.*.*'
-permissions:
-  attestations: write
-  contents: write
-  id-token: write
