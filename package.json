@@ -1,8 +1,8 @@
 {
   "_wiswa": {
-    "commandLine": "wiswa",
-    "lastRun": "2026-05-07T06:26:25Z",
-    "version": "7de193a"
+    "commandLine": "wiswa -d",
+    "lastRun": "2026-08-30T16:04:16Z",
+    "version": "14fa38f"
   },
   "contributors": ["Andrew Udvare <audvare@gmail.com>"],
   "cspell": {
@@ -46,7 +46,7 @@
   "description": "Tor Browser Launcher for macOS, inspired by the Linux version.",
   "devDependencies": {
     "@prettier/plugin-xml": "^3.4.2",
-    "cspell": "^10.0.1",
+    "cspell": "^10.1.0",
     "markdownlint-cli2": "^0.23.2",
     "prettier": "^3.9.6",
     "prettier-plugin-ini": "^1.3.0",
@@ -78,7 +78,7 @@
     "showFound": true
   },
   "name": "torbrowser-launcher-mac",
-  "packageManager": "yarn@4.14.1",
+  "packageManager": "yarn@4.18.0",
   "prettier": {
     "endOfLine": "lf",
     "iniSpaceAroundEquals": true,
