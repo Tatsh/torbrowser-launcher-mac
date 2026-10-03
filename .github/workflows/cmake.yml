@@ -53,7 +53,7 @@ jobs:
         with:
           merge-multiple: true
           path: dist
-          pattern: torbrowser-launcher-*
+          pattern: torbrowser-launcher-*-Release
       - env:
           REPO: ${{ github.repository }}
           TAG: ${{ github.ref_name }}
@@ -66,14 +66,12 @@ jobs:
           expected=()
           missing=()
           for arch in arm64 x86_64; do
-            for build_type in Debug Release; do
-              for ext in dmg zip; do
-                name="${slug}-${version}-Darwin-${arch}-${build_type}.${ext}"
-                expected+=("$name")
-                if [[ ! -f "dist/${name}" ]]; then
-                  missing+=("$name")
-                fi
-              done
+            for ext in dmg zip; do
+              name="${slug}-${version}-Darwin-${arch}-Release.${ext}"
+              expected+=("$name")
+              if [[ ! -f "dist/${name}" ]]; then
+                missing+=("$name")
+              fi
             done
           done
           if [[ ${#missing[@]} -gt 0 ]]; then
