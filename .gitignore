@@ -1,6 +1,7 @@
 *.kate-swp
 *.log
 *.profraw
+*.tsbuildinfo
 *~
 .*.swp
 .*_cache/

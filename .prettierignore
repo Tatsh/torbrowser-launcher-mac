@@ -12,6 +12,7 @@
 *.min.js
 *.strings
 *.swift
+*.tsbuildinfo
 *~
 .*.swp
 .*_cache/
