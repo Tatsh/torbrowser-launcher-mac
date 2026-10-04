@@ -58,6 +58,7 @@ qstringbuilder
 regen
 resp
 ripgreprc
+sbclaude
 schemafile
 shellcheck
 shellformat
