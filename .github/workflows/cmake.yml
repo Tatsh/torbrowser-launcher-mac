@@ -1,6 +1,11 @@
 ---
+concurrency:
+  cancel-in-progress: false
+  group: '${{ github.workflow }}-${{ github.ref }}'
+  queue: 'max'
 jobs:
   build-macos:
+    name: 'Build'
     permissions:
       attestations: write
       contents: read
@@ -11,18 +16,26 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Configure
+      - env:
+          BUILD_TYPE: '${{ matrix.build-type }}'
+        name: Configure
         run: |
-          cmake -G Xcode -B build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} \
-            --install-prefix ${{github.workspace}}/build/prefix
-      - name: Build
-        run: cmake --build build --config ${{matrix.build-type}} --verbose
-      - name: Install
-        run: cmake --install ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
-      - name: Package
+          cmake -G Xcode -B build -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+            --install-prefix "${GITHUB_WORKSPACE}/build/prefix"
+      - env:
+          BUILD_TYPE: '${{ matrix.build-type }}'
+        name: Build
+        run: cmake --build build --config "${BUILD_TYPE}" --verbose
+      - env:
+          BUILD_TYPE: '${{ matrix.build-type }}'
+        name: Install
+        run: cmake --install "${GITHUB_WORKSPACE}/build" --config "${BUILD_TYPE}" --verbose
+      - env:
+          BUILD_TYPE: '${{ matrix.build-type }}'
+        name: Package
         run: >-
-          cpack -C ${{matrix.build-type}}
-          --config ${{github.workspace}}/build/CPackConfig.cmake --verbose
+          cpack -C "${BUILD_TYPE}"
+          --config "${GITHUB_WORKSPACE}/build/CPackConfig.cmake" --verbose
       - name: 'Upload Artifacts'
         uses: 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a'
         with:
@@ -44,6 +57,7 @@ jobs:
         os: [macos-latest, macos-15-intel]
   publish-draft-release:
     if: ${{ github.ref_type == 'tag' }}
+    name: 'Publish Draft Release'
     needs: build-macos
     permissions:
       contents: write
@@ -99,3 +113,4 @@ name: Build
     branches: [master]
     tags:
       - 'v*.*.*'
+permissions: {}

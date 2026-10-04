@@ -1,7 +1,11 @@
+concurrency:
+  cancel-in-progress: true
+  group: '${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}'
 jobs:
   test:
     env:
       HOMEBREW_NO_REQUIRE_TAP_TRUST: '1'
+    name: 'Tests'
     permissions:
       contents: write
     runs-on: 'macos-latest'
@@ -10,21 +14,29 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Configure
+      - env:
+          BUILD_TYPE: '${{ matrix.build-type }}'
+        name: Configure
         run: >-
-          cmake -G Xcode -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -B ${{github.workspace}}/build
-          --install-prefix ${{github.workspace}}/build/prefix -DCMAKE_APPLE_SILICON_PROCESSOR=arm64
+          cmake -G Xcode -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -B "${GITHUB_WORKSPACE}/build"
+          --install-prefix "${GITHUB_WORKSPACE}/build/prefix" -DCMAKE_APPLE_SILICON_PROCESSOR=arm64
           -DBUILD_TESTS=ON -DCMAKE_OSX_SYSROOT=macosx
-      - name: Build
-        run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
-      - name: Run tests
-        run: ctest -C ${{matrix.build-type}} --output-on-failure --test-dir build/TorBrowserLauncherTests
-      - name: Generate coverage
+      - env:
+          BUILD_TYPE: '${{ matrix.build-type }}'
+        name: Build
+        run: cmake --build "${GITHUB_WORKSPACE}/build" --config "${BUILD_TYPE}" --verbose
+      - env:
+          BUILD_TYPE: '${{ matrix.build-type }}'
+        name: Run tests
+        run: ctest -C "${BUILD_TYPE}" --output-on-failure --test-dir build/TorBrowserLauncherTests
+      - env:
+          BUILD_TYPE: '${{ matrix.build-type }}'
+        name: Generate coverage
         if: ${{ matrix.build-type == 'Debug' }}
         run: |
           xcrun llvm-profdata merge -sparse build/TorBrowserLauncherTests/default.profraw -o default.profdata
           xcrun llvm-cov export \
-            build/TorBrowserLauncherTests/${{matrix.build-type}}/TorBrowserLauncherTests.xctest/Contents/MacOS/TorBrowserLauncherTests \
+            "build/TorBrowserLauncherTests/${BUILD_TYPE}/TorBrowserLauncherTests.xctest/Contents/MacOS/TorBrowserLauncherTests" \
             --ignore-filename-regex='.*TorBrowserLauncherTests/.*' \
             -instr-profile=default.profdata -format=lcov > coverage.lcov
       - if: ${{ matrix.build-type == 'Debug' }}
@@ -41,5 +53,4 @@ name: 'Tests'
   push:
     branches:
       - 'master'
-permissions:
-  contents: 'read'
+permissions: {}

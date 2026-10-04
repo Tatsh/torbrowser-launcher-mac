@@ -4,6 +4,7 @@ concurrency:
   group: pages
 jobs:
   jekyll:
+    name: 'Build Jekyll Content'
     outputs:
       jekyll_content: ${{ steps.save_content.outputs.jekyll_content }}
     permissions:
@@ -25,6 +26,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    name: 'Deploy'
     needs: jekyll
     permissions:
       contents: read
@@ -41,31 +43,31 @@ jobs:
       - name: Configure
         run: |
           cmake -G Xcode -B build -DCMAKE_BUILD_TYPE=Debug \
-            --install-prefix ${{github.workspace}}/build/prefix \
+            --install-prefix "${GITHUB_WORKSPACE}/build/prefix" \
             -DCMAKE_APPLE_SILICON_PROCESSOR=arm64
       - env:
           JEKYLL_CONTENT: ${{ needs.jekyll.outputs.jekyll_content }}
         name: Retrieve Jekyll content
         run: |
           echo "$JEKYLL_CONTENT" | base64 -d > jekyll_content.zip
-          unzip jekyll_content.zip -d ${{github.workspace}}/build/html
-          cp screenshot.png ${{github.workspace}}/build/html/
+          unzip jekyll_content.zip -d "${GITHUB_WORKSPACE}/build/html"
+          cp screenshot.png "${GITHUB_WORKSPACE}/build/html/"
       - name: Build documentation
         run: |
-          cd build
+          cd build || exit 1
           xcodebuild docbuild -scheme TorBrowserLauncher -derivedDataPath doc -destination 'generic/platform=macOS'
           xcodebuild docbuild -scheme TorBrowserLauncherLib -derivedDataPath doc2 -destination 'generic/platform=macOS'
       - name: Generate HTML
         run: |
-          cd build
+          cd build || exit 1
           xcrun docc process-archive transform-for-static-hosting \
             TorBrowserLauncherLib/Debug/TorBrowserLauncherLib.doccarchive \
-            --output-path ${{github.workspace}}/build/html/lib --hosting-base-path /torbrowser-launcher-mac/lib
+            --output-path "${GITHUB_WORKSPACE}/build/html/lib" --hosting-base-path /torbrowser-launcher-mac/lib
           xcrun docc process-archive transform-for-static-hosting \
             'TorBrowserLauncher/Debug/Tor Browser Launcher.doccarchive' \
-            --output-path ${{github.workspace}}/build/html/app --hosting-base-path /torbrowser-launcher-mac/app
-          sed -re 's|"/|"/torbrowser-launcher-mac/docs/|g' ${{github.workspace}}/build/html/app/index.html > new && mv new ${{github.workspace}}/build/html/app/index.html
-          sed -re 's|"/|"/torbrowser-launcher-mac/docs/|g' ${{github.workspace}}/build/html/lib/index.html > new && mv new ${{github.workspace}}/build/html/lib/index.html
+            --output-path "${GITHUB_WORKSPACE}/build/html/app" --hosting-base-path /torbrowser-launcher-mac/app
+          sed -re 's|"/|"/torbrowser-launcher-mac/docs/|g' "${GITHUB_WORKSPACE}/build/html/app/index.html" > new && mv new "${GITHUB_WORKSPACE}/build/html/app/index.html"
+          sed -re 's|"/|"/torbrowser-launcher-mac/docs/|g' "${GITHUB_WORKSPACE}/build/html/lib/index.html" > new && mv new "${GITHUB_WORKSPACE}/build/html/lib/index.html"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
         with:
@@ -77,3 +79,4 @@ name: GitHub Pages
 'on':
   push:
     branches: [master]
+permissions: {}

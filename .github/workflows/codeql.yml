@@ -1,3 +1,6 @@
+concurrency:
+  cancel-in-progress: true
+  group: '${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}'
 jobs:
   analyze:
     name: 'Analyze'
@@ -18,7 +21,7 @@ jobs:
       - name: Build
         run: |
           cmake -G Xcode -B build -DCMAKE_BUILD_TYPE=Debug \
-            --install-prefix ${{github.workspace}}/build/prefix \
+            --install-prefix "${GITHUB_WORKSPACE}/build/prefix" \
             -DCMAKE_APPLE_SILICON_PROCESSOR=arm64
           cmake --build build --config Debug --verbose
       - name: 'Perform CodeQL Analysis'
@@ -39,3 +42,4 @@ name: 'CodeQL'
       - 'master'
   schedule:
     - cron: '15 4 * * 3'
+permissions: {}
