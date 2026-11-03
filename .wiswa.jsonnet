@@ -11,7 +11,14 @@
     ],
   },
   keywords: ['macos', 'package manager', 'tor'],
-  want_codeql: false,
+  want_codeql: true,
+  github+: {
+    codeql+: {
+      languages: ['actions'],
+      runs_on: 'ubuntu-latest',
+      workflow_file: 'codeql-actions.yml',
+    },
+  },
   want_tests: false,
   project_type: 'swift',
   gitignore+: [
